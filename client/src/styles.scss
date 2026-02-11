@@ -82,17 +82,17 @@ body {
   min-height: 0;
   
   @media (min-width: 1024px) {
-    padding: 40px 28px;
+    padding: 20px;
   }
   
   @media (min-width: 1600px) {
     max-width: 1800px;
-    padding: 48px 32px;
+    padding: 20px;
   }
   
   @media (min-width: 1920px) {
     max-width: 2000px;
-    padding: 56px 40px;
+    padding: 20px;
   }
 }
 
