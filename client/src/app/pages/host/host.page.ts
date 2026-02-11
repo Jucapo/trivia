@@ -72,26 +72,28 @@ import { ToastService } from '../../services/toast.service';
     <button class="btn btn-float" (click)="start()" [disabled]="!canStart()"><span class="icon-play">&#9654;</span> Iniciar</button>
   </div>
   <div class="host-float-start host-float-actions" *ngIf="lobbyStarted() && !paused()">
-    <button class="btn btn-float btn-float-secondary" (click)="pause()">Pausar</button>
+    <button class="btn btn-float btn-float-pause" (click)="pause()"><span class="icon-pause">&#9208;</span> Pausar</button>
   </div>
   <div class="host-float-start host-float-actions host-float-two" *ngIf="lobbyStarted() && paused()">
-    <button class="btn btn-float" (click)="resume()">Reanudar</button>
-    <button class="btn btn-float btn-float-danger" (click)="stopGame()">Reiniciar</button>
+    <button class="btn btn-float btn-float-resume" (click)="resume()"><span class="icon-play">&#9654;</span> Reanudar</button>
+    <button class="btn btn-float btn-float-danger" (click)="stopGame()"><span class="icon-restart">&#8635;</span> Reiniciar</button>
   </div>
 
-  <div class="card host-panel" *ngIf="current() as q">
-    <div class="question-progress-header">
+  <details class="card host-panel host-accordion question-card-accordion" *ngIf="current() as q" open>
+    <summary>Pregunta actual ({{q.index+1}} de {{q.total}})</summary>
+    <div class="question-progress-header" *ngIf="!paused()">
       <span class="question-progress-text">Pregunta {{q.index+1}} de {{q.total}}</span>
       <span class="question-progress-pct">{{ gameProgressPct(q) }}% completado</span>
     </div>
-    <div class="progress progress-game"><div class="progress-bar progress-bar-game" [style.width.%]="gameProgressPct(q)"></div></div>
+    <div class="progress progress-game" *ngIf="!paused()"><div class="progress-bar progress-bar-game" [style.width.%]="gameProgressPct(q)"></div></div>
 
     <div class="header-row">
       <h3>Pregunta</h3>
-      <div class="badge" *ngIf="timeLeft(q) >= 0">Tiempo: {{ timeLeft(q) / 1000 | number:'1.0-0' }}s</div>
+      <div class="badge" *ngIf="!paused() && timeLeft(q) >= 0">Tiempo: {{ timeLeft(q) / 1000 | number:'1.0-0' }}s</div>
+      <div class="badge" *ngIf="paused()">Pausado</div>
     </div>
 
-    <div class="progress"><div class="progress-bar" [style.width.%]="progressPct(q)"></div></div>
+    <div class="progress" *ngIf="!paused()"><div class="progress-bar" [style.width.%]="progressPct(q)"></div></div>
 
     <div class="question-chips" *ngIf="q.category || q.difficulty">
       <span *ngIf="q.category" class="chip chip--category" [ngClass]="'chip--cat-' + (q.category || 'cultura')">
@@ -110,7 +112,7 @@ import { ToastService } from '../../services/toast.service';
       <button class="btn secondary" (click)="reveal()">Revelar</button>
       <button class="btn secondary" (click)="next()">Siguiente</button>
     </div>
-  </div>
+  </details>
 
   <div class="card host-panel" *ngIf="leaderboard().length > 0">
     <h3>Resultados</h3>
@@ -157,7 +159,206 @@ import { ToastService } from '../../services/toast.service';
   </details>
   `,
   styles: [`
-    :host { display: block; padding-bottom: 80px; }
+    :host { display: block; padding-bottom: 100px; }
+
+    .host-panel { padding: 28px; }
+    .host-col { padding: 6px 0; }
+    .host-section { margin-bottom: 20px; }
+    .host-status-row { 
+      margin-top: 20px; 
+      padding-top: 20px; 
+      border-top: 2px solid #e2e8f0; 
+    }
+    .host-status-row h3 { margin-bottom: 12px; }
+    .host-actions { 
+      margin-top: 20px; 
+      display: flex; 
+      gap: 12px; 
+      flex-wrap: wrap; 
+    }
+
+    .host-float-start {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 100;
+    }
+    .host-float-actions.host-float-two {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .btn-float {
+      padding: 16px 32px !important;
+      font-size: 16px !important;
+      box-shadow: 0 8px 24px rgba(30, 64, 175, 0.4) !important;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-float-pause {
+      background: linear-gradient(180deg, #eab308, #ca8a04) !important;
+      color: #1c1917 !important;
+      box-shadow: 0 8px 24px rgba(202, 138, 4, 0.4) !important;
+    }
+    .btn-float-resume {
+      background: linear-gradient(180deg, #22c55e, #16a34a) !important;
+      box-shadow: 0 8px 24px rgba(22, 163, 94, 0.35) !important;
+    }
+    .btn-float-danger {
+      background: linear-gradient(180deg, #dc2626, #b91c1c) !important;
+      color: #fff !important;
+      box-shadow: 0 8px 24px rgba(185, 28, 28, 0.4) !important;
+    }
+    .icon-play, .icon-pause, .icon-restart {
+      font-size: 1.1em;
+      line-height: 1;
+    }
+
+    .host-accordion summary {
+      font-size: 1.15rem;
+      font-weight: 600;
+      cursor: pointer;
+      list-style: none;
+      margin-bottom: 16px;
+      padding: 8px 0;
+    }
+    .host-accordion summary::-webkit-details-marker { display: none; }
+    .host-accordion summary::after {
+      content: '▾';
+      float: right;
+      color: var(--muted);
+      font-size: 1.2em;
+    }
+    .host-accordion[open] summary::after { content: '▴'; }
+
+    .question-card-accordion summary { font-weight: 600; cursor: pointer; list-style: none; }
+    .question-card-accordion summary::-webkit-details-marker { display: none; }
+    .question-card-accordion summary::after { content: ' ▾'; color: var(--muted); float: right; }
+    .question-card-accordion[open] summary::after { content: ' ▴'; }
+
+    .game-settings {
+      margin-bottom: 16px;
+      padding: 20px;
+      border: 2px solid #e2e8f0;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(248, 251, 255, 0.8) 0%, rgba(255, 255, 255, 0.9) 100%);
+    }
+
+    .category-select-col label { display: block; margin-bottom: 8px; }
+
+    .category-add-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .add-question-panel { margin-top: 24px; }
+    .add-question-form label { 
+      display: block; 
+      margin-top: 10px; 
+      font-weight: 600; 
+      color: var(--text); 
+      font-size: 14px; 
+    }
+    .add-question-form label:first-of-type { margin-top: 0; }
+    .form-actions { 
+      margin-top: 20px; 
+      display: flex; 
+      align-items: center; 
+      gap: 12px; 
+      flex-wrap: wrap; 
+    }
+
+    .category-admin-panel { margin-top: 16px; }
+    .category-table-wrap {
+      margin-top: 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+    .category-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+    }
+    .category-table th,
+    .category-table td {
+      text-align: left;
+      padding: 12px 16px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .category-table th {
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      font-size: 13px;
+      color: #334155;
+      font-weight: 600;
+    }
+    .category-table td:nth-child(2),
+    .category-table th:nth-child(2) { text-align: right; width: 100px; }
+    .category-table td:nth-child(3),
+    .category-table th:nth-child(3) { text-align: right; width: 90px; }
+    .category-table tbody tr:last-child td { border-bottom: 0; }
+    .category-table tbody tr:hover {
+      background: rgba(102, 126, 234, 0.03);
+    }
+
+    .category-icon-picker { margin-bottom: 16px; }
+    .category-icon-picker-label { 
+      display: block; 
+      font-size: 14px; 
+      font-weight: 600; 
+      margin-bottom: 10px; 
+      color: var(--text); 
+    }
+    .category-icon-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .icon-pick-btn {
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      background: #fff;
+      font-size: 1.3rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .icon-pick-btn:hover { 
+      border-color: var(--accent-light); 
+      background: #f8fbff; 
+      transform: scale(1.1);
+    }
+    .icon-pick-btn.selected { 
+      border-color: var(--accent-light); 
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+      box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+    }
+
+    @media (max-width: 820px) {
+      .host-panel { padding: 20px; }
+      .category-add-row { grid-template-columns: 1fr; }
+      .host-float-start {
+        bottom: 16px;
+        right: 16px;
+      }
+      .host-float-actions.host-float-two {
+        flex-direction: column;
+      }
+      .btn-float {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .host-actions .btn { width: 100%; }
+      .form-actions { align-items: stretch; }
+      .form-actions .btn { width: 100%; }
+      .category-table th,
+      .category-table td { padding: 10px 12px; }
+    }
   `]
 })
 export class HostPage implements OnDestroy {

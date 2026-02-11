@@ -581,6 +581,7 @@ io.on('connection', (socket) => {
     clearTimers();
     state.paused = true;
     state.pauseRemainingMs = Math.max(0, state.questionTimeMs - (Date.now() - state.startedAt));
+    io.emit('paused');
     broadcastLobby();
   });
   socket.on('host:resume', () => {
@@ -588,6 +589,7 @@ io.on('connection', (socket) => {
     state.paused = false;
     const remaining = state.pauseRemainingMs ?? state.questionTimeMs;
     state.pauseRemainingMs = null;
+    io.emit('resumed');
     emitQuestionWithDuration(remaining);
     broadcastLobby();
   });

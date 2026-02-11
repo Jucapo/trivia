@@ -45,8 +45,10 @@ export class SocketService {
     this.socket.on('lobby', ({ players, started, paused }: { players: Player[]; started: boolean; paused?: boolean; }) => {
       this.players.set(players);
       this.lobbyStarted.set(started);
-      this.paused.set(!!paused);
+      if (paused !== undefined) this.paused.set(!!paused);
     });
+    this.socket.on('paused', () => this.paused.set(true));
+    this.socket.on('resumed', () => this.paused.set(false));
 
     this.socket.on('question', (data: CurrentQ) => {
       this.currentQuestion.set(data);
@@ -64,6 +66,7 @@ export class SocketService {
 
     this.socket.on('end', ({ leaderboard }: { leaderboard: Player[]; }) => {
       this.leaderboard.set(leaderboard);
+      this.paused.set(false);
     });
   }
 

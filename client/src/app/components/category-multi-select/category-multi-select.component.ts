@@ -29,10 +29,6 @@ import { NgFor, NgIf, TitleCasePipe } from '@angular/common';
         <span class="multiselect-chevron">▾</span>
       </button>
       <div class="multiselect-dropdown" *ngIf="open()">
-        <label class="multiselect-option multiselect-option--all">
-          <input type="checkbox" [checked]="isAllSelected()" (change)="toggleAll()">
-          <span>Seleccionar todas</span>
-        </label>
         <div class="multiselect-option" *ngFor="let opt of availableOptions()" (click)="toggleOption(opt)">
           <input type="checkbox" [checked]="isSelected(opt)">
           <span class="chip-icon">{{ iconFor(opt) }}</span>
@@ -126,11 +122,6 @@ import { NgFor, NgIf, TitleCasePipe } from '@angular/common';
     .multiselect-option:hover {
       background: #f1f5f9;
     }
-    .multiselect-option--all {
-      font-weight: 600;
-      border-bottom: 1px solid #e2e8f0;
-      margin-bottom: 6px;
-    }
     .multiselect-option input {
       width: 18px;
       height: 18px;
@@ -199,16 +190,6 @@ export class CategoryMultiSelectComponent implements OnInit, OnChanges {
 
   isSelected(opt: string): boolean {
     return this.selectedList().includes(opt);
-  }
-
-  isAllSelected(): boolean {
-    return this.selectedList().includes('todas') || this.selectedList().length === 0;
-  }
-
-  toggleAll() {
-    const next = this.isAllSelected() ? [] : ['todas'];
-    this.selectedList.set(next);
-    this.selectedChange.emit(next);
   }
 
   iconFor(cat: string): string {
