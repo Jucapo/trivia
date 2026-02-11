@@ -1,0 +1,22 @@
+[
+  {
+    "q": "Ejemplo: ¿Cuál es la capital de Colombia?",
+    "options": [
+      "Bogotá",
+      "Medellín",
+      "Cali",
+      "Barranquilla"
+    ],
+    "answer": 0
+  },
+  {
+    "q": "Ejemplo: ¿En qué continente está Japón?",
+    "options": [
+      "Asia",
+      "Europa",
+      "América",
+      "África"
+    ],
+    "answer": 0
+  }
+]

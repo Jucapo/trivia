@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build outputs
+dist/
+**/dist/
+.angular/
+**/.angular/
+out-tsc/
+tmp/
+
+# IDE and OS
+.idea/
+.vscode/
+*.log
+.DS_Store
+Thumbs.db
+
+# Env / secrets (optional: keep environment.prod.ts with placeholder)
+# client/src/environments/environment.prod.ts

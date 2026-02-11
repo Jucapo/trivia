@@ -1,0 +1,13 @@
+# Render.com blueprint for the trivia game server
+# Deploy: connect your repo at render.com and use this blueprint, or create a Web Service manually
+services:
+  - type: web
+    name: trivia-game-server
+    runtime: node
+    rootDir: server
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
