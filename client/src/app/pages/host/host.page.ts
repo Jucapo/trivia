@@ -13,6 +13,8 @@ import { ToastService } from '../../services/toast.service';
   imports: [DecimalPipe, NgFor, NgIf, NgClass, TitleCasePipe, FormsModule, QuestionBankFormComponent, CategoryMultiSelectComponent],
   styleUrls: ['./host.page.scss'],
   template: `
+  <div class="host-main-layout">
+  <div class="host-left-col">
   <details class="card host-panel host-section host-accordion" [attr.open]="lobbyStarted() ? null : ''">
     <summary>Configuracion</summary>
     <div class="share-row">
@@ -95,6 +97,91 @@ import { ToastService } from '../../services/toast.service';
       </div>
     </div>
   </details>
+  </div>
+
+  <div class="host-right-col">
+  <details class="card host-panel host-section host-accordion question-card-accordion" *ngIf="current() as q" open>
+    <summary>Pregunta actual ({{q.index+1}} de {{q.total}})</summary>
+    <div class="question-progress-header" *ngIf="!paused()">
+      <span class="question-progress-text">Pregunta {{q.index+1}} de {{q.total}}</span>
+      <span class="question-progress-pct">{{ gameProgressPct(q) }}% completado</span>
+    </div>
+    <div class="progress progress-game" *ngIf="!paused()"><div class="progress-bar progress-bar-game" [style.width.%]="gameProgressPct(q)"></div></div>
+
+    <div class="header-row">
+      <h3>Pregunta</h3>
+      <div class="badge" *ngIf="!paused() && timeLeft(q) >= 0">Tiempo: {{ timeLeft(q) / 1000 | number:'1.0-0' }}s</div>
+      <div class="badge" *ngIf="paused()">Pausado</div>
+    </div>
+
+    <div class="progress" *ngIf="!paused()"><div class="progress-bar" [style.width.%]="progressPct(q)"></div></div>
+
+    <div class="question-chips" *ngIf="q.category || q.difficulty">
+      <span *ngIf="q.category" class="chip chip--category" [ngClass]="'chip--cat-' + (q.category || 'cultura')">
+        <span class="chip-icon">{{ categoryIcon(q.category) }}</span>{{ (q.category || 'cultura') | titlecase }}
+      </span>
+      <span *ngIf="q.difficulty" class="chip chip--difficulty" [ngClass]="'chip--diff-' + (q.difficulty || 'media')">
+        <span class="chip-dot"></span>{{ (q.difficulty || 'media') | titlecase }}
+      </span>
+    </div>
+    <p class="question">{{q.q}}</p>
+    <ul>
+      <li *ngFor="let opt of q.options; let i = index">{{ 'ABCD'[i] }}) {{ opt | titlecase }}</li>
+    </ul>
+    <p *ngIf="q.reveal" class="badge ok">Correcta: {{ 'ABCD'[q.correct ?? 0] }}</p>
+    <div class="host-actions" *ngIf="lobbyStarted() && !paused()">
+      <button class="btn secondary" (click)="reveal()">Revelar</button>
+      <button class="btn secondary" (click)="next()">Siguiente</button>
+    </div>
+  </details>
+
+  <div class="card host-panel host-section" *ngIf="leaderboard().length > 0">
+    <h3>Resultados</h3>
+    <ul class="list">
+      <li *ngFor="let p of leaderboard(); let i = index" class="list-item">
+        <span>{{i+1}}. {{p.name}}</span>
+        <span class="list-item-badges">
+          <span class="badge">Pts: {{p.score}}</span>
+          <span class="chip chip--correct"><span class="chip-dot"></span>{{ p.correctCount ?? 0 }} correctas</span>
+        </span>
+      </li>
+    </ul>
+  </div>
+  </div>
+  </div>
+
+  <div class="host-bottom-section">
+  <app-question-bank-form [categories]="categories()" (questionAdded)="onQuestionAdded()"></app-question-bank-form>
+
+  <details class="card host-panel host-section add-question-panel category-admin-panel host-accordion">
+    <summary>Gestionar categorias</summary>
+    <p class="muted">Agrega nuevas categorias para usarlas al crear preguntas y filtrar partidas.</p>
+    <div class="category-icon-picker">
+      <span class="category-icon-picker-label">Icono (opcional):</span>
+      <span class="category-icon-list">
+        <button type="button" *ngFor="let ic of availableCategoryIcons" class="icon-pick-btn" [class.selected]="newCategoryIcon === ic" (click)="newCategoryIcon = ic" [title]="ic">{{ ic }}</button>
+      </span>
+    </div>
+    <div class="category-add-row">
+      <input class="input" [(ngModel)]="newCategoryName" placeholder="Nueva categoria (ej: deportes)">
+      <button class="btn secondary" type="button" (click)="addCategory()" [disabled]="addingCategory()">Agregar categoria</button>
+    </div>
+    <div class="category-table-wrap" *ngIf="categories().length > 0">
+      <table class="category-table">
+        <thead>
+          <tr><th>Categoria</th><th>Preguntas</th><th>% del banco</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let c of categories()">
+            <td><span class="chip-icon">{{ categoryIcon(c) }}</span> {{ c | titlecase }}</td>
+            <td>{{ categoryCounts()[c] || 0 }}</td>
+            <td>{{ categoryPct(c) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    </details>
+  </div>
 
   <div class="host-float-start" *ngIf="!lobbyStarted()">
     <button
@@ -131,85 +218,6 @@ import { ToastService } from '../../services/toast.service';
       <span class="icon-restart">&#8635;</span>
     </button>
   </div>
-
-  <details class="card host-panel host-section host-accordion question-card-accordion" *ngIf="current() as q" open>
-    <summary>Pregunta actual ({{q.index+1}} de {{q.total}})</summary>
-    <div class="question-progress-header" *ngIf="!paused()">
-      <span class="question-progress-text">Pregunta {{q.index+1}} de {{q.total}}</span>
-      <span class="question-progress-pct">{{ gameProgressPct(q) }}% completado</span>
-    </div>
-    <div class="progress progress-game" *ngIf="!paused()"><div class="progress-bar progress-bar-game" [style.width.%]="gameProgressPct(q)"></div></div>
-
-    <div class="header-row">
-      <h3>Pregunta</h3>
-      <div class="badge" *ngIf="!paused() && timeLeft(q) >= 0">Tiempo: {{ timeLeft(q) / 1000 | number:'1.0-0' }}s</div>
-      <div class="badge" *ngIf="paused()">Pausado</div>
-    </div>
-
-    <div class="progress" *ngIf="!paused()"><div class="progress-bar" [style.width.%]="progressPct(q)"></div></div>
-
-    <div class="question-chips" *ngIf="q.category || q.difficulty">
-      <span *ngIf="q.category" class="chip chip--category" [ngClass]="'chip--cat-' + (q.category || 'cultura')">
-        <span class="chip-icon">{{ categoryIcon(q.category) }}</span>{{ (q.category || 'cultura') | titlecase }}
-      </span>
-      <span *ngIf="q.difficulty" class="chip chip--difficulty" [ngClass]="'chip--diff-' + (q.difficulty || 'media')">
-        <span class="chip-dot"></span>{{ (q.difficulty || 'media') | titlecase }}
-      </span>
-    </div>
-    <p class="question">{{q.q}}</p>
-    <ul>
-      <li *ngFor="let opt of q.options; let i = index">{{ 'ABCD'[i] }}) {{ opt | titlecase }}</li>
-    </ul>
-    <p *ngIf="q.reveal" class="badge ok">Correcta: {{ 'ABCD'[q.correct ?? 0] }}</p>
-    <div class="host-actions" *ngIf="lobbyStarted() && !paused()">
-      <button class="btn secondary" (click)="reveal()">Revelar</button>
-      <button class="btn secondary" (click)="next()">Siguiente</button>
-    </div>
-  </details>
-
-  <div class="card host-panel" *ngIf="leaderboard().length > 0">
-    <h3>Resultados</h3>
-    <ul class="list">
-      <li *ngFor="let p of leaderboard(); let i = index" class="list-item">
-        <span>{{i+1}}. {{p.name}}</span>
-        <span class="list-item-badges">
-          <span class="badge">Pts: {{p.score}}</span>
-          <span class="chip chip--correct"><span class="chip-dot"></span>{{ p.correctCount ?? 0 }} correctas</span>
-        </span>
-      </li>
-    </ul>
-  </div>
-
-  <app-question-bank-form [categories]="categories()" (questionAdded)="onQuestionAdded()"></app-question-bank-form>
-
-  <details class="card host-panel add-question-panel category-admin-panel host-accordion">
-    <summary>Gestionar categorias</summary>
-    <p class="muted">Agrega nuevas categorias para usarlas al crear preguntas y filtrar partidas.</p>
-    <div class="category-icon-picker">
-      <span class="category-icon-picker-label">Icono (opcional):</span>
-      <span class="category-icon-list">
-        <button type="button" *ngFor="let ic of availableCategoryIcons" class="icon-pick-btn" [class.selected]="newCategoryIcon === ic" (click)="newCategoryIcon = ic" [title]="ic">{{ ic }}</button>
-      </span>
-    </div>
-    <div class="category-add-row">
-      <input class="input" [(ngModel)]="newCategoryName" placeholder="Nueva categoria (ej: deportes)">
-      <button class="btn secondary" type="button" (click)="addCategory()" [disabled]="addingCategory()">Agregar categoria</button>
-    </div>
-    <div class="category-table-wrap" *ngIf="categories().length > 0">
-      <table class="category-table">
-        <thead>
-          <tr><th>Categoria</th><th>Preguntas</th><th>% del banco</th></tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let c of categories()">
-            <td><span class="chip-icon">{{ categoryIcon(c) }}</span> {{ c | titlecase }}</td>
-            <td>{{ categoryCounts()[c] || 0 }}</td>
-            <td>{{ categoryPct(c) }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    </details>
   `
 })
 export class HostPage implements OnDestroy {

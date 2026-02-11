@@ -3,6 +3,37 @@
   padding-bottom: 100px; 
 }
 
+/* Main layout grid for desktop */
+.host-main-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  
+  @media (min-width: 1024px) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    gap: 28px;
+  }
+}
+
+.host-left-col,
+.host-right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.host-bottom-section {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  
+  @media (min-width: 1024px) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 28px;
+  }
+}
+
 .host-panel { 
   padding: 28px; 
 }
@@ -310,6 +341,16 @@
 
 .status-pill {
   margin-top: 4px;
+}
+
+@media (max-width: 1023px) {
+  .host-main-layout {
+    grid-template-columns: 1fr;
+  }
+  
+  .host-bottom-section {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 820px) {

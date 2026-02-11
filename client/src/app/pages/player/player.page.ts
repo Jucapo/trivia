@@ -39,7 +39,7 @@ import { SocketService, Player } from '../../socket.service';
               <p class="paused-overlay-sub">Se reanudará en breve.</p>
             </div>
           </div>
-          <div class="grid grid-2 player-grid">
+          <div class="grid player-grid">
           <div class="qa-col">
             <div class="question-progress-header" *ngIf="!paused()">
               <span class="question-progress-text">Pregunta {{q.index+1}} de {{q.total}}</span>

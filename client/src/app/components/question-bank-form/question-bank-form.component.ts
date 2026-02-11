@@ -9,7 +9,7 @@ import { ToastService } from '../../services/toast.service';
   selector: 'app-question-bank-form',
   imports: [FormsModule, NgFor, NgIf, TitleCasePipe],
   template: `
-    <details class="card host-panel add-question-panel host-accordion">
+    <details class="card host-panel host-section add-question-panel host-accordion">
       <summary>Anadir pregunta al banco</summary>
       <p class="muted">Las preguntas nuevas quedaran disponibles para partidas futuras.</p>
       <form class="add-question-form" (ngSubmit)="submitQuestion()">
