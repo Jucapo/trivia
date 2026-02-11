@@ -1,23 +1,24 @@
-import { Component, OnDestroy, signal } from '@angular/core';
+﻿import { Component, OnDestroy, signal } from '@angular/core';
 import { DecimalPipe, NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SocketService } from './socket.service';
-import { QuestionsService, type QuestionItem } from './questions.service';
+import { SocketService } from '../../socket.service';
+import { QuestionsService } from '../../questions.service';
+import { QuestionBankFormComponent } from '../../components/question-bank-form/question-bank-form.component';
 
 @Component({
   standalone: true,
-  selector: 'app-host',
-  imports: [DecimalPipe, NgFor, NgIf, FormsModule],
+  selector: 'app-host-page',
+  imports: [DecimalPipe, NgFor, NgIf, FormsModule, QuestionBankFormComponent],
   template: `
   <div class="card host-panel">
-    <h2>🎛️ Host</h2>
+    <h2>ðŸŽ›ï¸ Host</h2>
     <div class="share-row">
       <span class="badge">Comparte:</span>
       <code class="share-url">{{ shareUrl }}</code>
-      <button type="button" class="btn btn-copy" (click)="copyLink()" [class.copied]="copied()">{{ copied() ? '✓ Copiado' : 'Copiar' }}</button>
+      <button type="button" class="btn btn-copy" (click)="copyLink()" [class.copied]="copied()">{{ copied() ? 'âœ“ Copiado' : 'Copiar' }}</button>
     </div>
     <div class="game-settings">
-      <h3>⚙️ Configuración de partida</h3>
+      <h3>âš™ï¸ ConfiguraciÃ³n de partida</h3>
       <div class="grid grid-2">
         <div>
           <label>Tiempo por pregunta (segundos)</label>
@@ -54,16 +55,16 @@ import { QuestionsService, type QuestionItem } from './questions.service';
     </div>
 
     <div class="host-actions">
-      <button class="btn" (click)="start()">▶️ Iniciar</button>
-      <button class="btn secondary" (click)="next()">➡️ Siguiente</button>
-      <button class="btn secondary" (click)="reveal()">👁 Revelar</button>
+      <button class="btn" (click)="start()">â–¶ï¸ Iniciar</button>
+      <button class="btn secondary" (click)="next()">âž¡ï¸ Siguiente</button>
+      <button class="btn secondary" (click)="reveal()">ðŸ‘ Revelar</button>
     </div>
   </div>
 
   <div class="card host-panel" *ngIf="current() as q">
     <div class="header-row">
       <h3>Pregunta {{q.index+1}} / {{q.total}}</h3>
-      <div class="badge" *ngIf="timeLeft(q) >= 0">⏱ {{ timeLeft(q) / 1000 | number:'1.0-0' }}s</div>
+      <div class="badge" *ngIf="timeLeft(q) >= 0">â± {{ timeLeft(q) / 1000 | number:'1.0-0' }}s</div>
     </div>
 
     <div class="progress"><div class="progress-bar" [style.width.%]="progressPct(q)"></div></div>
@@ -76,7 +77,7 @@ import { QuestionsService, type QuestionItem } from './questions.service';
   </div>
 
   <div class="card host-panel" *ngIf="leaderboard().length > 0">
-    <h3>🏆 Resultados</h3>
+    <h3>ðŸ† Resultados</h3>
     <ul class="list">
       <li *ngFor="let p of leaderboard(); let i = index" class="list-item">
         <span>{{i+1}}. {{p.name}}</span><span class="badge">Pts: {{p.score}}</span>
@@ -84,37 +85,10 @@ import { QuestionsService, type QuestionItem } from './questions.service';
     </ul>
   </div>
 
-  <details class="card host-panel add-question-panel">
-    <summary>➕ Añadir pregunta al banco</summary>
-    <p class="muted">Las preguntas que añadas quedarán disponibles para partidas futuras.</p>
-    <form class="add-question-form" (ngSubmit)="submitQuestion()">
-      <label>Pregunta</label>
-      <input [(ngModel)]="newQ.q" name="q" class="input" placeholder="Ej: ¿Cuál es la capital de Francia?" required>
-      <label>Opción A (correcta si eliges 0)</label>
-      <input [(ngModel)]="newQ.options[0]" name="opt0" class="input" placeholder="Texto opción A" required>
-      <label>Opción B</label>
-      <input [(ngModel)]="newQ.options[1]" name="opt1" class="input" placeholder="Texto opción B" required>
-      <label>Opción C</label>
-      <input [(ngModel)]="newQ.options[2]" name="opt2" class="input" placeholder="Texto opción C" required>
-      <label>Opción D</label>
-      <input [(ngModel)]="newQ.options[3]" name="opt3" class="input" placeholder="Texto opción D" required>
-      <label>Respuesta correcta</label>
-      <select [(ngModel)]="newQ.answer" name="answer" class="input">
-        <option [value]="0">A</option>
-        <option [value]="1">B</option>
-        <option [value]="2">C</option>
-        <option [value]="3">D</option>
-      </select>
-      <div class="form-actions">
-        <button type="submit" class="btn" [disabled]="adding()">{{ adding() ? 'Guardando…' : 'Guardar pregunta' }}</button>
-        <span *ngIf="addError()" class="error-msg">{{ addError() }}</span>
-        <span *ngIf="addSuccess()" class="success-msg">{{ addSuccess() }}</span>
-      </div>
-    </form>
-  </details>
+  <app-question-bank-form (questionAdded)="onQuestionAdded()"></app-question-bank-form>
   `
 })
-export class HostComponent implements OnDestroy {
+export class HostPage implements OnDestroy {
   get players() { return this.sock.players; }
   get lobbyStarted() { return this.sock.lobbyStarted; }
   get counts() { return this.sock.counts; }
@@ -125,10 +99,6 @@ export class HostComponent implements OnDestroy {
   private timer: any;
   shareUrl = '';
   copied = signal(false);
-  newQ: QuestionItem = { q: '', options: ['', '', '', ''], answer: 0 };
-  adding = signal(false);
-  addError = signal('');
-  addSuccess = signal('');
   gameTimeSec = 15;
   gameQuestionCount = 10;
   totalQuestionCount = signal(0);
@@ -153,7 +123,12 @@ export class HostComponent implements OnDestroy {
         this.totalQuestionCount.set(0);
       });
   }
-  ngOnDestroy(){ if (this.timer) clearInterval(this.timer); }
+
+  ngOnDestroy() { if (this.timer) clearInterval(this.timer); }
+
+  onQuestionAdded(): void {
+    this.totalQuestionCount.update((n) => n + 1);
+  }
 
   copyLink() {
     if (typeof navigator === 'undefined' || !navigator.clipboard) return;
@@ -163,27 +138,6 @@ export class HostComponent implements OnDestroy {
     });
   }
 
-  submitQuestion() {
-    this.addError.set('');
-    this.addSuccess.set('');
-    const q = this.newQ.q.trim();
-    const opts = this.newQ.options.map(o => o.trim()).filter(Boolean);
-    if (!q || opts.length !== 4) {
-      this.addError.set('Completa la pregunta y las 4 opciones.');
-      return;
-    }
-    this.adding.set(true);
-    this.questions.add({ q, options: opts, answer: this.newQ.answer })
-      .then(() => {
-        this.addSuccess.set('Pregunta guardada.');
-        this.newQ = { q: '', options: ['', '', '', ''], answer: 0 };
-        this.totalQuestionCount.update((n) => n + 1);
-        setTimeout(() => this.addSuccess.set(''), 3000);
-      })
-      .catch((err: Error) => { this.addError.set(err.message || 'Error al guardar'); })
-      .finally(() => { this.adding.set(false); });
-  }
-
   start() {
     const timeMs = Math.max(5, Math.min(60, Number(this.gameTimeSec) || 15)) * 1000;
     const maxFromBank = this.totalQuestionCount();
@@ -191,15 +145,17 @@ export class HostComponent implements OnDestroy {
     const safeCount = maxFromBank > 0 ? Math.min(desiredCount, maxFromBank) : desiredCount;
     this.sock.hostStart({ questionTimeMs: timeMs, questionCount: safeCount });
   }
-  next(){ this.sock.hostNext(); }
-  reveal(){ this.sock.hostReveal(); }
 
-  timeLeft(q:any){
+  next() { this.sock.hostNext(); }
+  reveal() { this.sock.hostReveal(); }
+
+  timeLeft(q: any) {
     if (!q?.startedAt || !q?.durationMs) return -1;
     const ms = q.startedAt + q.durationMs - this.now();
     return Math.max(0, ms);
   }
-  progressPct(q:any){
+
+  progressPct(q: any) {
     if (!q?.startedAt || !q?.durationMs) return 0;
     const elapsed = this.now() - q.startedAt;
     const pct = (elapsed / q.durationMs) * 100;

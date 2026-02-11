@@ -1,18 +1,18 @@
-import { Component, OnDestroy, signal, computed, effect, type Signal } from '@angular/core';
+﻿import { Component, OnDestroy, computed, effect, signal, type Signal } from '@angular/core';
 import { DecimalPipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SocketService, Player } from './socket.service';
+import { SocketService, Player } from '../../socket.service';
 
 @Component({
   standalone: true,
-  selector: 'app-player',
+  selector: 'app-player-page',
   imports: [DecimalPipe, NgClass, NgFor, NgIf, FormsModule],
   template: `
   <div class="card">
     <ng-container *ngIf="!joined; else game">
-      <h2>🎮 Unirse</h2>
+      <h2>ðŸŽ® Unirse</h2>
       <label>Tu nombre</label>
-      <input [(ngModel)]="name" placeholder="Ej: Óscar / Jucapo / Cristian / Pipe" class="input">
+      <input [(ngModel)]="name" placeholder="Ej: Ã“scar / Jucapo / Cristian / Pipe" class="input">
       <button class="btn" (click)="join()">Unirme</button>
       <p class="badge" style="margin-top:6px">Juega desde cualquier lugar.</p>
     </ng-container>
@@ -22,7 +22,7 @@ import { SocketService, Player } from './socket.service';
         <div class="qa-col">
           <div class="header-row">
             <h3>Pregunta</h3>
-            <div class="badge" *ngIf="timeLeft(q) >= 0">⏱ {{ timeLeft(q) / 1000 | number:'1.0-0' }}s</div>
+            <div class="badge" *ngIf="timeLeft(q) >= 0">â± {{ timeLeft(q) / 1000 | number:'1.0-0' }}s</div>
           </div>
 
           <div class="progress"><div class="progress-bar" [style.width.%]="progressPct(q)"></div></div>
@@ -44,7 +44,7 @@ import { SocketService, Player } from './socket.service';
         </div>
 
         <div class="lb-col">
-          <h3>🏆 Tabla de posiciones</h3>
+          <h3>ðŸ† Tabla de posiciones</h3>
           <ul class="list">
             <li *ngFor="let p of sortedPlayers(); let i = index" class="list-item">
               <span>{{i+1}}. {{p.name}}</span><span class="badge">Pts: {{p.score}}</span>
@@ -54,7 +54,7 @@ import { SocketService, Player } from './socket.service';
       </div>
 
       <ng-template #wait>
-        <p class="badge">Esperando a que el host inicie…</p>
+        <p class="badge">Esperando a que el host inicieâ€¦</p>
       </ng-template>
     </ng-template>
   </div>
@@ -86,7 +86,7 @@ import { SocketService, Player } from './socket.service';
     }
   `]
 })
-export class PlayerComponent implements OnDestroy {
+export class PlayerPage implements OnDestroy {
   name = '';
   joined = false;
   get current() { return this.sock.currentQuestion; }
@@ -99,9 +99,7 @@ export class PlayerComponent implements OnDestroy {
   sortedPlayers!: Signal<Player[]>;
 
   constructor(private sock: SocketService) {
-    this.sortedPlayers = computed(() =>
-      [...this.sock.players()].sort((a, b) => b.score - a.score)
-    );
+    this.sortedPlayers = computed(() => [...this.sock.players()].sort((a, b) => b.score - a.score));
     this.timer = setInterval(() => this.now.set(Date.now()), 150);
     effect(() => {
       const q = this.current();
@@ -109,38 +107,39 @@ export class PlayerComponent implements OnDestroy {
     });
   }
 
-  ngOnDestroy(){ if (this.timer) clearInterval(this.timer); }
+  ngOnDestroy() { if (this.timer) clearInterval(this.timer); }
 
-  join(){
+  join() {
     const n = this.name.trim() || 'Jugador';
     this.sock.joinPlayer(n);
     this.joined = true;
   }
 
-  pick(i:number, reveal:boolean){
+  pick(i: number, reveal: boolean) {
     if (reveal) return;
     this.selected = i;
     this.sock.answer(i);
   }
 
-  optionClass(i:number, q:any){
+  optionClass(i: number, q: any) {
     const c: string[] = [];
     const chosen = this.selected === i;
     if (!q?.reveal) {
       if (chosen) c.push('chosen');
       return c;
     }
-    if (chosen && q.correct === i) c.push('chosen','right');
-    else if (chosen && q.correct !== i) c.push('chosen','wrong');
+    if (chosen && q.correct === i) c.push('chosen', 'right');
+    else if (chosen && q.correct !== i) c.push('chosen', 'wrong');
     return c;
   }
 
-  timeLeft(q:any){
+  timeLeft(q: any) {
     if (!q?.startedAt || !q?.durationMs) return -1;
     const ms = q.startedAt + q.durationMs - this.now();
     return Math.max(0, ms);
   }
-  progressPct(q:any){
+
+  progressPct(q: any) {
     if (!q?.startedAt || !q?.durationMs) return 0;
     const elapsed = this.now() - q.startedAt;
     const pct = (elapsed / q.durationMs) * 100;
