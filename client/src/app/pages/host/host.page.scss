@@ -337,6 +337,22 @@
   border-radius: 14px;
   background: linear-gradient(135deg, rgba(248, 250, 252, 0.9) 0%, rgba(226, 232, 240, 0.9) 100%);
   border: 1px solid rgba(226, 232, 240, 0.9);
+  overflow: hidden;
+}
+
+/* Compact answer summary inside status card (desktop) */
+.host-status-card .answers-grid {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.host-status-card .answers-grid .card.soft {
+  padding: 10px 8px;
+  text-align: center;
+  font-size: 0.8rem;
+  box-shadow: none;
 }
 
 .status-pill {

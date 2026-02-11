@@ -377,6 +377,12 @@
   font-weight: 600;
 }
 
+/* Ensure grid columns can shrink on desktop without overflow */
+.qa-col,
+.lb-col {
+  min-width: 0;
+}
+
 .player-grid {
   display: grid;
   grid-template-columns: 1fr;
