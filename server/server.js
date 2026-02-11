@@ -630,6 +630,17 @@ io.on('connection', (socket) => {
       if (pp.answeredIndex === state.currentIndex && pp.answer != null) counts[pp.answer]++;
     });
     if (state.hostId) io.to(state.hostId).emit('host:answers', { counts });
+
+    // Si todos los jugadores ya respondieron, revela y pasa a la siguiente sin esperar al timer
+    const totalPlayers = Object.values(state.players).length;
+    const answeredPlayers = counts.reduce((sum, n) => sum + (n || 0), 0);
+    if (totalPlayers > 0 && answeredPlayers >= totalPlayers && !state.reveal) {
+      clearTimers();
+      doReveal();
+      state.nextTimer = setTimeout(() => {
+        doNext();
+      }, NEXT_DELAY_MS);
+    }
   });
 
   socket.on('disconnect', () => {

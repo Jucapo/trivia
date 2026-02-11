@@ -8,6 +8,7 @@ import { ToastService } from '../../services/toast.service';
   standalone: true,
   selector: 'app-question-bank-form',
   imports: [FormsModule, NgFor, NgIf, TitleCasePipe],
+  styleUrls: ['./question-bank-form.component.scss'],
   template: `
     <details class="card host-panel host-section add-question-panel host-accordion">
       <summary>Anadir pregunta al banco</summary>

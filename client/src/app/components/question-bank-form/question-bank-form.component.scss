@@ -1,0 +1,28 @@
+/* Alinea el acordeon de "Añadir pregunta" con el resto de host */
+
+.host-accordion {
+  summary {
+    font-size: 1.15rem;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+    margin-bottom: 16px;
+    padding: 8px 0;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &::after {
+      content: '▾';
+      float: right;
+      color: var(--muted);
+      font-size: 1.2em;
+    }
+  }
+
+  &[open] summary::after {
+    content: '▴';
+  }
+}
+

@@ -88,12 +88,17 @@ import { ToastService } from '../../services/toast.service';
             {{ lobbyStarted() && paused() ? 'Pausado' : lobbyStarted() ? 'En curso' : 'En lobby' }}
           </p>
         </div>
-        <div *ngIf="counts() as c" class="grid answers-grid">
-          <div class="card soft">A: {{c[0]}}</div>
-          <div class="card soft">B: {{c[1]}}</div>
-          <div class="card soft">C: {{c[2]}}</div>
-          <div class="card soft">D: {{c[3]}}</div>
-        </div>
+        <ng-container *ngIf="counts() as c">
+          <p class="muted status-answers">
+            Respuestas: {{ answeredCount(c) }} / {{ players().length }}
+          </p>
+          <div class="grid answers-grid">
+            <div class="card soft">A: {{c[0]}}</div>
+            <div class="card soft">B: {{c[1]}}</div>
+            <div class="card soft">C: {{c[2]}}</div>
+            <div class="card soft">D: {{c[3]}}</div>
+          </div>
+        </ng-container>
       </div>
     </div>
   </details>
@@ -243,6 +248,11 @@ export class HostPage implements OnDestroy {
   newCategoryIcon = '';
   addingCategory = signal(false);
   availableCategoryIcons = ['📚','🏛️','🌍','🎬','🎮','🎵','⚽','🏀','🎾','🎨','🔬','📖','✈️','🍕','🎭','🎪','🏥','💼','🔧','📁'];
+
+  answeredCount(counts: number[]): number {
+    if (!counts) return 0;
+    return counts.reduce((sum, n) => sum + (n || 0), 0);
+  }
 
   canStart(): boolean {
     if (this.lobbyStarted()) return false;
