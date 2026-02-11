@@ -192,6 +192,15 @@ function buildGameQuestions(questionCount, categories) {
   return shuffle(selected).slice(0, questionCount);
 }
 
+const DEFAULT_CATEGORY_ICONS = {
+  cultura: '📚',
+  historia: '🏛️',
+  geografia: '🌍',
+  entretenimiento: '🎬',
+  videojuegos: '🎮',
+  musica: '🎵',
+};
+let categoryIcons = { ...DEFAULT_CATEGORY_ICONS };
 let staticQuestions = [];
 let userQuestions = [];
 let categories = [];
@@ -210,9 +219,13 @@ app.get('/api/categories', (req, res) => {
 
 app.post('/api/categories', async (req, res) => {
   const rawName = req.body?.name;
+  const icon = typeof req.body?.icon === 'string' ? req.body.icon.trim() : null;
   const name = normalizeCategory(rawName);
   if (!name) return res.status(400).json({ error: 'Nombre de categoria invalido.' });
-  if (categories.includes(name)) return res.status(200).json({ name, created: false });
+  if (categories.includes(name)) {
+    if (icon) categoryIcons[name] = icon;
+    return res.status(200).json({ name, created: false });
+  }
 
   if (supabase) {
     const { error } = await supabase.from('categories').insert({ name });
@@ -222,6 +235,7 @@ app.post('/api/categories', async (req, res) => {
     saveCategoriesToFile();
   }
 
+  if (icon) categoryIcons[name] = icon;
   if (!categories.includes(name)) categories.push(name);
   return res.status(201).json({ name, created: true });
 });
@@ -237,6 +251,7 @@ app.get('/api/catalog', (req, res) => {
   res.json({
     categories,
     counts,
+    categoryIcons: { ...DEFAULT_CATEGORY_ICONS, ...categoryIcons },
     staticCount: staticQuestions.length,
     userCount: userQuestions.length,
     totalCount: all.length,
@@ -277,9 +292,11 @@ app.post('/api/questions', async (req, res) => {
 const state = {
   hostId: null,
   started: false,
+  paused: false,
+  pauseRemainingMs: null,
   currentIndex: -1,
   reveal: false,
-  players: {}, // socketId -> { name, score, correctCount, answeredIndex, answer, answeredAt }
+  players: {},
   currentOptions: null,
   currentCorrect: null,
   startedAt: null,
@@ -315,6 +332,7 @@ function resetAnswers() {
 function broadcastLobby() {
   io.emit('lobby', {
     started: state.started,
+    paused: state.paused,
     players: Object.values(state.players).map(p => ({
       name: p.name,
       score: p.score,
@@ -367,12 +385,42 @@ function emitQuestion() {
     difficulty: prepared.difficulty,
   });
 
+  if (!state.paused) {
+    state.timer = setTimeout(() => {
+      doReveal();
+      state.nextTimer = setTimeout(() => {
+        doNext();
+      }, NEXT_DELAY_MS);
+    }, state.questionTimeMs);
+  }
+}
+
+function emitQuestionWithDuration(durationMs) {
+  clearTimers();
+  const idx = state.currentIndex;
+  const prepared = prepareQuestion(idx);
+  if (!prepared) return;
+  state.currentOptions = prepared.options;
+  state.currentCorrect = prepared.correctIndex;
+  state.reveal = false;
+  state.startedAt = Date.now();
+  resetAnswers();
+  io.emit('question', {
+    index: idx,
+    total: state.gameQuestions.length,
+    q: prepared.q,
+    options: prepared.options,
+    reveal: false,
+    correct: null,
+    startedAt: state.startedAt,
+    durationMs,
+    category: prepared.category,
+    difficulty: prepared.difficulty,
+  });
   state.timer = setTimeout(() => {
     doReveal();
-    state.nextTimer = setTimeout(() => {
-      doNext();
-    }, NEXT_DELAY_MS);
-  }, state.questionTimeMs);
+    state.nextTimer = setTimeout(() => doNext(), NEXT_DELAY_MS);
+  }, durationMs);
 }
 
 function scoreForAnswer(answeredAt) {
@@ -519,6 +567,8 @@ io.on('connection', (socket) => {
       p.answeredAt = null;
     });
     state.started = true;
+    state.paused = false;
+    state.pauseRemainingMs = null;
     state.currentIndex = 0;
     emitQuestion();
     broadcastLobby();
@@ -526,6 +576,42 @@ io.on('connection', (socket) => {
 
   socket.on('host:reveal', () => { if (socket.id === state.hostId) doReveal(); });
   socket.on('host:next', () => { if (socket.id === state.hostId) doNext(); });
+  socket.on('host:pause', () => {
+    if (socket.id !== state.hostId || !state.started || state.paused) return;
+    clearTimers();
+    state.paused = true;
+    state.pauseRemainingMs = Math.max(0, state.questionTimeMs - (Date.now() - state.startedAt));
+    broadcastLobby();
+  });
+  socket.on('host:resume', () => {
+    if (socket.id !== state.hostId || !state.started || !state.paused) return;
+    state.paused = false;
+    const remaining = state.pauseRemainingMs ?? state.questionTimeMs;
+    state.pauseRemainingMs = null;
+    emitQuestionWithDuration(remaining);
+    broadcastLobby();
+  });
+  socket.on('host:stop', () => {
+    if (socket.id !== state.hostId) return;
+    if (state.started) {
+      io.emit('end', {
+        leaderboard: Object.values(state.players)
+          .sort((a, b) => b.score - a.score)
+          .map(p => ({ name: p.name, score: p.score, correctCount: p.correctCount ?? 0 }))
+      });
+    }
+    state.started = false;
+    state.paused = false;
+    state.pauseRemainingMs = null;
+    state.currentIndex = -1;
+    state.reveal = false;
+    state.currentOptions = null;
+    state.currentCorrect = null;
+    state.startedAt = null;
+    state.gameQuestions = [];
+    clearTimers();
+    broadcastLobby();
+  });
 
   socket.on('player:answer', (idx) => {
     if (!state.started || state.currentIndex < 0 || state.reveal) return;

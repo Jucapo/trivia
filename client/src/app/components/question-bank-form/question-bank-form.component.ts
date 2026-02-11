@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NgFor, NgIf } from '@angular/common';
+import { NgFor, NgIf, TitleCasePipe } from '@angular/common';
 import { QuestionsService, type QuestionItem } from '../../questions.service';
 import { ToastService } from '../../services/toast.service';
 
 @Component({
   standalone: true,
   selector: 'app-question-bank-form',
-  imports: [FormsModule, NgFor, NgIf],
+  imports: [FormsModule, NgFor, NgIf, TitleCasePipe],
   template: `
     <details class="card host-panel add-question-panel host-accordion">
       <summary>Anadir pregunta al banco</summary>
@@ -17,13 +17,13 @@ import { ToastService } from '../../services/toast.service';
         <input [(ngModel)]="newQ.q" name="q" class="input" placeholder="Ej: Cual es la capital de Francia?" required>
         <label>Categoria</label>
         <select [(ngModel)]="newQ.category" name="category" class="input">
-          <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
+          <option *ngFor="let c of categories" [value]="c">{{ c | titlecase }}</option>
         </select>
         <label>Dificultad</label>
         <select [(ngModel)]="newQ.difficulty" name="difficulty" class="input">
-          <option value="baja">baja</option>
-          <option value="media">media</option>
-          <option value="alta">alta</option>
+          <option value="baja">Baja</option>
+          <option value="media">Media</option>
+          <option value="alta">Alta</option>
         </select>
         <label>Opcion A</label>
         <input [(ngModel)]="newQ.options[0]" name="opt0" class="input" placeholder="Texto opcion A" required>

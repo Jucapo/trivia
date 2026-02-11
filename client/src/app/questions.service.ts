@@ -13,6 +13,7 @@ export interface QuestionItem {
 export interface CatalogInfo {
   categories: string[];
   counts: Record<string, number>;
+  categoryIcons?: Record<string, string>;
   staticCount: number;
   userCount: number;
   totalCount: number;
@@ -51,11 +52,11 @@ export class QuestionsService {
     return res.json();
   }
 
-  async addCategory(name: string): Promise<{ name: string; created: boolean }> {
+  async addCategory(name: string, icon?: string): Promise<{ name: string; created: boolean }> {
     const res = await fetch(`${apiBase()}/api/categories`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name }),
+      body: JSON.stringify(icon != null ? { name, icon } : { name }),
     });
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));

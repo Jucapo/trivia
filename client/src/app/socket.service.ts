@@ -31,6 +31,7 @@ export class SocketService {
   counts = signal([0, 0, 0, 0]);
   leaderboard = signal<Player[]>([]);
   lobbyStarted = signal(false);
+  paused = signal(false);
 
   constructor() {
     const base =
@@ -41,9 +42,10 @@ export class SocketService {
       transports: ['websocket']
     });
 
-    this.socket.on('lobby', ({ players, started }: { players: Player[]; started: boolean; }) => {
+    this.socket.on('lobby', ({ players, started, paused }: { players: Player[]; started: boolean; paused?: boolean; }) => {
       this.players.set(players);
       this.lobbyStarted.set(started);
+      this.paused.set(!!paused);
     });
 
     this.socket.on('question', (data: CurrentQ) => {
@@ -70,5 +72,8 @@ export class SocketService {
   hostStart(settings: GameSettings) { this.socket.emit('host:start', settings); }
   hostReveal() { this.socket.emit('host:reveal'); }
   hostNext() { this.socket.emit('host:next'); }
+  hostPause() { this.socket.emit('host:pause'); }
+  hostResume() { this.socket.emit('host:resume'); }
+  hostStop() { this.socket.emit('host:stop'); }
   answer(idx: number) { this.socket.emit('player:answer', idx); }
 }

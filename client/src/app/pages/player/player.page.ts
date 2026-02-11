@@ -20,30 +20,31 @@ import { SocketService, Player } from '../../socket.service';
     <ng-template #game>
       <div class="grid grid-2 player-grid" *ngIf="current() as q; else wait">
         <div class="qa-col">
-          <div class="question-progress-header">
+          <p *ngIf="paused()" class="badge paused-msg">Partida pausada. El host reanudara en breve.</p>
+          <div class="question-progress-header" *ngIf="!paused()">
             <span class="question-progress-text">Pregunta {{q.index+1}} de {{q.total}}</span>
             <span class="question-progress-pct">{{ gameProgressPct(q) }}% completado</span>
           </div>
-          <div class="progress progress-game"><div class="progress-bar progress-bar-game" [style.width.%]="gameProgressPct(q)"></div></div>
+          <div class="progress progress-game" *ngIf="!paused()"><div class="progress-bar progress-bar-game" [style.width.%]="gameProgressPct(q)"></div></div>
 
-          <div class="header-row">
+          <div class="header-row" *ngIf="!paused()">
             <h3>Pregunta</h3>
             <div class="badge" *ngIf="timeLeft(q) >= 0">Tiempo: {{ timeLeft(q) / 1000 | number:'1.0-0' }}s</div>
           </div>
 
-          <div class="progress"><div class="progress-bar" [style.width.%]="progressPct(q)"></div></div>
+          <div class="progress" *ngIf="!paused()"><div class="progress-bar" [style.width.%]="progressPct(q)"></div></div>
 
           <div class="question-chips" *ngIf="q.category || q.difficulty">
             <span *ngIf="q.category" class="chip chip--category" [ngClass]="'chip--cat-' + (q.category || 'cultura')">
-              <span class="chip-dot"></span>{{ q.category }}
+              <span class="chip-icon">{{ categoryIcon(q.category) }}</span>{{ (q.category || 'cultura') | titlecase }}
             </span>
             <span *ngIf="q.difficulty" class="chip chip--difficulty" [ngClass]="'chip--diff-' + (q.difficulty || 'media')">
-              <span class="chip-dot"></span>{{ q.difficulty }}
+              <span class="chip-dot"></span>{{ (q.difficulty || 'media') | titlecase }}
             </span>
           </div>
           <p class="question">{{q.q}}</p>
 
-          <div class="grid two options-grid">
+          <div class="grid two options-grid" *ngIf="!paused()">
             <button
               class="btn secondary option-btn"
               *ngFor="let opt of q.options; let i = index"
@@ -108,6 +109,7 @@ export class PlayerPage implements OnDestroy {
   name = '';
   joined = false;
   get current() { return this.sock.currentQuestion; }
+  get paused() { return this.sock.paused; }
 
   selected: number | null = null;
 
@@ -168,5 +170,14 @@ export class PlayerPage implements OnDestroy {
     if (!q?.total || q.total < 1) return 0;
     const current = (q.index ?? 0) + 1;
     return Math.round((current / q.total) * 100);
+  }
+
+  categoryIcon(cat: string): string {
+    const key = (cat || 'cultura').toLowerCase();
+    const defaults: Record<string, string> = {
+      cultura: '📚', historia: '🏛️', geografia: '🌍',
+      entretenimiento: '🎬', videojuegos: '🎮', musica: '🎵',
+    };
+    return defaults[key] || '📁';
   }
 }

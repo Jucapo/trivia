@@ -1,6 +1,8 @@
 import {
   Component,
+  ElementRef,
   EventEmitter,
+  HostListener,
   Input,
   OnChanges,
   OnInit,
@@ -8,18 +10,18 @@ import {
   signal,
   SimpleChanges,
 } from '@angular/core';
-import { NgFor, NgIf } from '@angular/common';
+import { NgFor, NgIf, TitleCasePipe } from '@angular/common';
 
 @Component({
   standalone: true,
   selector: 'app-category-multi-select',
-  imports: [NgFor, NgIf],
+  imports: [NgFor, NgIf, TitleCasePipe],
   template: `
-    <div class="multiselect" [class.open]="open()">
-      <button type="button" class="multiselect-trigger" (click)="toggle()" (blur)="onBlur()">
+    <div class="multiselect" #multiselectRef [class.open]="open()">
+      <button type="button" class="multiselect-trigger" (click)="toggle()">
         <span class="multiselect-chips" *ngIf="selectedList().length > 0">
           <span *ngFor="let c of selectedList()" class="chip chip--multiselect">
-            <span class="chip-dot"></span>{{ c }}
+            <span class="chip-icon">{{ iconFor(c) }}</span>{{ c | titlecase }}
             <button type="button" class="chip-x" (click)="remove($event, c)" aria-label="Quitar">×</button>
           </span>
         </span>
@@ -33,7 +35,8 @@ import { NgFor, NgIf } from '@angular/common';
         </label>
         <div class="multiselect-option" *ngFor="let opt of availableOptions()" (click)="toggleOption(opt)">
           <input type="checkbox" [checked]="isSelected(opt)">
-          <span>{{ opt }}</span>
+          <span class="chip-icon">{{ iconFor(opt) }}</span>
+          <span>{{ opt | titlecase }}</span>
         </div>
       </div>
     </div>
@@ -50,7 +53,7 @@ import { NgFor, NgIf } from '@angular/common';
       gap: 8px;
       width: 100%;
       min-height: 44px;
-      padding: 10px 40px 10px 14px;
+      padding: 10px 28px 10px 14px;
       border: 2px solid #e2e8f0;
       border-radius: 12px;
       background: #fff;
@@ -80,7 +83,7 @@ import { NgFor, NgIf } from '@angular/common';
     }
     .multiselect-chevron {
       position: absolute;
-      right: 14px;
+      right: 10px;
       top: 50%;
       transform: translateY(-50%);
       color: #64748b;
@@ -134,16 +137,33 @@ import { NgFor, NgIf } from '@angular/common';
       accent-color: var(--accent);
       cursor: pointer;
     }
+    .chip-icon {
+      font-size: 1.1em;
+      line-height: 1;
+    }
   `]
 })
 export class CategoryMultiSelectComponent implements OnInit, OnChanges {
   @Input() options: string[] = [];
   @Input() selected: string[] = [];
+  @Input() categoryIcons: Record<string, string> = {};
   @Output() selectedChange = new EventEmitter<string[]>();
+
+  static DEFAULT_ICONS: Record<string, string> = {
+    todas: '📋',
+    cultura: '📚',
+    historia: '🏛️',
+    geografia: '🌍',
+    entretenimiento: '🎬',
+    videojuegos: '🎮',
+    musica: '🎵',
+  };
 
   open = signal(false);
   selectedList = signal<string[]>([]);
   availableOptions = signal<string[]>([]);
+
+  constructor(private el: ElementRef<HTMLElement>) {}
 
   ngOnInit() {
     this.syncFromInputs();
@@ -158,12 +178,16 @@ export class CategoryMultiSelectComponent implements OnInit, OnChanges {
     this.availableOptions.set(['todas', ...(this.options || [])]);
   }
 
-  toggle() {
-    this.open.update((o) => !o);
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(ev: MouseEvent) {
+    if (!this.open()) return;
+    const target = ev.target as Node;
+    if (this.el.nativeElement.contains(target)) return;
+    this.open.set(false);
   }
 
-  onBlur() {
-    setTimeout(() => this.open.set(false), 150);
+  toggle() {
+    this.open.update((o) => !o);
   }
 
   remove(ev: Event, cat: string) {
@@ -185,6 +209,11 @@ export class CategoryMultiSelectComponent implements OnInit, OnChanges {
     const next = this.isAllSelected() ? [] : ['todas'];
     this.selectedList.set(next);
     this.selectedChange.emit(next);
+  }
+
+  iconFor(cat: string): string {
+    const key = (cat || '').toLowerCase();
+    return this.categoryIcons?.[key] || CategoryMultiSelectComponent.DEFAULT_ICONS[key] || '📁';
   }
 
   toggleOption(opt: string) {

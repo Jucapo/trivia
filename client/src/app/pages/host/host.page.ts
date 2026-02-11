@@ -35,6 +35,7 @@ import { ToastService } from '../../services/toast.service';
           <app-category-multi-select
             [options]="categories()"
             [selected]="selectedCategories()"
+            [categoryIcons]="categoryIcons()"
             (selectedChange)="onCategoriesChange($event)">
           </app-category-multi-select>
         </div>
@@ -57,7 +58,7 @@ import { ToastService } from '../../services/toast.service';
     <p *ngIf="players().length === 0" class="muted">Ningun jugador ha ingresado. Comparte el enlace para que se unan.</p>
     <div class="host-status-row">
       <h3>Estado</h3>
-      <p class="badge">{{ lobbyStarted() ? 'En curso' : 'En lobby' }}</p>
+      <p class="badge">{{ lobbyStarted() && paused() ? 'Pausado' : lobbyStarted() ? 'En curso' : 'En lobby' }}</p>
       <div *ngIf="counts() as c" class="grid answers-grid">
         <div class="card soft">A: {{c[0]}}</div>
         <div class="card soft">B: {{c[1]}}</div>
@@ -65,14 +66,17 @@ import { ToastService } from '../../services/toast.service';
         <div class="card soft">D: {{c[3]}}</div>
       </div>
     </div>
-    <div class="host-actions" *ngIf="lobbyStarted()">
-      <button class="btn secondary" (click)="next()">Siguiente</button>
-      <button class="btn secondary" (click)="reveal()">Revelar</button>
-    </div>
   </details>
 
-  <div class="host-float-start">
+  <div class="host-float-start" *ngIf="!lobbyStarted()">
     <button class="btn btn-float" (click)="start()" [disabled]="!canStart()"><span class="icon-play">&#9654;</span> Iniciar</button>
+  </div>
+  <div class="host-float-start host-float-actions" *ngIf="lobbyStarted() && !paused()">
+    <button class="btn btn-float btn-float-secondary" (click)="pause()">Pausar</button>
+  </div>
+  <div class="host-float-start host-float-actions host-float-two" *ngIf="lobbyStarted() && paused()">
+    <button class="btn btn-float" (click)="resume()">Reanudar</button>
+    <button class="btn btn-float btn-float-danger" (click)="stopGame()">Reiniciar</button>
   </div>
 
   <div class="card host-panel" *ngIf="current() as q">
@@ -91,10 +95,10 @@ import { ToastService } from '../../services/toast.service';
 
     <div class="question-chips" *ngIf="q.category || q.difficulty">
       <span *ngIf="q.category" class="chip chip--category" [ngClass]="'chip--cat-' + (q.category || 'cultura')">
-        <span class="chip-dot"></span>{{ q.category }}
+        <span class="chip-icon">{{ categoryIcon(q.category) }}</span>{{ (q.category || 'cultura') | titlecase }}
       </span>
       <span *ngIf="q.difficulty" class="chip chip--difficulty" [ngClass]="'chip--diff-' + (q.difficulty || 'media')">
-        <span class="chip-dot"></span>{{ q.difficulty }}
+        <span class="chip-dot"></span>{{ (q.difficulty || 'media') | titlecase }}
       </span>
     </div>
     <p class="question">{{q.q}}</p>
@@ -102,6 +106,10 @@ import { ToastService } from '../../services/toast.service';
       <li *ngFor="let opt of q.options; let i = index">{{ 'ABCD'[i] }}) {{ opt | titlecase }}</li>
     </ul>
     <p *ngIf="q.reveal" class="badge ok">Correcta: {{ 'ABCD'[q.correct ?? 0] }}</p>
+    <div class="host-actions" *ngIf="lobbyStarted() && !paused()">
+      <button class="btn secondary" (click)="reveal()">Revelar</button>
+      <button class="btn secondary" (click)="next()">Siguiente</button>
+    </div>
   </div>
 
   <div class="card host-panel" *ngIf="leaderboard().length > 0">
@@ -122,6 +130,12 @@ import { ToastService } from '../../services/toast.service';
   <details class="card host-panel add-question-panel category-admin-panel host-accordion">
     <summary>Gestionar categorias</summary>
     <p class="muted">Agrega nuevas categorias para usarlas al crear preguntas y filtrar partidas.</p>
+    <div class="category-icon-picker">
+      <span class="category-icon-picker-label">Icono (opcional):</span>
+      <span class="category-icon-list">
+        <button type="button" *ngFor="let ic of availableCategoryIcons" class="icon-pick-btn" [class.selected]="newCategoryIcon === ic" (click)="newCategoryIcon = ic" [title]="ic">{{ ic }}</button>
+      </span>
+    </div>
     <div class="category-add-row">
       <input class="input" [(ngModel)]="newCategoryName" placeholder="Nueva categoria (ej: deportes)">
       <button class="btn secondary" type="button" (click)="addCategory()" [disabled]="addingCategory()">Agregar categoria</button>
@@ -133,7 +147,7 @@ import { ToastService } from '../../services/toast.service';
         </thead>
         <tbody>
           <tr *ngFor="let c of categories()">
-            <td>{{ c }}</td>
+            <td><span class="chip-icon">{{ categoryIcon(c) }}</span> {{ c | titlecase }}</td>
             <td>{{ categoryCounts()[c] || 0 }}</td>
             <td>{{ categoryPct(c) }}</td>
           </tr>
@@ -152,6 +166,7 @@ export class HostPage implements OnDestroy {
   get counts() { return this.sock.counts; }
   get current() { return this.sock.currentQuestion; }
   get leaderboard() { return this.sock.leaderboard; }
+  get paused() { return this.sock.paused; }
 
   now = signal(Date.now());
   private timer: any;
@@ -162,9 +177,12 @@ export class HostPage implements OnDestroy {
   totalQuestionCount = signal(0);
   categories = signal<string[]>(['cultura', 'historia', 'geografia', 'entretenimiento', 'videojuegos', 'musica']);
   categoryCounts = signal<Record<string, number>>({});
+  categoryIcons = signal<Record<string, string>>({});
   selectedCategories = signal<string[]>(['todas']);
   newCategoryName = '';
+  newCategoryIcon = '';
   addingCategory = signal(false);
+  availableCategoryIcons = ['📚','🏛️','🌍','🎬','🎮','🎵','⚽','🏀','🎾','🎨','🔬','📖','✈️','🍕','🎭','🎪','🏥','💼','🔧','📁'];
 
   canStart(): boolean {
     if (this.lobbyStarted()) return false;
@@ -205,6 +223,7 @@ export class HostPage implements OnDestroy {
         this.totalQuestionCount.set(catalog.totalCount);
         this.categories.set(catalog.categories || []);
         this.categoryCounts.set(catalog.counts || {});
+        this.categoryIcons.set(catalog.categoryIcons || {});
         this.gameQuestionCount = Math.max(1, Math.min(this.gameQuestionCount, catalog.totalCount || 10));
         const sel = this.selectedCategories();
         const hasTodas = sel.includes('todas');
@@ -225,9 +244,11 @@ export class HostPage implements OnDestroy {
     const name = this.newCategoryName.trim().toLowerCase();
     if (!name) return;
     this.addingCategory.set(true);
-    this.questions.addCategory(name)
+    const icon = this.newCategoryIcon.trim() || undefined;
+    this.questions.addCategory(name, icon)
       .then((result) => {
         this.newCategoryName = '';
+        this.newCategoryIcon = '';
         this.refreshCatalog();
         this.toast.success(result.created ? 'Categoria creada.' : 'La categoria ya existia.');
       })
@@ -261,6 +282,9 @@ export class HostPage implements OnDestroy {
 
   next() { this.sock.hostNext(); }
   reveal() { this.sock.hostReveal(); }
+  pause() { this.sock.hostPause(); }
+  resume() { this.sock.hostResume(); }
+  stopGame() { this.sock.hostStop(); }
 
   timeLeft(q: any) {
     if (!q?.startedAt || !q?.durationMs) return -1;
@@ -279,6 +303,15 @@ export class HostPage implements OnDestroy {
     if (!q?.total || q.total < 1) return 0;
     const current = (q.index ?? 0) + 1;
     return Math.round((current / q.total) * 100);
+  }
+
+  categoryIcon(cat: string): string {
+    const key = (cat || 'cultura').toLowerCase();
+    const defaults: Record<string, string> = {
+      cultura: '📚', historia: '🏛️', geografia: '🌍',
+      entretenimiento: '🎬', videojuegos: '🎮', musica: '🎵',
+    };
+    return this.categoryIcons()[key] || defaults[key] || '📁';
   }
 
   categoryPct(cat: string): string {

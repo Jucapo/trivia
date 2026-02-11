@@ -132,6 +132,10 @@ h3 { font-size: 1.15rem; }
   font-size: 15px;
   font-family: inherit;
 }
+select.input {
+  padding-right: 32px;
+  appearance: auto;
+}
 
 .input:focus {
   outline: none;
@@ -183,6 +187,11 @@ h3 { font-size: 1.15rem; }
   right: 20px;
   z-index: 100;
 }
+.host-float-actions.host-float-two {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
 .btn-float {
   padding: 14px 28px !important;
   font-size: 16px !important;
@@ -190,6 +199,14 @@ h3 { font-size: 1.15rem; }
   display: inline-flex;
   align-items: center;
   gap: 8px;
+}
+.btn-float-secondary {
+  background: #64748b !important;
+  box-shadow: 0 6px 20px rgba(100, 116, 139, 0.35) !important;
+}
+.btn-float-danger {
+  background: linear-gradient(180deg, #dc2626, #b91c1c) !important;
+  box-shadow: 0 6px 20px rgba(185, 28, 28, 0.4) !important;
 }
 .icon-play {
   font-size: 1.1em;
@@ -320,6 +337,7 @@ h3 { font-size: 1.15rem; }
 }
 .chip--category .chip-dot,
 .chip--difficulty .chip-dot { background: currentColor; }
+.chip .chip-icon { margin-right: 2px; }
 .chip--category { background: #64748b; color: #fff; }
 .chip--cat-cultura { background: #3b82f6; color: #fff; }
 .chip--cat-historia { background: #16a34a; color: #fff; }
@@ -339,6 +357,22 @@ h3 { font-size: 1.15rem; }
   gap: 8px;
 }
 .category-select-col label { display: block; }
+.category-icon-picker { margin-bottom: 12px; }
+.category-icon-picker-label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 8px; color: var(--text); }
+.category-icon-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.icon-pick-btn {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.icon-pick-btn:hover { border-color: var(--accent); background: #f8fbff; }
+.icon-pick-btn.selected { border-color: var(--accent); background: #eff6ff; }
 
 /* Landing */
 .landing { text-align: center; padding: 40px 20px; }
@@ -382,6 +416,7 @@ h3 { font-size: 1.15rem; }
   line-height: 1;
   cursor: pointer;
 }
+.paused-msg { background: #fef3c7; color: #92400e; border-color: #f59e0b; margin-bottom: 12px; }
 
 @media (max-width: 820px) {
   .grid-2 { grid-template-columns: 1fr; }
