@@ -14,7 +14,7 @@ import { QuestionsService, type QuestionItem } from './questions.service';
     <div class="share-row">
       <span class="badge">Comparte:</span>
       <code class="share-url">{{ shareUrl }}</code>
-      <button type="button" class="btn btn-copy" (click)="copyLink()" [class.copied]="copied">{{ copied ? '✓ Copiado' : 'Copiar' }}</button>
+      <button type="button" class="btn btn-copy" (click)="copyLink()" [class.copied]="copied()">{{ copied() ? '✓ Copiado' : 'Copiar' }}</button>
     </div>
 
     <div class="grid grid-2">
@@ -92,9 +92,9 @@ import { QuestionsService, type QuestionItem } from './questions.service';
         <option [value]="3">D</option>
       </select>
       <div class="form-actions">
-        <button type="submit" class="btn" [disabled]="adding">{{ adding ? 'Guardando…' : 'Guardar pregunta' }}</button>
-        <span *ngIf="addError" class="error-msg">{{ addError }}</span>
-        <span *ngIf="addSuccess" class="success-msg">{{ addSuccess }}</span>
+        <button type="submit" class="btn" [disabled]="adding()">{{ adding() ? 'Guardando…' : 'Guardar pregunta' }}</button>
+        <span *ngIf="addError()" class="error-msg">{{ addError() }}</span>
+        <span *ngIf="addSuccess()" class="success-msg">{{ addSuccess() }}</span>
       </div>
     </form>
   </div>
@@ -110,11 +110,11 @@ export class HostComponent implements OnDestroy {
   now = signal(Date.now());
   private timer: any;
   shareUrl = '';
-  copied = false;
+  copied = signal(false);
   newQ: QuestionItem = { q: '', options: ['', '', '', ''], answer: 0 };
-  adding = false;
-  addError = '';
-  addSuccess = '';
+  adding = signal(false);
+  addError = signal('');
+  addSuccess = signal('');
 
   constructor(
     private sock: SocketService,
@@ -133,29 +133,29 @@ export class HostComponent implements OnDestroy {
   copyLink() {
     if (typeof navigator === 'undefined' || !navigator.clipboard) return;
     navigator.clipboard.writeText(this.shareUrl).then(() => {
-      this.copied = true;
-      setTimeout(() => (this.copied = false), 2000);
+      this.copied.set(true);
+      setTimeout(() => this.copied.set(false), 2000);
     });
   }
 
   submitQuestion() {
-    this.addError = '';
-    this.addSuccess = '';
+    this.addError.set('');
+    this.addSuccess.set('');
     const q = this.newQ.q.trim();
     const opts = this.newQ.options.map(o => o.trim()).filter(Boolean);
     if (!q || opts.length !== 4) {
-      this.addError = 'Completa la pregunta y las 4 opciones.';
+      this.addError.set('Completa la pregunta y las 4 opciones.');
       return;
     }
-    this.adding = true;
+    this.adding.set(true);
     this.questions.add({ q, options: opts, answer: this.newQ.answer })
       .then(() => {
-        this.addSuccess = 'Pregunta guardada.';
+        this.addSuccess.set('Pregunta guardada.');
         this.newQ = { q: '', options: ['', '', '', ''], answer: 0 };
-        setTimeout(() => (this.addSuccess = ''), 3000);
+        setTimeout(() => this.addSuccess.set(''), 3000);
       })
-      .catch((err: Error) => { this.addError = err.message || 'Error al guardar'; })
-      .finally(() => { this.adding = false; });
+      .catch((err: Error) => { this.addError.set(err.message || 'Error al guardar'); })
+      .finally(() => { this.adding.set(false); });
   }
 
   start(){ this.sock.hostStart(); }
