@@ -58,9 +58,21 @@ import { NgFor, NgIf, TitleCasePipe } from '@angular/common';
       font-family: inherit;
       font-size: 15px;
       transition: border-color 0.2s, box-shadow 0.2s;
+      color: var(--text);
+    }
+    @media (prefers-color-scheme: dark) {
+      .multiselect-trigger {
+        background: var(--card);
+        border-color: #475569;
+      }
     }
     .multiselect-trigger:hover {
       border-color: #cbd5e1;
+    }
+    @media (prefers-color-scheme: dark) {
+      .multiselect-trigger:hover {
+        border-color: #64748b;
+      }
     }
     .multiselect.open .multiselect-trigger {
       border-color: var(--accent);
@@ -77,6 +89,11 @@ import { NgFor, NgIf, TitleCasePipe } from '@angular/common';
       color: #94a3b8;
       flex: 1;
     }
+    @media (prefers-color-scheme: dark) {
+      .multiselect-placeholder {
+        color: #94a3b8;
+      }
+    }
     .multiselect-chevron {
       position: absolute;
       right: 10px;
@@ -85,6 +102,11 @@ import { NgFor, NgIf, TitleCasePipe } from '@angular/common';
       color: #64748b;
       font-size: 12px;
       pointer-events: none;
+    }
+    @media (prefers-color-scheme: dark) {
+      .multiselect-chevron {
+        color: #94a3b8;
+      }
     }
     .multiselect.open .multiselect-chevron {
       transform: translateY(-50%) rotate(180deg);
@@ -110,6 +132,13 @@ import { NgFor, NgIf, TitleCasePipe } from '@angular/common';
       z-index: 200;
       padding: 8px;
     }
+    @media (prefers-color-scheme: dark) {
+      .multiselect-dropdown {
+        background: var(--card);
+        border-color: #475569;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+      }
+    }
     .multiselect-option {
       display: flex;
       align-items: center;
@@ -118,9 +147,15 @@ import { NgFor, NgIf, TitleCasePipe } from '@angular/common';
       border-radius: 8px;
       cursor: pointer;
       transition: background 0.15s;
+      color: var(--text);
     }
     .multiselect-option:hover {
       background: #f1f5f9;
+    }
+    @media (prefers-color-scheme: dark) {
+      .multiselect-option:hover {
+        background: rgba(59, 130, 246, 0.1);
+      }
     }
     .multiselect-option input {
       width: 18px;

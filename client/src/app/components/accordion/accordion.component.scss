@@ -6,6 +6,10 @@
   background: var(--card);
   border: 1px solid rgba(226, 232, 240, 0.8);
   
+  @media (prefers-color-scheme: dark) {
+    border-color: rgba(51, 65, 85, 0.8);
+  }
+  
   summary {
     font-size: 1.15rem;
     font-weight: 600;
@@ -25,6 +29,14 @@
     align-items: center;
     justify-content: space-between;
     color: var(--text-secondary);
+    
+    @media (prefers-color-scheme: dark) {
+      background: linear-gradient(
+        135deg,
+        rgba(102, 126, 234, 0.15) 0%,
+        rgba(118, 75, 162, 0.1) 100%
+      );
+    }
     
     .accordion-title-content {
       display: flex;
@@ -84,6 +96,14 @@
     );
     margin-bottom: 16px;
     border-radius: var(--radius) var(--radius) 0 0;
+    
+    @media (prefers-color-scheme: dark) {
+      background: linear-gradient(
+        135deg,
+        rgba(102, 126, 234, 0.25) 0%,
+        rgba(118, 75, 162, 0.2) 100%
+      );
+    }
 
     &::after {
       transform: rotate(180deg);

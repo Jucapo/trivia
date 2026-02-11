@@ -533,7 +533,10 @@ io.on('connection', (socket) => {
     if (socket.id !== state.hostId) return;
     const all = getAllQuestions();
     if (!all.length) return;
-    if (state.started) return;
+    if (state.started) {
+      socket.emit('error', { message: 'Ya hay una partida en curso. Detén la partida actual antes de iniciar una nueva.' });
+      return;
+    }
 
     const categoriesParam = Array.isArray(settings.categories) && settings.categories.length > 0
       ? settings.categories

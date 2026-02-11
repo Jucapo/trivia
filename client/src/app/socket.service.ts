@@ -68,6 +68,20 @@ export class SocketService {
       this.leaderboard.set(leaderboard);
       this.paused.set(false);
     });
+
+    this.socket.on('error', (data: { message?: string }) => {
+      const message = data.message || 'Error desconocido';
+      console.error('[Socket] Error:', message);
+      // Notificar a todos los callbacks registrados
+      this.errorCallbacks.forEach(callback => callback(message));
+    });
+  }
+
+  private errorCallbacks: Set<(message: string) => void> = new Set();
+
+  onError(callback: (message: string) => void): () => void {
+    this.errorCallbacks.add(callback);
+    return () => this.errorCallbacks.delete(callback);
   }
 
   joinHost() { this.socket.emit('join', { role: 'host' }); }

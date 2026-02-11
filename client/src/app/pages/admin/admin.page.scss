@@ -175,18 +175,31 @@
   overflow-x: auto;
   overflow-y: auto;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  
+  @media (prefers-color-scheme: dark) {
+    border-color: #475569;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
 }
 
 .category-table {
   width: 100%;
   border-collapse: collapse;
   background: #fff;
+  
+  @media (prefers-color-scheme: dark) {
+    background: var(--card);
+  }
 
   th,
   td {
     text-align: left;
     padding: 12px 16px;
     border-bottom: 1px solid #f1f5f9;
+    
+    @media (prefers-color-scheme: dark) {
+      border-bottom-color: #334155;
+    }
   }
 
   th {
@@ -266,17 +279,31 @@
   font-size: 1.3rem;
   cursor: pointer;
   transition: all 0.2s ease;
+  
+  @media (prefers-color-scheme: dark) {
+    background: var(--card);
+    border-color: #475569;
+  }
 
   &:hover {
     border-color: var(--accent-light);
     background: #f8fbff;
     transform: scale(1.1);
+    
+    @media (prefers-color-scheme: dark) {
+      background: rgba(59, 130, 246, 0.1);
+    }
   }
 
   &.selected {
     border-color: var(--accent-light);
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
     box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+    
+    @media (prefers-color-scheme: dark) {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.15) 100%);
+      box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+    }
   }
 }
 

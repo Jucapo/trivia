@@ -277,6 +277,7 @@ export class HostPage implements OnDestroy {
     private questions: QuestionsService,
     private toast: ToastService,
   ) {
+    this.setupErrorHandling();
     this.sock.joinHost();
     this.timer = setInterval(() => this.now.set(Date.now()), 150);
     if (typeof location !== 'undefined') {
@@ -360,6 +361,12 @@ export class HostPage implements OnDestroy {
       questionTimeMs: timeMs,
       questionCount: safeCount,
       categories,
+    });
+  }
+
+  private setupErrorHandling() {
+    this.sock.onError((message: string) => {
+      this.toast.error(message);
     });
   }
 

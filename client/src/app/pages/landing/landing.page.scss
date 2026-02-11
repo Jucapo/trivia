@@ -31,6 +31,12 @@
   max-width: 600px;
   width: 100%;
   text-align: center;
+  
+  @media (prefers-color-scheme: dark) {
+    background: rgba(30, 41, 59, 0.95);
+    border-color: rgba(51, 65, 85, 0.8);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
 }
 
 .landing-content {
@@ -57,6 +63,10 @@
   max-width: 480px;
   margin-left: auto;
   margin-right: auto;
+  
+  @media (prefers-color-scheme: dark) {
+    color: #cbd5e1;
+  }
 }
 
 .landing-links {
@@ -76,6 +86,17 @@
   text-decoration: none;
   font-weight: 600;
   position: relative;
+  
+  @media (prefers-color-scheme: dark) {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #fff !important;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.15) !important;
+      border-color: rgba(255, 255, 255, 0.3) !important;
+    }
+  }
 }
 
 .landing-btn-icon {
