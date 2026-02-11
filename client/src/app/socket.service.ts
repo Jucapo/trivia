@@ -16,6 +16,7 @@ export interface CurrentQ {
 export interface GameSettings {
   questionTimeMs: number;
   questionCount: number;
+  category?: string;
 }
 
 @Injectable({ providedIn: 'root' })

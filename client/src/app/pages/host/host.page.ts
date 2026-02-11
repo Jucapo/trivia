@@ -1,9 +1,10 @@
-﻿import { Component, OnDestroy, signal } from '@angular/core';
+import { Component, OnDestroy, signal } from '@angular/core';
 import { DecimalPipe, NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SocketService } from '../../socket.service';
 import { QuestionsService } from '../../questions.service';
 import { QuestionBankFormComponent } from '../../components/question-bank-form/question-bank-form.component';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   standalone: true,
@@ -28,8 +29,19 @@ import { QuestionBankFormComponent } from '../../components/question-bank-form/q
           <label>Cantidad de preguntas</label>
           <input type="number" class="input" [(ngModel)]="gameQuestionCount" min="1" [max]="totalQuestionCount() || 200">
         </div>
+        <div>
+          <label>Categoria de la partida</label>
+          <select class="input" [(ngModel)]="selectedCategory">
+            <option value="todas">todas</option>
+            <option *ngFor="let c of categories()" [value]="c">{{ c }}</option>
+          </select>
+        </div>
       </div>
       <p class="muted no-margin">Banco disponible: {{ totalQuestionCount() || '...' }} preguntas.</p>
+      <div class="category-add-row">
+        <input class="input" [(ngModel)]="newCategoryName" placeholder="Nueva categoria (ej: deportes)">
+        <button class="btn secondary" type="button" (click)="addCategory()" [disabled]="addingCategory()">Agregar categoria</button>
+      </div>
     </div>
 
     <div class="grid grid-2">
@@ -85,7 +97,7 @@ import { QuestionBankFormComponent } from '../../components/question-bank-form/q
     </ul>
   </div>
 
-  <app-question-bank-form (questionAdded)="onQuestionAdded()"></app-question-bank-form>
+  <app-question-bank-form [categories]="categories()" (questionAdded)="onQuestionAdded()"></app-question-bank-form>
   `
 })
 export class HostPage implements OnDestroy {
@@ -102,10 +114,15 @@ export class HostPage implements OnDestroy {
   gameTimeSec = 15;
   gameQuestionCount = 10;
   totalQuestionCount = signal(0);
+  categories = signal<string[]>(['cultura', 'historia', 'geografia', 'entretenimiento', 'videojuegos', 'musica']);
+  selectedCategory = 'todas';
+  newCategoryName = '';
+  addingCategory = signal(false);
 
   constructor(
     private sock: SocketService,
     private questions: QuestionsService,
+    private toast: ToastService,
   ) {
     this.sock.joinHost();
     this.timer = setInterval(() => this.now.set(Date.now()), 150);
@@ -114,20 +131,44 @@ export class HostPage implements OnDestroy {
     } else {
       this.shareUrl = 'http://localhost:4200/play';
     }
-    this.questions.list()
-      .then((items) => {
-        this.totalQuestionCount.set(items.length);
-        this.gameQuestionCount = Math.max(1, Math.min(this.gameQuestionCount, items.length || 10));
+    this.refreshCatalog();
+  }
+
+  ngOnDestroy() { if (this.timer) clearInterval(this.timer); }
+
+  onQuestionAdded(): void {
+    this.refreshCatalog();
+  }
+
+  refreshCatalog(): void {
+    this.questions.getCatalog()
+      .then((catalog) => {
+        this.totalQuestionCount.set(catalog.totalCount);
+        this.categories.set(catalog.categories || []);
+        this.gameQuestionCount = Math.max(1, Math.min(this.gameQuestionCount, catalog.totalCount || 10));
+        if (this.selectedCategory !== 'todas' && !catalog.categories.includes(this.selectedCategory)) {
+          this.selectedCategory = 'todas';
+        }
       })
       .catch(() => {
         this.totalQuestionCount.set(0);
       });
   }
 
-  ngOnDestroy() { if (this.timer) clearInterval(this.timer); }
-
-  onQuestionAdded(): void {
-    this.totalQuestionCount.update((n) => n + 1);
+  addCategory(): void {
+    const name = this.newCategoryName.trim().toLowerCase();
+    if (!name) return;
+    this.addingCategory.set(true);
+    this.questions.addCategory(name)
+      .then((result) => {
+        this.newCategoryName = '';
+        this.refreshCatalog();
+        this.toast.success(result.created ? 'Categoria creada.' : 'La categoria ya existia.');
+      })
+      .catch((err: Error) => {
+        this.toast.error(err.message || 'No se pudo crear categoria');
+      })
+      .finally(() => this.addingCategory.set(false));
   }
 
   copyLink() {
@@ -143,7 +184,11 @@ export class HostPage implements OnDestroy {
     const maxFromBank = this.totalQuestionCount();
     const desiredCount = Math.max(1, Number(this.gameQuestionCount) || 10);
     const safeCount = maxFromBank > 0 ? Math.min(desiredCount, maxFromBank) : desiredCount;
-    this.sock.hostStart({ questionTimeMs: timeMs, questionCount: safeCount });
+    this.sock.hostStart({
+      questionTimeMs: timeMs,
+      questionCount: safeCount,
+      category: this.selectedCategory,
+    });
   }
 
   next() { this.sock.hostNext(); }

@@ -32,11 +32,23 @@ const MAX_QUESTION_TIME_MS = 60000;
 const NEXT_DELAY_MS = 1800;             // pausa tras revelar
 const MAX_POINTS = 1000;                // puntaje si respondes al instante
 const MIN_POINTS = 200;                 // puntaje mínimo si respondes al final del tiempo
+const DEFAULT_DIFFICULTY = 'media';
 // ============================================
 
 const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, 'data');
-const QUESTIONS_FILE = path.join(DATA_DIR, 'questions.json');
-const SEED_FILE = path.join(__dirname, 'questions.json');
+const USER_QUESTIONS_FILE = path.join(DATA_DIR, 'user-questions.json');
+const CATEGORIES_FILE = path.join(DATA_DIR, 'categories.json');
+const STATIC_QUESTIONS_FILE = path.join(__dirname, 'static-questions.json');
+const LEGACY_FILE = path.join(__dirname, 'questions.json');
+
+const BASE_CATEGORIES = [
+  'cultura',
+  'historia',
+  'geografia',
+  'entretenimiento',
+  'videojuegos',
+  'musica',
+];
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -44,72 +56,215 @@ const supabase = (SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY)
   ? createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
   : null;
 
-function loadQuestionsSync() {
-  let seed = [];
-  try {
-    seed = JSON.parse(fs.readFileSync(SEED_FILE, 'utf-8'));
-    if (!Array.isArray(seed)) seed = [];
-  } catch (e) {
-    console.error('No se pudo cargar seed de preguntas:', e.message);
-  }
-  try {
-    if (fs.existsSync(QUESTIONS_FILE)) {
-      const data = JSON.parse(fs.readFileSync(QUESTIONS_FILE, 'utf-8'));
-      if (Array.isArray(data) && data.length > 0) return data;
-    }
-  } catch (e) {
-    console.warn('No se pudo cargar banco de preguntas, usando seed:', e.message);
-  }
-  return seed;
+function normalizeCategory(name) {
+  if (typeof name !== 'string') return 'cultura';
+  const v = name.trim().toLowerCase();
+  return v || 'cultura';
 }
 
-function saveQuestionsToFile() {
+function normalizeDifficulty(value) {
+  const v = (typeof value === 'string' ? value.trim().toLowerCase() : DEFAULT_DIFFICULTY);
+  if (v === 'baja' || v === 'alta' || v === 'media') return v;
+  return DEFAULT_DIFFICULTY;
+}
+
+function normalizeQuestion(input, source = 'user') {
+  const q = String(input?.q || '').trim();
+  const options = Array.isArray(input?.options)
+    ? input.options.map((o) => String(o).trim()).filter(Boolean)
+    : [];
+  const answer = Number(input?.answer);
+  const category = normalizeCategory(input?.category || 'cultura');
+  const difficulty = normalizeDifficulty(input?.difficulty);
+  if (!q || options.length !== 4 || !Number.isInteger(answer) || answer < 0 || answer > 3) {
+    return null;
+  }
+  return {
+    q,
+    options,
+    answer,
+    category,
+    difficulty,
+    source,
+  };
+}
+
+function loadJsonArraySafe(filePath) {
+  try {
+    const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    return Array.isArray(data) ? data : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function loadStaticQuestionsSync() {
+  let seed = loadJsonArraySafe(STATIC_QUESTIONS_FILE);
+  if (!seed.length) {
+    // Fallback para no romper en entornos viejos
+    seed = loadJsonArraySafe(LEGACY_FILE);
+  }
+  return seed
+    .map((q) => normalizeQuestion(q, 'static'))
+    .filter(Boolean);
+}
+
+function loadUserQuestionsSync() {
+  const local = loadJsonArraySafe(USER_QUESTIONS_FILE)
+    .map((q) => normalizeQuestion(q, 'user'))
+    .filter(Boolean);
+  return local;
+}
+
+function loadCategoriesSync() {
+  const local = loadJsonArraySafe(CATEGORIES_FILE)
+    .map((c) => normalizeCategory(typeof c === 'string' ? c : c?.name))
+    .filter(Boolean);
+  return Array.from(new Set([...BASE_CATEGORIES, ...local]));
+}
+
+function ensureDataDirSync() {
   try {
     if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-    fs.writeFileSync(QUESTIONS_FILE, JSON.stringify(questions, null, 2), 'utf-8');
+  } catch (e) {
+    console.warn('No se pudo crear directorio de datos:', e.message);
+  }
+}
+
+function saveUserQuestionsToFile() {
+  try {
+    ensureDataDirSync();
+    fs.writeFileSync(USER_QUESTIONS_FILE, JSON.stringify(userQuestions, null, 2), 'utf-8');
     return true;
   } catch (e) {
-    console.warn('No se pudo guardar banco de preguntas (p. ej. en hosting solo lectura):', e.message);
+    console.warn('No se pudo guardar banco de preguntas de usuario:', e.message);
     return false;
   }
 }
 
-let questions = [];
+function saveCategoriesToFile() {
+  try {
+    ensureDataDirSync();
+    fs.writeFileSync(CATEGORIES_FILE, JSON.stringify(categories, null, 2), 'utf-8');
+    return true;
+  } catch (e) {
+    console.warn('No se pudo guardar categorias:', e.message);
+    return false;
+  }
+}
+
+function getAllQuestions() {
+  return [...staticQuestions, ...userQuestions];
+}
+
+function filterByCategory(items, category) {
+  if (!category || category === 'todas') return items;
+  const c = normalizeCategory(category);
+  return items.filter((q) => normalizeCategory(q.category) === c);
+}
+
+function buildGameQuestions(questionCount, category) {
+  const staticPool = shuffle(filterByCategory(staticQuestions, category));
+  const userPool = shuffle(filterByCategory(userQuestions, category));
+
+  const targetStatic = Math.ceil(questionCount / 2);
+  const targetUser = questionCount - targetStatic;
+
+  const selected = [];
+  selected.push(...userPool.splice(0, targetUser));
+  selected.push(...staticPool.splice(0, targetStatic));
+
+  let remaining = questionCount - selected.length;
+  if (remaining > 0) {
+    selected.push(...staticPool.splice(0, remaining));
+    remaining = questionCount - selected.length;
+  }
+  if (remaining > 0) {
+    selected.push(...userPool.splice(0, remaining));
+  }
+  return shuffle(selected).slice(0, questionCount);
+}
+
+let staticQuestions = [];
+let userQuestions = [];
+let categories = [];
 
 // REST API: questions
 app.get('/api/questions', (req, res) => {
-  res.json(questions);
+  const source = String(req.query.source || 'all').toLowerCase();
+  if (source === 'static') return res.json(staticQuestions);
+  if (source === 'user') return res.json(userQuestions);
+  return res.json(getAllQuestions());
+});
+
+app.get('/api/categories', (req, res) => {
+  res.json(categories);
+});
+
+app.post('/api/categories', async (req, res) => {
+  const rawName = req.body?.name;
+  const name = normalizeCategory(rawName);
+  if (!name) return res.status(400).json({ error: 'Nombre de categoria invalido.' });
+  if (categories.includes(name)) return res.status(200).json({ name, created: false });
+
+  if (supabase) {
+    const { error } = await supabase.from('categories').insert({ name });
+    if (error) return res.status(500).json({ error: error.message || 'No se pudo crear categoria.' });
+  } else {
+    categories.push(name);
+    saveCategoriesToFile();
+  }
+
+  if (!categories.includes(name)) categories.push(name);
+  return res.status(201).json({ name, created: true });
+});
+
+app.get('/api/catalog', (req, res) => {
+  const all = getAllQuestions();
+  const counts = {};
+  categories.forEach((c) => { counts[c] = 0; });
+  all.forEach((q) => {
+    const c = normalizeCategory(q.category);
+    counts[c] = (counts[c] || 0) + 1;
+  });
+  res.json({
+    categories,
+    counts,
+    staticCount: staticQuestions.length,
+    userCount: userQuestions.length,
+    totalCount: all.length,
+  });
 });
 
 app.post('/api/questions', async (req, res) => {
-  const { q, options, answer } = req.body || {};
-  if (typeof q !== 'string' || !q.trim()) {
-    return res.status(400).json({ error: 'Falta el texto de la pregunta (q).' });
+  const payload = req.body || {};
+  const normalized = normalizeQuestion(payload, 'user');
+  if (!normalized) {
+    return res.status(400).json({ error: 'Pregunta invalida: revisa texto, 4 opciones y respuesta.' });
   }
-  if (!Array.isArray(options) || options.length !== 4) {
-    return res.status(400).json({ error: 'Se necesitan exactamente 4 opciones (options).' });
+  if (!categories.includes(normalized.category)) {
+    // Auto-crea la categoria si no existe
+    if (supabase) {
+      const { error: catErr } = await supabase.from('categories').insert({ name: normalized.category });
+      if (catErr) return res.status(500).json({ error: catErr.message || 'No se pudo crear categoria.' });
+    } else {
+      categories.push(normalized.category);
+      saveCategoriesToFile();
+    }
+    if (!categories.includes(normalized.category)) categories.push(normalized.category);
   }
-  const opts = options.map(o => (typeof o === 'string' ? o : String(o)).trim()).filter(Boolean);
-  if (opts.length !== 4) {
-    return res.status(400).json({ error: 'Las 4 opciones deben ser texto no vacío.' });
-  }
-  const ans = Number(answer);
-  if (!Number.isInteger(ans) || ans < 0 || ans > 3) {
-    return res.status(400).json({ error: 'La respuesta correcta (answer) debe ser 0, 1, 2 o 3.' });
-  }
-  const newQ = { q: q.trim(), options: opts, answer: ans };
 
   if (supabase) {
-    const { error } = await supabase.from('questions').insert(newQ);
+    const { error } = await supabase.from('questions').insert(normalized);
     if (error) {
       return res.status(500).json({ error: error.message || 'Error al guardar en la base de datos.' });
     }
-    questions.push(newQ);
+    userQuestions.push(normalized);
   } else {
-    questions.push(newQ);
-    saveQuestionsToFile();
+    userQuestions.push(normalized);
+    saveUserQuestionsToFile();
   }
-  res.status(201).json(newQ);
+  res.status(201).json(normalized);
 });
 
 const state = {
@@ -305,8 +460,14 @@ io.on('connection', (socket) => {
 
   socket.on('host:start', (settings = {}) => {
     if (socket.id !== state.hostId) return;
-    if (!questions.length) return;
+    const all = getAllQuestions();
+    if (!all.length) return;
     if (state.started) return;
+
+    const selectedCategory = (typeof settings.category === 'string' && settings.category.trim())
+      ? normalizeCategory(settings.category)
+      : 'todas';
+    const categoryForGame = selectedCategory === 'todas' ? 'todas' : selectedCategory;
 
     state.questionTimeMs = clampInt(
       settings.questionTimeMs,
@@ -314,13 +475,15 @@ io.on('connection', (socket) => {
       MAX_QUESTION_TIME_MS,
       DEFAULT_QUESTION_TIME_MS,
     );
+    const availableByCategory = filterByCategory(all, categoryForGame).length;
+    if (!availableByCategory) return;
     const questionCount = clampInt(
       settings.questionCount,
       1,
-      questions.length,
-      questions.length,
+      availableByCategory,
+      availableByCategory,
     );
-    state.gameQuestions = shuffle(questions).slice(0, questionCount);
+    state.gameQuestions = buildGameQuestions(questionCount, categoryForGame);
     if (!state.gameQuestions.length) return;
 
     Object.values(state.players).forEach(p => {
@@ -363,29 +526,38 @@ io.on('connection', (socket) => {
 });
 
 async function start() {
+  staticQuestions = loadStaticQuestionsSync();
+  categories = loadCategoriesSync();
+
   if (supabase) {
     try {
-      const { data, error } = await supabase.from('questions').select('q, options, answer');
-      if (error) throw error;
-      if (data && data.length > 0) {
-        questions = data;
-        console.log('[server] Preguntas cargadas desde Supabase:', questions.length);
-      } else {
-        const seed = loadQuestionsSync();
-        if (seed.length > 0) {
-          const { error: insertErr } = await supabase.from('questions').insert(seed);
-          if (insertErr) console.warn('[server] No se pudieron insertar seed en Supabase:', insertErr.message);
-          questions = seed;
-          console.log('[server] Seed de preguntas insertado en Supabase:', seed.length);
-        }
-      }
+      await supabase.from('categories').upsert(
+        BASE_CATEGORIES.map((name) => ({ name })),
+        { onConflict: 'name' },
+      );
+      const { data: cData, error: cErr } = await supabase.from('categories').select('name');
+      if (cErr) throw cErr;
+      categories = Array.from(new Set([
+        ...BASE_CATEGORIES,
+        ...(cData || []).map((c) => normalizeCategory(c.name)),
+      ]));
+
+      const { data: qData, error: qErr } = await supabase
+        .from('questions')
+        .select('q, options, answer, category, difficulty, source');
+      if (qErr) throw qErr;
+      userQuestions = (qData || [])
+        .map((q) => normalizeQuestion({ ...q, source: q.source || 'user' }, 'user'))
+        .filter(Boolean);
+      console.log('[server] Preguntas cargadas: static=%d user=%d total=%d', staticQuestions.length, userQuestions.length, getAllQuestions().length);
     } catch (e) {
-      console.error('[server] Error cargando desde Supabase, usando seed:', e.message);
-      questions = loadQuestionsSync();
+      console.error('[server] Error cargando desde Supabase, usando archivos locales:', e.message);
+      userQuestions = loadUserQuestionsSync();
     }
   } else {
-    questions = loadQuestionsSync();
-    console.log('[server] Preguntas cargadas desde archivo/seed:', questions.length);
+    userQuestions = loadUserQuestionsSync();
+    categories = loadCategoriesSync();
+    console.log('[server] Preguntas cargadas localmente: static=%d user=%d total=%d', staticQuestions.length, userQuestions.length, getAllQuestions().length);
   }
 
   server.listen(PORT, () => {

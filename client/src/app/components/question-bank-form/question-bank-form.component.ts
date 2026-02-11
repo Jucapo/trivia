@@ -1,13 +1,13 @@
-﻿import { Component, EventEmitter, Output, signal } from '@angular/core';
+import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NgIf } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { QuestionsService, type QuestionItem } from '../../questions.service';
 import { ToastService } from '../../services/toast.service';
 
 @Component({
   standalone: true,
   selector: 'app-question-bank-form',
-  imports: [FormsModule, NgIf],
+  imports: [FormsModule, NgFor, NgIf],
   template: `
     <details class="card host-panel add-question-panel">
       <summary>Anadir pregunta al banco</summary>
@@ -15,6 +15,16 @@ import { ToastService } from '../../services/toast.service';
       <form class="add-question-form" (ngSubmit)="submitQuestion()">
         <label>Pregunta</label>
         <input [(ngModel)]="newQ.q" name="q" class="input" placeholder="Ej: Cual es la capital de Francia?" required>
+        <label>Categoria</label>
+        <select [(ngModel)]="newQ.category" name="category" class="input">
+          <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
+        </select>
+        <label>Dificultad</label>
+        <select [(ngModel)]="newQ.difficulty" name="difficulty" class="input">
+          <option value="baja">baja</option>
+          <option value="media">media</option>
+          <option value="alta">alta</option>
+        </select>
         <label>Opcion A (correcta si eliges 0)</label>
         <input [(ngModel)]="newQ.options[0]" name="opt0" class="input" placeholder="Texto opcion A" required>
         <label>Opcion B</label>
@@ -39,9 +49,16 @@ import { ToastService } from '../../services/toast.service';
   `,
 })
 export class QuestionBankFormComponent {
+  @Input() categories: string[] = [];
   @Output() questionAdded = new EventEmitter<void>();
 
-  newQ: QuestionItem = { q: '', options: ['', '', '', ''], answer: 0 };
+  newQ: QuestionItem = {
+    q: '',
+    options: ['', '', '', ''],
+    answer: 0,
+    category: 'cultura',
+    difficulty: 'media',
+  };
   adding = signal(false);
   addError = signal('');
 
@@ -61,9 +78,21 @@ export class QuestionBankFormComponent {
     }
 
     this.adding.set(true);
-    this.questions.add({ q, options: opts, answer: this.newQ.answer })
+    this.questions.add({
+      q,
+      options: opts,
+      answer: this.newQ.answer,
+      category: this.newQ.category || (this.categories[0] || 'cultura'),
+      difficulty: this.newQ.difficulty || 'media',
+    })
       .then(() => {
-        this.newQ = { q: '', options: ['', '', '', ''], answer: 0 };
+        this.newQ = {
+          q: '',
+          options: ['', '', '', ''],
+          answer: 0,
+          category: this.newQ.category || (this.categories[0] || 'cultura'),
+          difficulty: 'media',
+        };
         this.toast.success('Pregunta guardada correctamente.');
         this.questionAdded.emit();
       })

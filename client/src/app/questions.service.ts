@@ -5,6 +5,17 @@ export interface QuestionItem {
   q: string;
   options: string[];
   answer: number;
+  category: string;
+  difficulty: 'baja' | 'media' | 'alta';
+  source?: 'static' | 'user';
+}
+
+export interface CatalogInfo {
+  categories: string[];
+  counts: Record<string, number>;
+  staticCount: number;
+  userCount: number;
+  totalCount: number;
 }
 
 function apiBase(): string {
@@ -15,8 +26,8 @@ function apiBase(): string {
 
 @Injectable({ providedIn: 'root' })
 export class QuestionsService {
-  async list(): Promise<QuestionItem[]> {
-    const res = await fetch(`${apiBase()}/api/questions`);
+  async list(source: 'all' | 'static' | 'user' = 'all'): Promise<QuestionItem[]> {
+    const res = await fetch(`${apiBase()}/api/questions?source=${source}`);
     if (!res.ok) throw new Error('No se pudieron cargar las preguntas');
     return res.json();
   }
@@ -31,6 +42,31 @@ export class QuestionsService {
       const err = await res.json().catch(() => ({}));
       throw new Error(err.error || 'Error al guardar la pregunta');
     }
+    return res.json();
+  }
+
+  async getCategories(): Promise<string[]> {
+    const res = await fetch(`${apiBase()}/api/categories`);
+    if (!res.ok) throw new Error('No se pudieron cargar las categorias');
+    return res.json();
+  }
+
+  async addCategory(name: string): Promise<{ name: string; created: boolean }> {
+    const res = await fetch(`${apiBase()}/api/categories`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name }),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || 'No se pudo crear categoria');
+    }
+    return res.json();
+  }
+
+  async getCatalog(): Promise<CatalogInfo> {
+    const res = await fetch(`${apiBase()}/api/catalog`);
+    if (!res.ok) throw new Error('No se pudo cargar el catalogo');
     return res.json();
   }
 }
