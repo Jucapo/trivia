@@ -2,7 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { environment } from '../environments/environment';
 
-export interface Player { name: string; score: number; }
+export interface Player { name: string; score: number; correctCount?: number; }
 export interface CurrentQ {
   index: number;
   total: number;

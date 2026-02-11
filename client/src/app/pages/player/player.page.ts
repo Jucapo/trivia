@@ -1,12 +1,12 @@
 import { Component, OnDestroy, computed, effect, signal, type Signal } from '@angular/core';
-import { DecimalPipe, NgClass, NgFor, NgIf } from '@angular/common';
+import { DecimalPipe, NgClass, NgFor, NgIf, TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SocketService, Player } from '../../socket.service';
 
 @Component({
   standalone: true,
   selector: 'app-player-page',
-  imports: [DecimalPipe, NgClass, NgFor, NgIf, FormsModule],
+  imports: [DecimalPipe, NgClass, NgFor, NgIf, TitleCasePipe, FormsModule],
   template: `
   <div class="card">
     <ng-container *ngIf="!joined; else game">
@@ -20,6 +20,12 @@ import { SocketService, Player } from '../../socket.service';
     <ng-template #game>
       <div class="grid grid-2 player-grid" *ngIf="current() as q; else wait">
         <div class="qa-col">
+          <div class="question-progress-header">
+            <span class="question-progress-text">Pregunta {{q.index+1}} de {{q.total}}</span>
+            <span class="question-progress-pct">{{ gameProgressPct(q) }}% completado</span>
+          </div>
+          <div class="progress progress-game"><div class="progress-bar progress-bar-game" [style.width.%]="gameProgressPct(q)"></div></div>
+
           <div class="header-row">
             <h3>Pregunta</h3>
             <div class="badge" *ngIf="timeLeft(q) >= 0">Tiempo: {{ timeLeft(q) / 1000 | number:'1.0-0' }}s</div>
@@ -44,7 +50,7 @@ import { SocketService, Player } from '../../socket.service';
               [disabled]="q.reveal"
               [ngClass]="optionClass(i, q)"
               (click)="pick(i, q.reveal)">
-              {{ 'ABCD'[i] }}) {{opt}}
+              {{ 'ABCD'[i] }}) {{ opt | titlecase }}
             </button>
           </div>
 
@@ -55,7 +61,11 @@ import { SocketService, Player } from '../../socket.service';
           <h3>Tabla de posiciones</h3>
           <ul class="list">
             <li *ngFor="let p of sortedPlayers(); let i = index" class="list-item">
-              <span>{{i+1}}. {{p.name}}</span><span class="badge">Pts: {{p.score}}</span>
+              <span>{{i+1}}. {{p.name}}</span>
+              <span class="list-item-badges">
+                <span class="badge">Pts: {{p.score}}</span>
+                <span class="chip chip--correct" *ngIf="(p.correctCount ?? 0) > 0"><span class="chip-dot"></span>{{ p.correctCount }} correctas</span>
+              </span>
             </li>
           </ul>
         </div>
@@ -152,5 +162,11 @@ export class PlayerPage implements OnDestroy {
     const elapsed = this.now() - q.startedAt;
     const pct = (elapsed / q.durationMs) * 100;
     return Math.min(100, Math.max(0, pct));
+  }
+
+  gameProgressPct(q: any): number {
+    if (!q?.total || q.total < 1) return 0;
+    const current = (q.index ?? 0) + 1;
+    return Math.round((current / q.total) * 100);
   }
 }

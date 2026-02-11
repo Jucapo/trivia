@@ -1,15 +1,16 @@
-import { Component, OnDestroy, computed, signal } from '@angular/core';
-import { DecimalPipe, NgClass, NgFor, NgIf } from '@angular/common';
+import { Component, OnDestroy, signal } from '@angular/core';
+import { DecimalPipe, NgClass, NgFor, NgIf, TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SocketService } from '../../socket.service';
 import { QuestionsService } from '../../questions.service';
 import { QuestionBankFormComponent } from '../../components/question-bank-form/question-bank-form.component';
+import { CategoryMultiSelectComponent } from '../../components/category-multi-select/category-multi-select.component';
 import { ToastService } from '../../services/toast.service';
 
 @Component({
   standalone: true,
   selector: 'app-host-page',
-  imports: [DecimalPipe, NgFor, NgIf, NgClass, FormsModule, QuestionBankFormComponent],
+  imports: [DecimalPipe, NgFor, NgIf, NgClass, TitleCasePipe, FormsModule, QuestionBankFormComponent, CategoryMultiSelectComponent],
   template: `
   <details class="card host-panel host-section host-accordion" [attr.open]="lobbyStarted() ? null : ''">
     <summary>Configuracion</summary>
@@ -31,19 +32,14 @@ import { ToastService } from '../../services/toast.service';
         </div>
         <div class="category-select-col">
           <label>Categoria de la partida <span class="required">*</span></label>
-          <select class="input" [ngModel]="categoryDropdownValue" (ngModelChange)="onCategorySelected($event)">
-            <option value="">Elegir categoria...</option>
-            <option *ngFor="let c of availableCategoriesForDropdown()" [value]="c">{{ c }}</option>
-          </select>
-          <div class="chip-row chip-row--select" *ngIf="selectedCategories().length > 0">
-            <span *ngFor="let c of selectedCategories()" class="chip chip--select">
-              <span class="chip-dot"></span>{{ c }}
-              <button type="button" class="chip-x" (click)="removeCategoryChip(c)" aria-label="Quitar">×</button>
-            </span>
-          </div>
+          <app-category-multi-select
+            [options]="categories()"
+            [selected]="selectedCategories()"
+            (selectedChange)="onCategoriesChange($event)">
+          </app-category-multi-select>
         </div>
       </div>
-      <p class="muted no-margin">Banco disponible: {{ totalQuestionCount() || '...' }} preguntas.</p>
+      <p class="muted no-margin bank-info">Banco disponible: {{ totalQuestionCount() || '...' }} preguntas.</p>
     </div>
   </details>
 
@@ -51,7 +47,11 @@ import { ToastService } from '../../services/toast.service';
     <summary>Jugadores ingresados</summary>
     <ul class="list" *ngIf="players().length > 0">
       <li *ngFor="let p of players()" class="list-item">
-        <span>{{p.name}}</span><span class="badge">Pts: {{p.score}}</span>
+        <span>{{p.name}}</span>
+        <span class="list-item-badges">
+          <span class="badge">Pts: {{p.score}}</span>
+          <span class="chip chip--correct" *ngIf="(p.correctCount ?? 0) > 0"><span class="chip-dot"></span>{{ p.correctCount }} correctas</span>
+        </span>
       </li>
     </ul>
     <p *ngIf="players().length === 0" class="muted">Ningun jugador ha ingresado. Comparte el enlace para que se unan.</p>
@@ -72,12 +72,18 @@ import { ToastService } from '../../services/toast.service';
   </details>
 
   <div class="host-float-start">
-    <button class="btn btn-float" (click)="start()" [disabled]="!canStart()">Iniciar</button>
+    <button class="btn btn-float" (click)="start()" [disabled]="!canStart()"><span class="icon-play">&#9654;</span> Iniciar</button>
   </div>
 
   <div class="card host-panel" *ngIf="current() as q">
+    <div class="question-progress-header">
+      <span class="question-progress-text">Pregunta {{q.index+1}} de {{q.total}}</span>
+      <span class="question-progress-pct">{{ gameProgressPct(q) }}% completado</span>
+    </div>
+    <div class="progress progress-game"><div class="progress-bar progress-bar-game" [style.width.%]="gameProgressPct(q)"></div></div>
+
     <div class="header-row">
-      <h3>Pregunta {{q.index+1}} / {{q.total}}</h3>
+      <h3>Pregunta</h3>
       <div class="badge" *ngIf="timeLeft(q) >= 0">Tiempo: {{ timeLeft(q) / 1000 | number:'1.0-0' }}s</div>
     </div>
 
@@ -93,7 +99,7 @@ import { ToastService } from '../../services/toast.service';
     </div>
     <p class="question">{{q.q}}</p>
     <ul>
-      <li *ngFor="let opt of q.options; let i = index">{{ 'ABCD'[i] }}) {{opt}}</li>
+      <li *ngFor="let opt of q.options; let i = index">{{ 'ABCD'[i] }}) {{ opt | titlecase }}</li>
     </ul>
     <p *ngIf="q.reveal" class="badge ok">Correcta: {{ 'ABCD'[q.correct ?? 0] }}</p>
   </div>
@@ -102,7 +108,11 @@ import { ToastService } from '../../services/toast.service';
     <h3>Resultados</h3>
     <ul class="list">
       <li *ngFor="let p of leaderboard(); let i = index" class="list-item">
-        <span>{{i+1}}. {{p.name}}</span><span class="badge">Pts: {{p.score}}</span>
+        <span>{{i+1}}. {{p.name}}</span>
+        <span class="list-item-badges">
+          <span class="badge">Pts: {{p.score}}</span>
+          <span class="chip chip--correct"><span class="chip-dot"></span>{{ p.correctCount ?? 0 }} correctas</span>
+        </span>
       </li>
     </ul>
   </div>
@@ -152,15 +162,9 @@ export class HostPage implements OnDestroy {
   totalQuestionCount = signal(0);
   categories = signal<string[]>(['cultura', 'historia', 'geografia', 'entretenimiento', 'videojuegos', 'musica']);
   categoryCounts = signal<Record<string, number>>({});
-  categoryDropdownValue = '';
   selectedCategories = signal<string[]>(['todas']);
   newCategoryName = '';
   addingCategory = signal(false);
-
-  availableCategoriesForDropdown = computed(() => {
-    const sel = this.selectedCategories();
-    return ['todas', ...this.categories()].filter((c) => !sel.includes(c));
-  });
 
   canStart(): boolean {
     if (this.lobbyStarted()) return false;
@@ -213,21 +217,8 @@ export class HostPage implements OnDestroy {
       });
   }
 
-  onCategorySelected(value: string): void {
-    this.categoryDropdownValue = '';
-    if (!value) return;
-    const v = value.trim().toLowerCase();
-    if (v === 'todas') {
-      this.selectedCategories.set(['todas']);
-      return;
-    }
-    const list = this.selectedCategories().filter((c) => c !== 'todas');
-    if (list.includes(v)) return;
-    this.selectedCategories.set([...list, v]);
-  }
-
-  removeCategoryChip(cat: string): void {
-    this.selectedCategories.set(this.selectedCategories().filter((c) => c !== cat));
+  onCategoriesChange(value: string[]): void {
+    this.selectedCategories.set(value);
   }
 
   addCategory(): void {
@@ -282,6 +273,12 @@ export class HostPage implements OnDestroy {
     const elapsed = this.now() - q.startedAt;
     const pct = (elapsed / q.durationMs) * 100;
     return Math.min(100, Math.max(0, pct));
+  }
+
+  gameProgressPct(q: any): number {
+    if (!q?.total || q.total < 1) return 0;
+    const current = (q.index ?? 0) + 1;
+    return Math.round((current / q.total) * 100);
   }
 
   categoryPct(cat: string): string {

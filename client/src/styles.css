@@ -154,6 +154,19 @@ h3 { font-size: 1.15rem; }
   width: 0%;
   transition: width 0.15s linear;
 }
+.question-progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.question-progress-text { font-weight: 600; font-size: 0.95rem; }
+.question-progress-pct { font-size: 0.85rem; color: var(--muted); }
+.progress-game { margin-bottom: 12px; }
+.progress-bar-game {
+  background: linear-gradient(90deg, #86efac, var(--accent2));
+  transition: width 0.3s ease;
+}
 
 .header-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
 .list { list-style: none; padding: 0; margin: 0; }
@@ -167,14 +180,20 @@ h3 { font-size: 1.15rem; }
 .host-float-start {
   position: fixed;
   bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  right: 20px;
   z-index: 100;
 }
 .btn-float {
   padding: 14px 28px !important;
   font-size: 16px !important;
   box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4) !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.icon-play {
+  font-size: 1.1em;
+  line-height: 1;
 }
 
 /* Game settings + accordion */
@@ -192,6 +211,8 @@ h3 { font-size: 1.15rem; }
   margin-top: 10px;
 }
 .no-margin { margin: 0; }
+.bank-info { margin-top: 18px !important; }
+.chip-row--select { margin-bottom: 4px; }
 .add-question-panel summary,
 .host-accordion summary {
   font-size: 1.1rem;
@@ -294,7 +315,8 @@ h3 { font-size: 1.15rem; }
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 10px;
+  margin-top: 14px;
+  margin-bottom: 14px;
 }
 .chip--category .chip-dot,
 .chip--difficulty .chip-dot { background: currentColor; }
@@ -308,6 +330,14 @@ h3 { font-size: 1.15rem; }
 .chip--diff-baja { background: #e2e8f0; color: #334155; }
 .chip--diff-media { background: #f59e0b; color: #fff; }
 .chip--diff-alta { background: #991b1b; color: #fff; }
+.chip--correct { background: var(--ok); color: #fff; font-size: 12px; }
+.chip--correct .chip-dot { background: #fff; }
+.list-item-badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
 .category-select-col label { display: block; }
 
 /* Landing */

@@ -279,7 +279,7 @@ const state = {
   started: false,
   currentIndex: -1,
   reveal: false,
-  players: {}, // socketId -> { name, score, answeredIndex, answer, answeredAt }
+  players: {}, // socketId -> { name, score, correctCount, answeredIndex, answer, answeredAt }
   currentOptions: null,
   currentCorrect: null,
   startedAt: null,
@@ -315,7 +315,11 @@ function resetAnswers() {
 function broadcastLobby() {
   io.emit('lobby', {
     started: state.started,
-    players: Object.values(state.players).map(p => ({ name: p.name, score: p.score }))
+    players: Object.values(state.players).map(p => ({
+      name: p.name,
+      score: p.score,
+      correctCount: p.correctCount ?? 0,
+    }))
   });
 }
 
@@ -389,6 +393,7 @@ function doReveal() {
     const answeredThis = p.answeredIndex === state.currentIndex;
     if (answeredThis && p.answer === correct) {
       p.score += scoreForAnswer(p.answeredAt);
+      p.correctCount = (p.correctCount ?? 0) + 1;
     }
   });
 
@@ -402,7 +407,7 @@ function doNext() {
     io.emit('end', {
       leaderboard: Object.values(state.players)
         .sort((a, b) => b.score - a.score)
-        .map(p => ({ name: p.name, score: p.score }))
+        .map(p => ({ name: p.name, score: p.score, correctCount: p.correctCount ?? 0 }))
     });
     state.started = false;
     state.currentIndex = -1;
@@ -450,6 +455,7 @@ io.on('connection', (socket) => {
       state.players[socket.id] = {
         name: finalName,
         score: 0,
+        correctCount: 0,
         answeredIndex: null,
         answer: null,
         answeredAt: null
@@ -507,6 +513,7 @@ io.on('connection', (socket) => {
 
     Object.values(state.players).forEach(p => {
       p.score = 0;
+      p.correctCount = 0;
       p.answeredIndex = null;
       p.answer = null;
       p.answeredAt = null;
