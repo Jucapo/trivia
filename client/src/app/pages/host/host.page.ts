@@ -18,7 +18,26 @@ import { ToastService } from '../../services/toast.service';
     <div class="share-row">
       <span class="badge">Comparte:</span>
       <code class="share-url">{{ shareUrl }}</code>
-      <button type="button" class="btn btn-copy" (click)="copyLink()" [class.copied]="copied()">{{ copied() ? 'OK Copiado' : 'Copiar' }}</button>
+      <div class="share-actions">
+        <button
+          type="button"
+          class="btn share-btn share-btn-open"
+          (click)="openShare()"
+          [disabled]="!shareUrl"
+          title="Abrir enlace en una nueva pestaña"
+          aria-label="Abrir enlace en una nueva pestaña">
+          ↗
+        </button>
+        <button
+          type="button"
+          class="btn share-btn btn-copy"
+          (click)="copyLink()"
+          [class.copied]="copied()"
+          title="Copiar enlace de jugadores"
+          aria-label="Copiar enlace de jugadores">
+          📋
+        </button>
+      </div>
     </div>
     <div class="game-settings">
       <h3>Configuracion de partida</h3>
@@ -47,40 +66,73 @@ import { ToastService } from '../../services/toast.service';
 
   <details class="card host-panel host-section host-accordion" open>
     <summary>Jugadores ingresados</summary>
-    <ul class="list" *ngIf="players().length > 0">
-      <li *ngFor="let p of players()" class="list-item">
-        <span>{{p.name}}</span>
-        <span class="list-item-badges">
-          <span class="badge">Pts: {{p.score}}</span>
-          <span class="chip chip--correct" *ngIf="(p.correctCount ?? 0) > 0"><span class="chip-dot"></span>{{ p.correctCount }} correctas</span>
-        </span>
-      </li>
-    </ul>
-    <p *ngIf="players().length === 0" class="muted">Ningun jugador ha ingresado. Comparte el enlace para que se unan.</p>
-    <div class="host-status-row">
-      <h3>Estado</h3>
-      <p class="badge">{{ lobbyStarted() && paused() ? 'Pausado' : lobbyStarted() ? 'En curso' : 'En lobby' }}</p>
-      <div *ngIf="counts() as c" class="grid answers-grid">
-        <div class="card soft">A: {{c[0]}}</div>
-        <div class="card soft">B: {{c[1]}}</div>
-        <div class="card soft">C: {{c[2]}}</div>
-        <div class="card soft">D: {{c[3]}}</div>
+    <div class="players-layout">
+      <div class="players-list">
+        <ul class="list" *ngIf="players().length > 0">
+          <li *ngFor="let p of players()" class="list-item">
+            <span>{{p.name}}</span>
+            <span class="list-item-badges">
+              <span class="badge">Pts: {{p.score}}</span>
+              <span class="chip chip--correct" *ngIf="(p.correctCount ?? 0) > 0"><span class="chip-dot"></span>{{ p.correctCount }} correctas</span>
+            </span>
+          </li>
+        </ul>
+        <p *ngIf="players().length === 0" class="muted">Ningun jugador ha ingresado. Comparte el enlace para que se unan.</p>
+      </div>
+      <div class="host-status-card">
+        <div class="host-status-row">
+          <h3>Estado</h3>
+          <p class="badge status-pill">
+            {{ lobbyStarted() && paused() ? 'Pausado' : lobbyStarted() ? 'En curso' : 'En lobby' }}
+          </p>
+        </div>
+        <div *ngIf="counts() as c" class="grid answers-grid">
+          <div class="card soft">A: {{c[0]}}</div>
+          <div class="card soft">B: {{c[1]}}</div>
+          <div class="card soft">C: {{c[2]}}</div>
+          <div class="card soft">D: {{c[3]}}</div>
+        </div>
       </div>
     </div>
   </details>
 
   <div class="host-float-start" *ngIf="!lobbyStarted()">
-    <button class="btn btn-float" (click)="start()" [disabled]="!canStart()"><span class="icon-play">&#9654;</span> Iniciar</button>
+    <button
+      class="btn btn-float btn-float-primary"
+      (click)="start()"
+      [disabled]="!canStart()"
+      title="Iniciar partida"
+      aria-label="Iniciar partida">
+      <span class="icon-play">&#9654;</span>
+    </button>
   </div>
   <div class="host-float-start host-float-actions" *ngIf="lobbyStarted() && !paused()">
-    <button class="btn btn-float btn-float-pause" (click)="pause()"><span class="icon-pause">&#9208;</span> Pausar</button>
+    <button
+      class="btn btn-float btn-float-pause"
+      (click)="pause()"
+      title="Pausar partida"
+      aria-label="Pausar partida">
+      <span class="icon-pause">&#9208;</span>
+    </button>
   </div>
   <div class="host-float-start host-float-actions host-float-two" *ngIf="lobbyStarted() && paused()">
-    <button class="btn btn-float btn-float-resume" (click)="resume()"><span class="icon-play">&#9654;</span> Reanudar</button>
-    <button class="btn btn-float btn-float-danger" (click)="stopGame()"><span class="icon-restart">&#8635;</span> Reiniciar</button>
+    <button
+      class="btn btn-float btn-float-resume"
+      (click)="resume()"
+      title="Reanudar partida"
+      aria-label="Reanudar partida">
+      <span class="icon-play">&#9654;</span>
+    </button>
+    <button
+      class="btn btn-float btn-float-danger"
+      (click)="stopGame()"
+      title="Reiniciar partida"
+      aria-label="Reiniciar partida">
+      <span class="icon-restart">&#8635;</span>
+    </button>
   </div>
 
-  <details class="card host-panel host-accordion question-card-accordion" *ngIf="current() as q" open>
+  <details class="card host-panel host-section host-accordion question-card-accordion" *ngIf="current() as q" open>
     <summary>Pregunta actual ({{q.index+1}} de {{q.total}})</summary>
     <div class="question-progress-header" *ngIf="!paused()">
       <span class="question-progress-text">Pregunta {{q.index+1}} de {{q.total}}</span>
@@ -264,6 +316,13 @@ export class HostPage implements OnDestroy {
       this.copied.set(true);
       setTimeout(() => this.copied.set(false), 2000);
     });
+  }
+
+  openShare() {
+    if (!this.shareUrl) return;
+    if (typeof window !== 'undefined') {
+      window.open(this.shareUrl, '_blank', 'noopener');
+    }
   }
 
   start() {
