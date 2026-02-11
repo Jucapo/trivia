@@ -5,6 +5,7 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   selector: 'app-landing-page',
   imports: [RouterLink],
+  styleUrls: ['./landing.page.scss'],
   template: `
     <div class="landing-container">
       <div class="landing-card">
@@ -18,105 +19,6 @@ import { RouterLink } from '@angular/router';
         </div>
       </div>
     </div>
-  `,
-  styles: [`
-    .landing-container {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px 20px;
-      background: 
-        radial-gradient(ellipse at top left, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
-        radial-gradient(ellipse at bottom right, rgba(118, 75, 162, 0.12) 0%, transparent 50%),
-        linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-      position: relative;
-    }
-
-    .landing-card {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-radius: 24px;
-      padding: 64px 48px;
-      box-shadow: 0 20px 60px rgba(15, 23, 42, 0.15), 0 4px 12px rgba(15, 23, 42, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      max-width: 600px;
-      width: 100%;
-      text-align: center;
-    }
-
-    .landing-content {
-      position: relative;
-      z-index: 1;
-    }
-
-    .landing-title {
-      font-size: 3.5rem;
-      font-weight: 800;
-      margin-bottom: 16px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      letter-spacing: -0.02em;
-    }
-
-    .landing-description {
-      color: #64748b;
-      font-size: 1.125rem;
-      margin-bottom: 40px;
-      line-height: 1.7;
-      max-width: 480px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .landing-links {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .landing-btn-primary,
-    .landing-btn-secondary {
-      min-width: 180px;
-      padding: 16px 32px;
-      font-size: 16px;
-    }
-
-    .landing-btn-primary {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
-    }
-
-    .landing-btn-primary:hover {
-      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
-      transform: translateY(-2px);
-    }
-
-    @media (max-width: 640px) {
-      .landing-card {
-        padding: 48px 32px;
-      }
-
-      .landing-title {
-        font-size: 2.5rem;
-      }
-
-      .landing-description {
-        font-size: 1rem;
-      }
-
-      .landing-links {
-        flex-direction: column;
-      }
-
-      .landing-btn-primary,
-      .landing-btn-secondary {
-        width: 100%;
-      }
-    }
-  `]
+  `
 })
 export class LandingPage {}
