@@ -1,10 +1,10 @@
 import { Component, Input } from '@angular/core';
-import { NgClass } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 
 @Component({
   standalone: true,
   selector: 'app-accordion',
-  imports: [NgClass],
+  imports: [NgClass, NgIf],
   styleUrls: ['./accordion.component.scss'],
   template: `
     <details
@@ -12,7 +12,12 @@ import { NgClass } from '@angular/common';
       [ngClass]="extraClasses"
       [attr.open]="open ? '' : null"
     >
-      <summary>{{ title }}</summary>
+      <summary>
+        <span class="accordion-title-content">
+          <span *ngIf="icon" class="accordion-icon">{{ icon }}</span>
+          <span class="accordion-title-text">{{ title }}</span>
+        </span>
+      </summary>
       <div class="accordion-content">
         <ng-content></ng-content>
       </div>
@@ -22,6 +27,7 @@ import { NgClass } from '@angular/common';
 export class AccordionComponent {
   @Input() title = '';
   @Input() open = false;
+  @Input() icon: string = '';
   /**
    * Clases adicionales que se agregan al wrapper <details>,
    * por ejemplo: "add-question-panel category-admin-panel question-card-accordion"

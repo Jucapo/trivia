@@ -314,6 +314,11 @@
   background: rgba(255, 255, 255, 0.6);
   border: 1px solid rgba(226, 232, 240, 0.6);
   transition: all 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
   
   &:hover {
     background: rgba(255, 255, 255, 0.9);
@@ -331,6 +336,8 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  flex: 1;
+  min-width: 0;
 }
 
 .rank-number {
@@ -368,6 +375,14 @@
 .player-name {
   font-weight: 600;
   color: #1e293b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
+  
+  @media (max-width: 820px) {
+    max-width: 120px;
+  }
 }
 
 .score-badge {

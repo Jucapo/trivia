@@ -1,0 +1,2914 @@
+[
+  {
+    "q": "¿Cuál es la capital de Reino Unido?",
+    "options": [
+      "Varsovia",
+      "Abu Dabi",
+      "Ottawa",
+      "Londres"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Reino Unido?",
+    "options": [
+      "inglés",
+      "portugués",
+      "ruso",
+      "japonés"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Reino Unido?",
+    "options": [
+      "América del Norte",
+      "África",
+      "Asia",
+      "Europa"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Reino Unido?",
+    "options": [
+      "dólar",
+      "euro",
+      "dólar canadiense",
+      "libra esterlina"
+    ],
+    "answer": 3,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Francia?",
+    "options": [
+      "Lima",
+      "Ciudad de México",
+      "Londres",
+      "París"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Francia?",
+    "options": [
+      "inglés",
+      "francés",
+      "ruso",
+      "alemán"
+    ],
+    "answer": 1,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Francia?",
+    "options": [
+      "América del Sur",
+      "Asia",
+      "África",
+      "Europa"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Francia?",
+    "options": [
+      "euro",
+      "rupia",
+      "chelín",
+      "peso"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué año ocurrió Revolución Francesa en Francia?",
+    "options": [
+      "1769",
+      "1794",
+      "1779",
+      "1789"
+    ],
+    "answer": 3,
+    "category": "historia",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Alemania?",
+    "options": [
+      "Lima",
+      "Adís Abeba",
+      "Pekín",
+      "Berlín"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Alemania?",
+    "options": [
+      "francés",
+      "italiano",
+      "portugués",
+      "alemán"
+    ],
+    "answer": 3,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Alemania?",
+    "options": [
+      "América del Sur",
+      "Oceanía",
+      "Europa",
+      "África"
+    ],
+    "answer": 2,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Alemania?",
+    "options": [
+      "złoty",
+      "euro",
+      "dólar jamaiquino",
+      "ringgit"
+    ],
+    "answer": 1,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Italia?",
+    "options": [
+      "Singapur",
+      "Moscú",
+      "Ankara",
+      "Roma"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Italia?",
+    "options": [
+      "árabe",
+      "alemán",
+      "español",
+      "italiano"
+    ],
+    "answer": 3,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Italia?",
+    "options": [
+      "Asia",
+      "África",
+      "Europa",
+      "América del Sur"
+    ],
+    "answer": 2,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Italia?",
+    "options": [
+      "sol",
+      "cedi",
+      "euro",
+      "naira"
+    ],
+    "answer": 2,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de España?",
+    "options": [
+      "Madrid",
+      "Santiago",
+      "Ámsterdam",
+      "Buenos Aires"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de España?",
+    "options": [
+      "alemán",
+      "ruso",
+      "español",
+      "árabe"
+    ],
+    "answer": 2,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra España?",
+    "options": [
+      "América del Sur",
+      "África",
+      "América del Norte",
+      "Europa"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de España?",
+    "options": [
+      "won",
+      "libra esterlina",
+      "sol",
+      "euro"
+    ],
+    "answer": 3,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Portugal?",
+    "options": [
+      "Atenas",
+      "Bangkok",
+      "Caracas",
+      "Lisboa"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Portugal?",
+    "options": [
+      "portugués",
+      "chino",
+      "español",
+      "japonés"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Portugal?",
+    "options": [
+      "Europa",
+      "Asia",
+      "América del Norte",
+      "América del Sur"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Portugal?",
+    "options": [
+      "dírham",
+      "peso cubano",
+      "riyal",
+      "euro"
+    ],
+    "answer": 3,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Grecia?",
+    "options": [
+      "San José",
+      "Atenas",
+      "Varsovia",
+      "Manila"
+    ],
+    "answer": 1,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Grecia?",
+    "options": [
+      "español",
+      "inglés",
+      "francés",
+      "griego"
+    ],
+    "answer": 3,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Grecia?",
+    "options": [
+      "Asia",
+      "América del Norte",
+      "Europa",
+      "América del Sur"
+    ],
+    "answer": 2,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Grecia?",
+    "options": [
+      "euro",
+      "złoty",
+      "naira",
+      "rand"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Países Bajos?",
+    "options": [
+      "Canberra",
+      "Ámsterdam",
+      "París",
+      "Nueva Delhi"
+    ],
+    "answer": 1,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Países Bajos?",
+    "options": [
+      "neerlandés",
+      "portugués",
+      "alemán",
+      "francés"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Países Bajos?",
+    "options": [
+      "Asia",
+      "América del Norte",
+      "Europa",
+      "América del Sur"
+    ],
+    "answer": 2,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Países Bajos?",
+    "options": [
+      "dírham",
+      "rupia",
+      "peso",
+      "euro"
+    ],
+    "answer": 3,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Bélgica?",
+    "options": [
+      "Viena",
+      "Canberra",
+      "Bruselas",
+      "Pekín"
+    ],
+    "answer": 2,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Bélgica?",
+    "options": [
+      "chino",
+      "francés",
+      "japonés",
+      "español"
+    ],
+    "answer": 1,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Bélgica?",
+    "options": [
+      "Oceanía",
+      "Europa",
+      "Asia",
+      "África"
+    ],
+    "answer": 1,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Bélgica?",
+    "options": [
+      "yen",
+      "peso",
+      "euro",
+      "franco suizo"
+    ],
+    "answer": 2,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Suiza?",
+    "options": [
+      "Atenas",
+      "San José",
+      "Madrid",
+      "Berna"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Suiza?",
+    "options": [
+      "alemán",
+      "inglés",
+      "italiano",
+      "francés"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Suiza?",
+    "options": [
+      "Oceanía",
+      "Europa",
+      "África",
+      "América del Sur"
+    ],
+    "answer": 1,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Suiza?",
+    "options": [
+      "franco suizo",
+      "euro",
+      "peso cubano",
+      "libra egipcia"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Austria?",
+    "options": [
+      "Berna",
+      "Varsovia",
+      "Wellington",
+      "Viena"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Austria?",
+    "options": [
+      "japonés",
+      "alemán",
+      "francés",
+      "portugués"
+    ],
+    "answer": 1,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Austria?",
+    "options": [
+      "Europa",
+      "África",
+      "América del Norte",
+      "Asia"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Austria?",
+    "options": [
+      "euro",
+      "peso",
+      "colón",
+      "dólar"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Polonia?",
+    "options": [
+      "Varsovia",
+      "Ankara",
+      "Santo Domingo",
+      "Ámsterdam"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Polonia?",
+    "options": [
+      "alemán",
+      "japonés",
+      "polaco",
+      "francés"
+    ],
+    "answer": 2,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Polonia?",
+    "options": [
+      "África",
+      "Asia",
+      "Oceanía",
+      "Europa"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Polonia?",
+    "options": [
+      "libra esterlina",
+      "chelín",
+      "lira turca",
+      "złoty"
+    ],
+    "answer": 3,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Rusia?",
+    "options": [
+      "Moscú",
+      "Canberra",
+      "Sucre",
+      "La Habana"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Rusia?",
+    "options": [
+      "italiano",
+      "español",
+      "ruso",
+      "japonés"
+    ],
+    "answer": 2,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Rusia?",
+    "options": [
+      "Europa",
+      "Europa/Asia",
+      "Asia",
+      "Oceanía"
+    ],
+    "answer": 1,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Rusia?",
+    "options": [
+      "rublo",
+      "euro",
+      "peso",
+      "euro"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué año ocurrió Revolución Rusa en Rusia?",
+    "options": [
+      "1912",
+      "1922",
+      "1907",
+      "1917"
+    ],
+    "answer": 3,
+    "category": "historia",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Turquía?",
+    "options": [
+      "Ankara",
+      "Ciudad de Panamá",
+      "Argel",
+      "Riad"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Turquía?",
+    "options": [
+      "árabe",
+      "chino",
+      "alemán",
+      "turco"
+    ],
+    "answer": 3,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Turquía?",
+    "options": [
+      "Europa/Asia",
+      "Europa",
+      "América del Norte",
+      "Oceanía"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Turquía?",
+    "options": [
+      "lira turca",
+      "euro",
+      "dólar australiano",
+      "euro"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Japón?",
+    "options": [
+      "Buenos Aires",
+      "Londres",
+      "Hanói",
+      "Tokio"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Japón?",
+    "options": [
+      "inglés",
+      "español",
+      "ruso",
+      "japonés"
+    ],
+    "answer": 3,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Japón?",
+    "options": [
+      "Oceanía",
+      "América del Norte",
+      "América del Sur",
+      "Asia"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Japón?",
+    "options": [
+      "yen",
+      "dong",
+      "ringgit",
+      "euro"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué año ocurrió Restauración Meiji en Japón?",
+    "options": [
+      "1888",
+      "1868",
+      "1848",
+      "1858"
+    ],
+    "answer": 1,
+    "category": "historia",
+    "difficulty": "alta",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de China?",
+    "options": [
+      "Abu Dabi",
+      "Ottawa",
+      "Pekín",
+      "Abuya"
+    ],
+    "answer": 2,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de China?",
+    "options": [
+      "chino mandarín",
+      "alemán",
+      "italiano",
+      "francés"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra China?",
+    "options": [
+      "Asia",
+      "África",
+      "América del Sur",
+      "América del Norte"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de China?",
+    "options": [
+      "yuan",
+      "peso",
+      "bolívar",
+      "peso"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de India?",
+    "options": [
+      "Nueva Delhi",
+      "El Cairo",
+      "Berlín",
+      "Bangkok"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de India?",
+    "options": [
+      "hindi",
+      "francés",
+      "inglés",
+      "japonés"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra India?",
+    "options": [
+      "África",
+      "Oceanía",
+      "América del Norte",
+      "Asia"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de India?",
+    "options": [
+      "cedi",
+      "bolívar",
+      "rupia",
+      "peso"
+    ],
+    "answer": 2,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Corea del Sur?",
+    "options": [
+      "Canberra",
+      "Seúl",
+      "Berlín",
+      "Santiago"
+    ],
+    "answer": 1,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Corea del Sur?",
+    "options": [
+      "coreano",
+      "francés",
+      "alemán",
+      "ruso"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Corea del Sur?",
+    "options": [
+      "África",
+      "América del Norte",
+      "Asia",
+      "Europa"
+    ],
+    "answer": 2,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Corea del Sur?",
+    "options": [
+      "won",
+      "yen",
+      "euro",
+      "guaraní"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Tailandia?",
+    "options": [
+      "Bangkok",
+      "Londres",
+      "Pekín",
+      "Riad"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Tailandia?",
+    "options": [
+      "español",
+      "tailandés",
+      "japonés",
+      "inglés"
+    ],
+    "answer": 1,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Tailandia?",
+    "options": [
+      "Asia",
+      "Europa",
+      "África",
+      "Oceanía"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Tailandia?",
+    "options": [
+      "baht",
+      "peso",
+      "colón",
+      "naira"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Vietnam?",
+    "options": [
+      "Montevideo",
+      "Hanói",
+      "Kuala Lumpur",
+      "Atenas"
+    ],
+    "answer": 1,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Vietnam?",
+    "options": [
+      "francés",
+      "chino",
+      "vietnamita",
+      "árabe"
+    ],
+    "answer": 2,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Vietnam?",
+    "options": [
+      "América del Norte",
+      "África",
+      "América del Sur",
+      "Asia"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Vietnam?",
+    "options": [
+      "dólar",
+      "franco suizo",
+      "dong",
+      "baht"
+    ],
+    "answer": 2,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Indonesia?",
+    "options": [
+      "Adís Abeba",
+      "Kingston",
+      "Sucre",
+      "Yakarta"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Indonesia?",
+    "options": [
+      "indonesio",
+      "árabe",
+      "alemán",
+      "francés"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Indonesia?",
+    "options": [
+      "América del Norte",
+      "América del Sur",
+      "Asia",
+      "África"
+    ],
+    "answer": 2,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Indonesia?",
+    "options": [
+      "rupia",
+      "peso",
+      "peso",
+      "dólar canadiense"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Filipinas?",
+    "options": [
+      "Argel",
+      "Nueva Delhi",
+      "Ankara",
+      "Manila"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Filipinas?",
+    "options": [
+      "español",
+      "filipino",
+      "chino",
+      "inglés"
+    ],
+    "answer": 1,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Filipinas?",
+    "options": [
+      "América del Sur",
+      "América del Norte",
+      "Europa",
+      "Asia"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Filipinas?",
+    "options": [
+      "boliviano",
+      "rial",
+      "peso",
+      "euro"
+    ],
+    "answer": 2,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Singapur?",
+    "options": [
+      "Ankara",
+      "Berna",
+      "Acra",
+      "Singapur"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Singapur?",
+    "options": [
+      "inglés",
+      "español",
+      "alemán",
+      "francés"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Singapur?",
+    "options": [
+      "América del Norte",
+      "Oceanía",
+      "Europa",
+      "Asia"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Singapur?",
+    "options": [
+      "dólar",
+      "dólar neozelandés",
+      "libra esterlina",
+      "euro"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Malasia?",
+    "options": [
+      "Kuala Lumpur",
+      "El Cairo",
+      "Londres",
+      "París"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Malasia?",
+    "options": [
+      "ruso",
+      "inglés",
+      "chino",
+      "malayo"
+    ],
+    "answer": 3,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Malasia?",
+    "options": [
+      "Asia",
+      "África",
+      "Europa",
+      "América del Norte"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Malasia?",
+    "options": [
+      "euro",
+      "ringgit",
+      "real",
+      "won"
+    ],
+    "answer": 1,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Arabia Saudí?",
+    "options": [
+      "Ottawa",
+      "Riad",
+      "Abu Dabi",
+      "Adís Abeba"
+    ],
+    "answer": 1,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Arabia Saudí?",
+    "options": [
+      "portugués",
+      "alemán",
+      "italiano",
+      "árabe"
+    ],
+    "answer": 3,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Arabia Saudí?",
+    "options": [
+      "Asia",
+      "África",
+      "Oceanía",
+      "América del Sur"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Arabia Saudí?",
+    "options": [
+      "ringgit",
+      "rublo",
+      "dólar",
+      "riyal"
+    ],
+    "answer": 3,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Emiratos Árabes Unidos?",
+    "options": [
+      "Abu Dabi",
+      "Teherán",
+      "Abuya",
+      "Seúl"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Emiratos Árabes Unidos?",
+    "options": [
+      "chino",
+      "portugués",
+      "japonés",
+      "árabe"
+    ],
+    "answer": 3,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Emiratos Árabes Unidos?",
+    "options": [
+      "África",
+      "América del Sur",
+      "Asia",
+      "América del Norte"
+    ],
+    "answer": 2,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Emiratos Árabes Unidos?",
+    "options": [
+      "dírham",
+      "euro",
+      "euro",
+      "dólar canadiense"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Israel?",
+    "options": [
+      "Jerusalén",
+      "Londres",
+      "San José",
+      "El Cairo"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Israel?",
+    "options": [
+      "hebreo",
+      "francés",
+      "inglés",
+      "italiano"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Israel?",
+    "options": [
+      "África",
+      "Europa",
+      "América del Norte",
+      "Asia"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Israel?",
+    "options": [
+      "yen",
+      "dólar",
+      "shekel",
+      "euro"
+    ],
+    "answer": 2,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Irán?",
+    "options": [
+      "Adís Abeba",
+      "Quito",
+      "Santiago",
+      "Teherán"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Irán?",
+    "options": [
+      "alemán",
+      "persa",
+      "inglés",
+      "francés"
+    ],
+    "answer": 1,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Irán?",
+    "options": [
+      "Asia",
+      "América del Sur",
+      "Oceanía",
+      "África"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Irán?",
+    "options": [
+      "rial",
+      "ringgit",
+      "rupia",
+      "lira turca"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Estados Unidos?",
+    "options": [
+      "Atenas",
+      "Washington D.C.",
+      "Manila",
+      "Canberra"
+    ],
+    "answer": 1,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Estados Unidos?",
+    "options": [
+      "árabe",
+      "alemán",
+      "portugués",
+      "inglés"
+    ],
+    "answer": 3,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Estados Unidos?",
+    "options": [
+      "América del Norte",
+      "Europa",
+      "Oceanía",
+      "Asia"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Estados Unidos?",
+    "options": [
+      "boliviano",
+      "dólar jamaiquino",
+      "dólar",
+      "peso cubano"
+    ],
+    "answer": 2,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué año ocurrió Llegada del hombre a la luna en Estados Unidos?",
+    "options": [
+      "1974",
+      "1949",
+      "1959",
+      "1969"
+    ],
+    "answer": 3,
+    "category": "historia",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Canadá?",
+    "options": [
+      "Teherán",
+      "Acra",
+      "Singapur",
+      "Ottawa"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Canadá?",
+    "options": [
+      "ruso",
+      "español",
+      "francés",
+      "inglés"
+    ],
+    "answer": 3,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Canadá?",
+    "options": [
+      "América del Norte",
+      "Asia",
+      "Europa",
+      "Oceanía"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Canadá?",
+    "options": [
+      "euro",
+      "euro",
+      "lira turca",
+      "dólar canadiense"
+    ],
+    "answer": 3,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de México?",
+    "options": [
+      "Ciudad de México",
+      "Berlín",
+      "Canberra",
+      "Acra"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de México?",
+    "options": [
+      "italiano",
+      "ruso",
+      "español",
+      "portugués"
+    ],
+    "answer": 2,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra México?",
+    "options": [
+      "América del Norte",
+      "África",
+      "Europa",
+      "Oceanía"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de México?",
+    "options": [
+      "peso",
+      "libra egipcia",
+      "euro",
+      "euro"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Cuba?",
+    "options": [
+      "La Habana",
+      "Abuya",
+      "Abu Dabi",
+      "Seúl"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Cuba?",
+    "options": [
+      "francés",
+      "español",
+      "chino",
+      "inglés"
+    ],
+    "answer": 1,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Cuba?",
+    "options": [
+      "América Central",
+      "África",
+      "América del Sur",
+      "Oceanía"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Cuba?",
+    "options": [
+      "libra esterlina",
+      "euro",
+      "peso cubano",
+      "yuan"
+    ],
+    "answer": 2,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Jamaica?",
+    "options": [
+      "Kingston",
+      "Adís Abeba",
+      "Singapur",
+      "Berna"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Jamaica?",
+    "options": [
+      "inglés",
+      "japonés",
+      "ruso",
+      "italiano"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Jamaica?",
+    "options": [
+      "América Central",
+      "América del Sur",
+      "Oceanía",
+      "África"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Jamaica?",
+    "options": [
+      "dólar jamaiquino",
+      "dong",
+      "dinar",
+      "libra esterlina"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de República Dominicana?",
+    "options": [
+      "Santo Domingo",
+      "Jerusalén",
+      "Nairobi",
+      "Kuala Lumpur"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de República Dominicana?",
+    "options": [
+      "francés",
+      "español",
+      "inglés",
+      "chino"
+    ],
+    "answer": 1,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra República Dominicana?",
+    "options": [
+      "América Central",
+      "Asia",
+      "América del Sur",
+      "Oceanía"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de República Dominicana?",
+    "options": [
+      "colón",
+      "libra esterlina",
+      "peso",
+      "euro"
+    ],
+    "answer": 2,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Costa Rica?",
+    "options": [
+      "Jerusalén",
+      "San José",
+      "Viena",
+      "Ankara"
+    ],
+    "answer": 1,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Costa Rica?",
+    "options": [
+      "portugués",
+      "español",
+      "italiano",
+      "alemán"
+    ],
+    "answer": 1,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Costa Rica?",
+    "options": [
+      "Asia",
+      "América Central",
+      "África",
+      "Oceanía"
+    ],
+    "answer": 1,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Costa Rica?",
+    "options": [
+      "rial",
+      "shekel",
+      "dong",
+      "colón"
+    ],
+    "answer": 3,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Panamá?",
+    "options": [
+      "Ciudad de Panamá",
+      "Viena",
+      "Ámsterdam",
+      "Kuala Lumpur"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Panamá?",
+    "options": [
+      "italiano",
+      "ruso",
+      "alemán",
+      "español"
+    ],
+    "answer": 3,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Panamá?",
+    "options": [
+      "América Central",
+      "Asia",
+      "América del Norte",
+      "Oceanía"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Panamá?",
+    "options": [
+      "balboa",
+      "riyal",
+      "yuan",
+      "rand"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Brasil?",
+    "options": [
+      "Bruselas",
+      "Brasilia",
+      "Atenas",
+      "Viena"
+    ],
+    "answer": 1,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Brasil?",
+    "options": [
+      "chino",
+      "portugués",
+      "italiano",
+      "alemán"
+    ],
+    "answer": 1,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Brasil?",
+    "options": [
+      "América del Norte",
+      "África",
+      "América del Sur",
+      "Oceanía"
+    ],
+    "answer": 2,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Brasil?",
+    "options": [
+      "real",
+      "bolívar",
+      "dírham",
+      "won"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Argentina?",
+    "options": [
+      "Buenos Aires",
+      "Atenas",
+      "Bruselas",
+      "Manila"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Argentina?",
+    "options": [
+      "español",
+      "inglés",
+      "árabe",
+      "francés"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Argentina?",
+    "options": [
+      "América del Sur",
+      "África",
+      "América del Norte",
+      "Asia"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Argentina?",
+    "options": [
+      "ringgit",
+      "sol",
+      "peso",
+      "rublo"
+    ],
+    "answer": 2,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Chile?",
+    "options": [
+      "Santiago",
+      "Bangkok",
+      "San José",
+      "Atenas"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Chile?",
+    "options": [
+      "francés",
+      "italiano",
+      "inglés",
+      "español"
+    ],
+    "answer": 3,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Chile?",
+    "options": [
+      "América del Norte",
+      "América del Sur",
+      "África",
+      "Asia"
+    ],
+    "answer": 1,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Chile?",
+    "options": [
+      "colón",
+      "euro",
+      "ringgit",
+      "peso"
+    ],
+    "answer": 3,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Perú?",
+    "options": [
+      "Lima",
+      "Santiago",
+      "Teherán",
+      "Ciudad del Cabo/Pretoria/Bloemfontein"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Perú?",
+    "options": [
+      "español",
+      "inglés",
+      "japonés",
+      "chino"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Perú?",
+    "options": [
+      "América del Sur",
+      "Europa",
+      "África",
+      "Asia"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Perú?",
+    "options": [
+      "dólar",
+      "rupia",
+      "sol",
+      "ringgit"
+    ],
+    "answer": 2,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Ecuador?",
+    "options": [
+      "Quito",
+      "Nairobi",
+      "Santiago",
+      "Moscú"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Ecuador?",
+    "options": [
+      "ruso",
+      "árabe",
+      "inglés",
+      "español"
+    ],
+    "answer": 3,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Ecuador?",
+    "options": [
+      "América del Norte",
+      "África",
+      "Oceanía",
+      "América del Sur"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Ecuador?",
+    "options": [
+      "dólar",
+      "euro",
+      "naira",
+      "yen"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Venezuela?",
+    "options": [
+      "Caracas",
+      "Londres",
+      "París",
+      "Bangkok"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Venezuela?",
+    "options": [
+      "alemán",
+      "árabe",
+      "francés",
+      "español"
+    ],
+    "answer": 3,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Venezuela?",
+    "options": [
+      "África",
+      "Europa",
+      "Oceanía",
+      "América del Sur"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Venezuela?",
+    "options": [
+      "yen",
+      "libra esterlina",
+      "lira turca",
+      "bolívar"
+    ],
+    "answer": 3,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Uruguay?",
+    "options": [
+      "Kuala Lumpur",
+      "Wellington",
+      "Jerusalén",
+      "Montevideo"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Uruguay?",
+    "options": [
+      "español",
+      "francés",
+      "inglés",
+      "árabe"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Uruguay?",
+    "options": [
+      "Asia",
+      "África",
+      "Europa",
+      "América del Sur"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Uruguay?",
+    "options": [
+      "euro",
+      "libra egipcia",
+      "złoty",
+      "peso"
+    ],
+    "answer": 3,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Paraguay?",
+    "options": [
+      "Asunción",
+      "Acra",
+      "Londres",
+      "Rabat"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Paraguay?",
+    "options": [
+      "español",
+      "inglés",
+      "francés",
+      "alemán"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Paraguay?",
+    "options": [
+      "América del Norte",
+      "Oceanía",
+      "Europa",
+      "América del Sur"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Paraguay?",
+    "options": [
+      "naira",
+      "dólar neozelandés",
+      "chelín",
+      "guaraní"
+    ],
+    "answer": 3,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Bolivia?",
+    "options": [
+      "Lisboa",
+      "Manila",
+      "Sucre",
+      "París"
+    ],
+    "answer": 2,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Bolivia?",
+    "options": [
+      "español",
+      "portugués",
+      "italiano",
+      "árabe"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Bolivia?",
+    "options": [
+      "América del Sur",
+      "África",
+      "Asia",
+      "América del Norte"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Bolivia?",
+    "options": [
+      "real",
+      "balboa",
+      "boliviano",
+      "dólar neozelandés"
+    ],
+    "answer": 2,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Egipto?",
+    "options": [
+      "El Cairo",
+      "Berlín",
+      "Bangkok",
+      "Canberra"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Egipto?",
+    "options": [
+      "árabe",
+      "ruso",
+      "japonés",
+      "alemán"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Egipto?",
+    "options": [
+      "América del Norte",
+      "Europa",
+      "África",
+      "Asia"
+    ],
+    "answer": 2,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Egipto?",
+    "options": [
+      "libra egipcia",
+      "euro",
+      "rand",
+      "rupia"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Sudáfrica?",
+    "options": [
+      "Ciudad del Cabo/Pretoria/Bloemfontein",
+      "Pekín",
+      "Nairobi",
+      "Kuala Lumpur"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Sudáfrica?",
+    "options": [
+      "español",
+      "francés",
+      "ruso",
+      "inglés"
+    ],
+    "answer": 3,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Sudáfrica?",
+    "options": [
+      "América del Sur",
+      "Europa",
+      "Asia",
+      "África"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Sudáfrica?",
+    "options": [
+      "rand",
+      "yen",
+      "peso",
+      "dólar australiano"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Nigeria?",
+    "options": [
+      "Ottawa",
+      "El Cairo",
+      "Abuya",
+      "Londres"
+    ],
+    "answer": 2,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Nigeria?",
+    "options": [
+      "italiano",
+      "portugués",
+      "chino",
+      "inglés"
+    ],
+    "answer": 3,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Nigeria?",
+    "options": [
+      "África",
+      "Asia",
+      "Europa",
+      "América del Norte"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Nigeria?",
+    "options": [
+      "naira",
+      "real",
+      "euro",
+      "franco suizo"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Kenia?",
+    "options": [
+      "Madrid",
+      "Abu Dabi",
+      "Pekín",
+      "Nairobi"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Kenia?",
+    "options": [
+      "español",
+      "inglés",
+      "portugués",
+      "japonés"
+    ],
+    "answer": 1,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Kenia?",
+    "options": [
+      "Asia",
+      "Europa",
+      "América del Norte",
+      "África"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Kenia?",
+    "options": [
+      "euro",
+      "chelín",
+      "peso",
+      "euro"
+    ],
+    "answer": 1,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Marruecos?",
+    "options": [
+      "La Habana",
+      "Kuala Lumpur",
+      "Rabat",
+      "Nueva Delhi"
+    ],
+    "answer": 2,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Marruecos?",
+    "options": [
+      "ruso",
+      "alemán",
+      "francés",
+      "árabe"
+    ],
+    "answer": 3,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Marruecos?",
+    "options": [
+      "África",
+      "América del Norte",
+      "Asia",
+      "América del Sur"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Marruecos?",
+    "options": [
+      "franco suizo",
+      "dírham",
+      "naira",
+      "rublo"
+    ],
+    "answer": 1,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Argelia?",
+    "options": [
+      "Sucre",
+      "Madrid",
+      "Abu Dabi",
+      "Argel"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Argelia?",
+    "options": [
+      "alemán",
+      "árabe",
+      "inglés",
+      "francés"
+    ],
+    "answer": 1,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Argelia?",
+    "options": [
+      "Oceanía",
+      "Europa",
+      "Asia",
+      "África"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Argelia?",
+    "options": [
+      "libra egipcia",
+      "peso",
+      "peso cubano",
+      "dinar"
+    ],
+    "answer": 3,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Etiopía?",
+    "options": [
+      "Atenas",
+      "Argel",
+      "Adís Abeba",
+      "Londres"
+    ],
+    "answer": 2,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Etiopía?",
+    "options": [
+      "italiano",
+      "francés",
+      "amárico",
+      "alemán"
+    ],
+    "answer": 2,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Etiopía?",
+    "options": [
+      "Oceanía",
+      "América del Norte",
+      "África",
+      "Asia"
+    ],
+    "answer": 2,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Etiopía?",
+    "options": [
+      "rial",
+      "dólar",
+      "birr",
+      "sol"
+    ],
+    "answer": 2,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Ghana?",
+    "options": [
+      "Montevideo",
+      "Washington D.C.",
+      "Lisboa",
+      "Acra"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Ghana?",
+    "options": [
+      "inglés",
+      "chino",
+      "japonés",
+      "portugués"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Ghana?",
+    "options": [
+      "Europa",
+      "África",
+      "América del Norte",
+      "Oceanía"
+    ],
+    "answer": 1,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Ghana?",
+    "options": [
+      "cedi",
+      "euro",
+      "libra egipcia",
+      "peso"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Australia?",
+    "options": [
+      "Canberra",
+      "Argel",
+      "Ámsterdam",
+      "Bangkok"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Australia?",
+    "options": [
+      "francés",
+      "inglés",
+      "árabe",
+      "alemán"
+    ],
+    "answer": 1,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Australia?",
+    "options": [
+      "América del Sur",
+      "África",
+      "América del Norte",
+      "Oceanía"
+    ],
+    "answer": 3,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Australia?",
+    "options": [
+      "cedi",
+      "birr",
+      "dólar australiano",
+      "euro"
+    ],
+    "answer": 2,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la capital de Nueva Zelanda?",
+    "options": [
+      "Ámsterdam",
+      "Rabat",
+      "Wellington",
+      "Viena"
+    ],
+    "answer": 2,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es el idioma principal de Nueva Zelanda?",
+    "options": [
+      "portugués",
+      "inglés",
+      "italiano",
+      "chino"
+    ],
+    "answer": 1,
+    "category": "cultura",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿En qué continente se encuentra Nueva Zelanda?",
+    "options": [
+      "Oceanía",
+      "América del Sur",
+      "América del Norte",
+      "Asia"
+    ],
+    "answer": 0,
+    "category": "geografia",
+    "difficulty": "baja",
+    "source": "static"
+  },
+  {
+    "q": "¿Cuál es la moneda oficial de Nueva Zelanda?",
+    "options": [
+      "dólar neozelandés",
+      "libra esterlina",
+      "yen",
+      "bolívar"
+    ],
+    "answer": 0,
+    "category": "cultura",
+    "difficulty": "media",
+    "source": "static"
+  }
+]

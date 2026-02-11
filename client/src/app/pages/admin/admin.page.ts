@@ -27,6 +27,7 @@ import { AccordionComponent } from '../../components/accordion/accordion.compone
 
         <app-accordion
           [title]="'Gestionar categorias'"
+          [icon]="'📁'"
           [open]="false"
           [extraClasses]="'add-question-panel category-admin-panel'">
           <p class="muted">Agrega nuevas categorias para usarlas al crear preguntas y filtrar partidas.</p>
@@ -51,7 +52,11 @@ import { AccordionComponent } from '../../components/accordion/accordion.compone
           <div class="category-table-wrap" *ngIf="categories().length > 0">
             <table class="category-table">
               <thead>
-                <tr><th>Categoria</th><th>Preguntas</th><th>% del banco</th></tr>
+                <tr>
+                  <th class="col-category">Categoria</th>
+                  <th class="col-questions">Preguntas</th>
+                  <th class="col-bank">% del banco</th>
+                </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let c of categories()">

@@ -92,7 +92,7 @@ import { SocketService, Player } from '../../socket.service';
                   </div>
                   <span class="list-item-badges">
                     <span class="badge score-badge">Pts: {{p.score}}</span>
-                    <span class="chip chip--correct" *ngIf="(p.correctCount ?? 0) > 0"><span class="chip-dot"></span>{{ p.correctCount }} correctas</span>
+                    <span class="chip chip--correct" *ngIf="(p.correctCount ?? 0) > 0"><span class="chip-dot"></span>{{ p.correctCount }} ✓</span>
                   </span>
                 </li>
               </ul>

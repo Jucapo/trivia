@@ -7,12 +7,14 @@ import { ToastStackComponent } from './components/toast/toast-stack.component';
   standalone: true,
   imports: [RouterOutlet, ToastStackComponent],
   template: `
-    <div class="container">
-      <router-outlet></router-outlet>
+    <div class="app-wrapper">
+      <div class="container">
+        <router-outlet></router-outlet>
+      </div>
+      <footer class="app-footer">
+        <p>© 2026 Trivia · Developed by Jucapo</p>
+      </footer>
     </div>
-    <footer class="app-footer">
-      <p>© 2026 Trivia · Developed by Jucapo</p>
-    </footer>
     <app-toast-stack></app-toast-stack>
   `
 })

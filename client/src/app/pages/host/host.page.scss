@@ -17,8 +17,8 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 24px;
-  max-width: 1600px;
-  margin: 0 auto;
+  width: 100%;
+  align-items: start;
   
   @media (min-width: 1024px) {
     grid-template-columns: minmax(300px, 1fr) minmax(300px, 1fr) minmax(350px, 1.2fr);
@@ -34,19 +34,23 @@
     grid-template-columns: minmax(400px, 1fr) minmax(400px, 1fr) minmax(450px, 1.2fr);
     gap: 32px;
   }
+  
+  @media (min-width: 1600px) {
+    grid-template-columns: minmax(450px, 1fr) minmax(450px, 1fr) minmax(500px, 1.2fr);
+    gap: 36px;
+  }
+  
+  @media (min-width: 1800px) {
+    grid-template-columns: minmax(500px, 1fr) minmax(500px, 1fr) minmax(550px, 1.2fr);
+    gap: 40px;
+  }
 }
 
-.host-left-col {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
+/* Las secciones ahora son hijos directos del grid principal */
+.host-main-layout > app-accordion,
+.host-right-col {
   min-width: 0;
-  
-  @media (min-width: 1024px) {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 24px;
-    align-content: start;
-  }
+  overflow: hidden;
 }
 
 .host-right-col {
@@ -54,13 +58,6 @@
   flex-direction: column;
   gap: 24px;
   min-width: 0;
-}
-
-/* Asegurar que las tarjetas dentro de las columnas no se corten */
-.host-left-col > *,
-.host-right-col > * {
-  min-width: 0;
-  overflow: hidden;
 }
 
 .host-bottom-section {
@@ -392,8 +389,8 @@
 /* Players + status layout */
 .players-layout {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr);
-  gap: 16px;
+  grid-template-columns: 1fr;
+  gap: 20px;
   align-items: flex-start;
 }
 

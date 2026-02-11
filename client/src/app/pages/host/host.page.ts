@@ -44,7 +44,6 @@ import { AccordionComponent } from '../../components/accordion/accordion.compone
   </div>
 
   <div class="host-main-layout">
-  <div class="host-left-col">
   <app-accordion
     [open]="!lobbyStarted()"
     title="Configuracion">
@@ -91,7 +90,7 @@ import { AccordionComponent } from '../../components/accordion/accordion.compone
             <span>{{p.name}}</span>
             <span class="list-item-badges">
               <span class="badge">Pts: {{p.score}}</span>
-              <span class="chip chip--correct" *ngIf="(p.correctCount ?? 0) > 0"><span class="chip-dot"></span>{{ p.correctCount }} correctas</span>
+              <span class="chip chip--correct" *ngIf="(p.correctCount ?? 0) > 0"><span class="chip-dot"></span>{{ p.correctCount }} ✓</span>
             </span>
           </li>
         </ul>
@@ -118,7 +117,6 @@ import { AccordionComponent } from '../../components/accordion/accordion.compone
       </div>
     </div>
   </app-accordion>
-  </div>
 
   <div class="host-right-col">
   <app-accordion
@@ -166,7 +164,7 @@ import { AccordionComponent } from '../../components/accordion/accordion.compone
         <span>{{i+1}}. {{p.name}}</span>
         <span class="list-item-badges">
           <span class="badge">Pts: {{p.score}}</span>
-          <span class="chip chip--correct"><span class="chip-dot"></span>{{ p.correctCount ?? 0 }} correctas</span>
+          <span class="chip chip--correct"><span class="chip-dot"></span>{{ p.correctCount ?? 0 }} ✓</span>
         </span>
       </li>
     </ul>

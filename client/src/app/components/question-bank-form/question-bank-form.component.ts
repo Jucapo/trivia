@@ -12,7 +12,8 @@ import { AccordionComponent } from '../accordion/accordion.component';
   styleUrls: ['./question-bank-form.component.scss'],
   template: `
     <app-accordion
-      [title]="'Anadir pregunta al banco'"
+      [title]="'Añadir pregunta'"
+      [icon]="'➕'"
       [extraClasses]="'add-question-panel'">
       <p class="muted">Las preguntas nuevas quedaran disponibles para partidas futuras.</p>
       <form class="add-question-form" (ngSubmit)="submitQuestion()">

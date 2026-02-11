@@ -1,11 +1,44 @@
 .admin-container {
   padding-top: 40px;
   padding-bottom: 40px;
+  
+  @media (min-width: 1024px) {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+  
+  @media (min-width: 1600px) {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
 }
 
 .admin-card {
   max-width: 900px;
   margin: 0 auto;
+  
+  h2 {
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-align: center;
+    
+    @media (min-width: 1024px) {
+      margin-bottom: 16px;
+    }
+  }
+  
+  .muted {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 24px;
+    text-align: center;
+    
+    @media (min-width: 1024px) {
+      margin-bottom: 32px;
+    }
+  }
 }
 
 /* Estilos unificados para acordeones en la página de admin */
@@ -69,6 +102,17 @@
 
 .add-question-panel {
   margin-top: 24px;
+  margin-bottom: 24px;
+  
+  @media (min-width: 1024px) {
+    margin-top: 32px;
+    margin-bottom: 32px;
+  }
+  
+  @media (min-width: 1600px) {
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
 }
 
 .category-add-row {
@@ -76,19 +120,60 @@
   grid-template-columns: 1fr auto;
   gap: 12px;
   margin-top: 12px;
+  
+  @media (min-width: 1024px) {
+    gap: 16px;
+    margin-top: 16px;
+  }
 }
 
 .category-admin-panel {
   margin-top: 24px;
   /* Evitar padding doble del card en el header del acordeón */
   padding: 0;
+  
+  @media (min-width: 1024px) {
+    margin-top: 32px;
+  }
+  
+  @media (min-width: 1600px) {
+    margin-top: 40px;
+  }
+}
+
+/* Espacio entre acordeones en la página de admin */
+.admin-card > app-question-bank-form {
+  margin-bottom: 24px;
+  display: block;
+  
+  @media (min-width: 1024px) {
+    margin-bottom: 32px;
+  }
+  
+  @media (min-width: 1600px) {
+    margin-bottom: 40px;
+  }
+}
+
+.admin-card > app-accordion {
+  margin-top: 24px;
+  display: block;
+  
+  @media (min-width: 1024px) {
+    margin-top: 32px;
+  }
+  
+  @media (min-width: 1600px) {
+    margin-top: 40px;
+  }
 }
 
 .category-table-wrap {
   margin-top: 16px;
   border: 2px solid #e2e8f0;
   border-radius: 12px;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: auto;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
@@ -105,9 +190,9 @@
   }
 
   th {
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.05) 100%);
     font-size: 13px;
-    color: #334155;
+    color: var(--accent);
     font-weight: 600;
   }
 
@@ -121,6 +206,20 @@
   th:nth-child(3) {
     text-align: right;
     width: 90px;
+  }
+}
+
+.category-table {
+  .col-category::before {
+    content: '🗂️';
+    margin-right: 6px;
+    display: inline-block;
+  }
+
+  .col-questions::before {
+    content: '❓';
+    margin-right: 6px;
+    display: inline-block;
   }
 }
 
@@ -148,7 +247,7 @@
   font-size: 14px;
   font-weight: 600;
   margin-bottom: 10px;
-  color: var(--text);
+  color: var(--text-secondary);
 }
 
 .category-icon-list {

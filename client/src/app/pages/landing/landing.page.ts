@@ -7,7 +7,7 @@ import { RouterLink } from '@angular/router';
   imports: [RouterLink],
   styleUrls: ['./landing.page.scss'],
   template: `
-    <div class="landing-container">
+    <div class="landing-container landing-page-wrapper">
       <div class="landing-card">
         <div class="landing-content">
           <h1 class="landing-title">TRIVIA</h1>
