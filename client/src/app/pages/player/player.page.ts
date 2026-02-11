@@ -1,12 +1,13 @@
 import { Component, OnDestroy, computed, effect, signal, type Signal } from '@angular/core';
 import { DecimalPipe, NgClass, NgFor, NgIf, TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { SocketService, Player } from '../../socket.service';
 
 @Component({
   standalone: true,
   selector: 'app-player-page',
-  imports: [DecimalPipe, NgClass, NgFor, NgIf, TitleCasePipe, FormsModule],
+  imports: [DecimalPipe, NgClass, NgFor, NgIf, TitleCasePipe, FormsModule, RouterLink],
   styleUrls: ['./player.page.scss'],
   template: `
   <div class="player-container">
@@ -25,7 +26,7 @@ import { SocketService, Player } from '../../socket.service';
               placeholder="Ej: Oscar / Jucapo / Cristian / Pipe" 
               class="input join-input"
               (keyup.enter)="join()">
-            <button class="btn join-btn" (click)="join()">Unirme</button>
+            <button class="btn join-btn" (click)="join()" [disabled]="!name.trim()">Unirme</button>
             <p class="badge join-badge">Juega desde cualquier lugar</p>
           </div>
         </div>
@@ -142,7 +143,10 @@ export class PlayerPage implements OnDestroy {
   ngOnDestroy() { if (this.timer) clearInterval(this.timer); }
 
   join() {
-    const n = this.name.trim() || 'Jugador';
+    const n = this.name.trim();
+    if (!n || n.length === 0) {
+      return; // No permitir nombres vacíos
+    }
     this.sock.joinPlayer(n);
     this.joined = true;
   }

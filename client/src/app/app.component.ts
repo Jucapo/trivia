@@ -10,6 +10,9 @@ import { ToastStackComponent } from './components/toast/toast-stack.component';
     <div class="container">
       <router-outlet></router-outlet>
     </div>
+    <footer class="app-footer">
+      <p>© 2026 Trivia · Developed by Jucapo</p>
+    </footer>
     <app-toast-stack></app-toast-stack>
   `
 })

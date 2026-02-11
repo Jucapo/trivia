@@ -3,23 +3,64 @@
   padding-bottom: 100px; 
 }
 
+/* Sección de compartir enlace - fuera del acordeón */
+.host-share-section {
+  margin-bottom: 24px;
+  
+  .share-row {
+    margin-bottom: 0;
+  }
+}
+
 /* Main layout grid for desktop */
 .host-main-layout {
   display: grid;
   grid-template-columns: 1fr;
   gap: 24px;
+  max-width: 1600px;
+  margin: 0 auto;
   
   @media (min-width: 1024px) {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    grid-template-columns: minmax(300px, 1fr) minmax(300px, 1fr) minmax(350px, 1.2fr);
+    gap: 24px;
+  }
+  
+  @media (min-width: 1200px) {
+    grid-template-columns: minmax(350px, 1fr) minmax(350px, 1fr) minmax(400px, 1.2fr);
     gap: 28px;
+  }
+  
+  @media (min-width: 1400px) {
+    grid-template-columns: minmax(400px, 1fr) minmax(400px, 1fr) minmax(450px, 1.2fr);
+    gap: 32px;
   }
 }
 
-.host-left-col,
+.host-left-col {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  min-width: 0;
+  
+  @media (min-width: 1024px) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 24px;
+    align-content: start;
+  }
+}
+
 .host-right-col {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  min-width: 0;
+}
+
+/* Asegurar que las tarjetas dentro de las columnas no se corten */
+.host-left-col > *,
+.host-right-col > * {
+  min-width: 0;
+  overflow: hidden;
 }
 
 .host-bottom-section {
@@ -140,48 +181,59 @@
   border: 1px solid #bae6fd;
 }
 
-.host-accordion summary {
+.host-accordion summary,
+.question-card-accordion summary {
   font-size: 1.15rem;
   font-weight: 600;
   cursor: pointer;
   list-style: none;
-  margin-bottom: 16px;
-  padding: 8px 0;
-  
-  &::-webkit-details-marker { 
-    display: none; 
+  margin: 0;
+  padding: 14px 18px;
+  background: linear-gradient(
+    135deg,
+    rgba(102, 126, 234, 0.05) 0%,
+    rgba(118, 75, 162, 0.03) 100%
+  );
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--text);
+
+  &::-webkit-details-marker {
+    display: none;
   }
-  
+
   &::after {
-    content: '▾';
-    float: right;
-    color: var(--muted);
-    font-size: 1.2em;
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 9px solid var(--accent-light);
+    transition: transform 0.3s ease, border-top-color 0.2s ease;
+    flex-shrink: 0;
+    margin-left: 12px;
+    filter: drop-shadow(0 1px 2px rgba(37, 99, 235, 0.2));
   }
 }
 
-.host-accordion[open] summary::after { 
-  content: '▴'; 
-}
+.host-accordion[open] summary,
+.question-card-accordion[open] summary {
+  background: linear-gradient(
+    135deg,
+    rgba(102, 126, 234, 0.1) 0%,
+    rgba(118, 75, 162, 0.07) 100%
+  );
+  margin-bottom: 16px;
 
-.question-card-accordion summary { 
-  font-weight: 600; 
-  cursor: pointer; 
-  list-style: none; 
-  
-  &::-webkit-details-marker { 
-    display: none; 
+  &::after {
+    transform: rotate(180deg);
+    border-top-color: var(--accent);
+    filter: drop-shadow(0 1px 2px rgba(30, 64, 175, 0.3));
   }
-  
-  &::after { 
-    content: ' ▾'; 
-    color: var(--muted); 
-    float: right; 
-  }
-}
-
-.question-card-accordion[open] summary::after { 
-  content: ' ▴'; 
 }
 
 .game-settings {
@@ -195,6 +247,19 @@
 .category-select-col label { 
   display: block; 
   margin-bottom: 8px; 
+}
+
+@media (max-width: 960px) {
+  /* Que los campos de configuración se apilen en una sola columna en mobile */
+  .game-settings .grid.grid-2 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Que el selector de categorias ocupe todo el ancho en mobile */
+  .category-select-col {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
 }
 
 .category-add-row {
@@ -386,6 +451,12 @@
   .players-layout {
     grid-template-columns: 1fr;
   }
+
+  /* En mobile centrar los botones de compartir debajo del enlace */
+  .share-actions {
+    justify-content: center;
+    margin-top: 8px;
+  }
   
   .host-float-start {
     bottom: 16px;
@@ -396,8 +467,10 @@
     flex-direction: column;
   }
   
+  /* Mantener botones flotantes redondos también en mobile */
   .btn-float {
-    width: 100%;
+    width: 56px;
+    height: 56px;
     justify-content: center;
   }
 }

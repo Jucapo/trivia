@@ -4,11 +4,12 @@ import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { QuestionBankFormComponent } from '../../components/question-bank-form/question-bank-form.component';
 import { QuestionsService } from '../../questions.service';
+import { AccordionComponent } from '../../components/accordion/accordion.component';
 
 @Component({
   standalone: true,
   selector: 'app-admin-page',
-  imports: [NgFor, NgIf, TitleCasePipe, FormsModule, QuestionBankFormComponent, RouterLink],
+  imports: [NgFor, NgIf, TitleCasePipe, FormsModule, QuestionBankFormComponent, RouterLink, AccordionComponent],
   styleUrls: ['./admin.page.scss'],
   template: `
     <div class="container admin-container">
@@ -24,8 +25,10 @@ import { QuestionsService } from '../../questions.service';
           (questionAdded)="onQuestionAdded()">
         </app-question-bank-form>
 
-        <details class="card host-panel add-question-panel category-admin-panel host-accordion">
-          <summary>Gestionar categorias</summary>
+        <app-accordion
+          [title]="'Gestionar categorias'"
+          [open]="false"
+          [extraClasses]="'add-question-panel category-admin-panel'">
           <p class="muted">Agrega nuevas categorias para usarlas al crear preguntas y filtrar partidas.</p>
           <div class="category-icon-picker">
             <span class="category-icon-picker-label">Icono (opcional):</span>
@@ -59,7 +62,7 @@ import { QuestionsService } from '../../questions.service';
               </tbody>
             </table>
           </div>
-        </details>
+        </app-accordion>
       </div>
     </div>
   `

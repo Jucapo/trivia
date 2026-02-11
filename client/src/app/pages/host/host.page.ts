@@ -6,19 +6,17 @@ import { SocketService } from '../../socket.service';
 import { QuestionsService } from '../../questions.service';
 import { CategoryMultiSelectComponent } from '../../components/category-multi-select/category-multi-select.component';
 import { ToastService } from '../../services/toast.service';
+import { AccordionComponent } from '../../components/accordion/accordion.component';
 
 @Component({
   standalone: true,
   selector: 'app-host-page',
-  imports: [DecimalPipe, NgFor, NgIf, NgClass, TitleCasePipe, FormsModule, CategoryMultiSelectComponent, RouterLink],
+  imports: [DecimalPipe, NgFor, NgIf, NgClass, TitleCasePipe, FormsModule, CategoryMultiSelectComponent, RouterLink, AccordionComponent],
   styleUrls: ['./host.page.scss'],
   template: `
   <a routerLink="/" class="back-link">← Volver a inicio</a>
 
-  <div class="host-main-layout">
-  <div class="host-left-col">
-  <details class="card host-panel host-section host-accordion" [attr.open]="lobbyStarted() ? null : ''">
-    <summary>Configuracion</summary>
+  <div class="host-share-section">
     <div class="share-row">
       <span class="badge">Comparte:</span>
       <code class="share-url">{{ shareUrl }}</code>
@@ -43,12 +41,27 @@ import { ToastService } from '../../services/toast.service';
         </button>
       </div>
     </div>
+  </div>
+
+  <div class="host-main-layout">
+  <div class="host-left-col">
+  <app-accordion
+    [open]="!lobbyStarted()"
+    title="Configuracion">
     <div class="game-settings">
       <h3>Configuracion de partida</h3>
       <div class="grid grid-2">
         <div>
           <label>Tiempo por pregunta (segundos) <span class="required">*</span></label>
-          <input type="number" class="input" [(ngModel)]="gameTimeSec" min="5" max="60" placeholder="5-60" required>
+          <input
+            type="number"
+            class="input"
+            [(ngModel)]="gameTimeSec"
+            min="3"
+            max="60"
+            placeholder="3-60"
+            required>
+          <p *ngIf="timeError()" class="error-msg">{{ timeError() }}</p>
         </div>
         <div>
           <label>Cantidad de preguntas <span class="required">*</span></label>
@@ -66,10 +79,11 @@ import { ToastService } from '../../services/toast.service';
       </div>
       <p class="muted no-margin bank-info">Banco disponible: {{ totalQuestionCount() || '...' }} preguntas.</p>
     </div>
-  </details>
+  </app-accordion>
 
-  <details class="card host-panel host-section host-accordion" open>
-    <summary>Jugadores ingresados</summary>
+  <app-accordion
+    [open]="true"
+    title="Jugadores ingresados">
     <div class="players-layout">
       <div class="players-list">
         <ul class="list" *ngIf="players().length > 0">
@@ -103,12 +117,15 @@ import { ToastService } from '../../services/toast.service';
         </ng-container>
       </div>
     </div>
-  </details>
+  </app-accordion>
   </div>
 
   <div class="host-right-col">
-  <details class="card host-panel host-section host-accordion question-card-accordion" *ngIf="current() as q" open>
-    <summary>Pregunta actual ({{q.index+1}} de {{q.total}})</summary>
+  <app-accordion
+    *ngIf="current() as q"
+    [open]="true"
+    [title]="'Pregunta actual (' + (q.index + 1) + ' de ' + q.total + ')'"
+    [extraClasses]="'question-card-accordion'">
     <div class="question-progress-header" *ngIf="!paused()">
       <span class="question-progress-text">Pregunta {{q.index+1}} de {{q.total}}</span>
       <span class="question-progress-pct">{{ gameProgressPct(q) }}% completado</span>
@@ -140,7 +157,7 @@ import { ToastService } from '../../services/toast.service';
       <button class="btn secondary" (click)="reveal()">Revelar</button>
       <button class="btn secondary" (click)="next()">Siguiente</button>
     </div>
-  </details>
+  </app-accordion>
 
   <div class="card host-panel host-section" *ngIf="leaderboard().length > 0">
     <h3>Resultados</h3>
@@ -225,13 +242,36 @@ export class HostPage implements OnDestroy {
   canStart(): boolean {
     if (this.lobbyStarted()) return false;
     if (this.players().length === 0) return false;
-    if (this.selectedCategories().length === 0) return false;
+    const cats = this.selectedCategories();
+    if (!cats || cats.length === 0) return false;
+    // Validar que las categorías seleccionadas sean válidas
+    const validCats = this.categories();
+    const hasValidCategory = cats.some(c => c === 'todas' || validCats.includes(c));
+    if (!hasValidCategory) return false;
     const t = Number(this.gameTimeSec);
-    if (!Number.isFinite(t) || t < 5 || t > 60) return false;
+    if (!Number.isFinite(t) || t < 3 || t > 60) return false;
     const max = this.totalQuestionCount() || 0;
     const n = Number(this.gameQuestionCount);
     if (!Number.isFinite(n) || n < 1 || (max > 0 && n > max)) return false;
     return true;
+  }
+
+  timeError(): string | null {
+    const raw = this.gameTimeSec as any;
+    if (raw === null || raw === undefined || raw === '') {
+      return 'Ingresa un tiempo entre 3 y 60 segundos.';
+    }
+    const t = Number(raw);
+    if (!Number.isFinite(t)) {
+      return 'Ingresa un número válido para el tiempo.';
+    }
+    if (t < 3) {
+      return 'El tiempo mínimo por pregunta es de 3 segundos.';
+    }
+    if (t > 60) {
+      return 'El tiempo máximo por pregunta es de 60 segundos.';
+    }
+    return null;
   }
 
   constructor(

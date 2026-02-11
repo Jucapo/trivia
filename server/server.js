@@ -29,7 +29,7 @@ const PORT = process.env.PORT || 3000;
 const DEFAULT_QUESTION_TIME_MS = 15000; // 15s por pregunta
 const MIN_QUESTION_TIME_MS = 5000;
 const MAX_QUESTION_TIME_MS = 60000;
-const NEXT_DELAY_MS = 1800;             // pausa tras revelar
+const NEXT_DELAY_MS = 1500;             // pausa tras revelar (reducido para mejor UX)
 const MAX_POINTS = 1000;                // puntaje si respondes al instante
 const MIN_POINTS = 200;                 // puntaje mínimo si respondes al final del tiempo
 const DEFAULT_DIFFICULTY = 'media';
@@ -634,7 +634,9 @@ io.on('connection', (socket) => {
     // Si todos los jugadores ya respondieron, revela y pasa a la siguiente sin esperar al timer
     const totalPlayers = Object.values(state.players).length;
     const answeredPlayers = counts.reduce((sum, n) => sum + (n || 0), 0);
+    console.log(`[auto-advance] totalPlayers: ${totalPlayers}, answeredPlayers: ${answeredPlayers}, reveal: ${state.reveal}`);
     if (totalPlayers > 0 && answeredPlayers >= totalPlayers && !state.reveal) {
+      console.log('[auto-advance] Todos respondieron, revelando y avanzando...');
       clearTimers();
       doReveal();
       state.nextTimer = setTimeout(() => {

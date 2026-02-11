@@ -10,7 +10,7 @@ import { RouterLink } from '@angular/router';
     <div class="landing-container">
       <div class="landing-card">
         <div class="landing-content">
-          <h1 class="landing-title">Trivia</h1>
+          <h1 class="landing-title">TRIVIA</h1>
           <p class="landing-description">Juega con amigos en vivo. Únete como jugador, crea la partida como host o gestiona el banco de preguntas.</p>
           <div class="landing-links">
             <a routerLink="/play" class="btn landing-btn-primary">
@@ -18,7 +18,7 @@ import { RouterLink } from '@angular/router';
               <span class="landing-btn-text">Quiero Jugar</span>
             </a>
             <a routerLink="/host" class="btn secondary landing-btn-secondary">
-              <span class="landing-btn-icon">📡</span>
+              <span class="landing-btn-icon">⚙️</span>
               <span class="landing-btn-text">Soy Host</span>
             </a>
             <a routerLink="/admin" class="btn secondary landing-btn-secondary">

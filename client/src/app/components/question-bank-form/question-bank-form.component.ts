@@ -3,15 +3,17 @@ import { FormsModule } from '@angular/forms';
 import { NgFor, NgIf, TitleCasePipe } from '@angular/common';
 import { QuestionsService, type QuestionItem } from '../../questions.service';
 import { ToastService } from '../../services/toast.service';
+import { AccordionComponent } from '../accordion/accordion.component';
 
 @Component({
   standalone: true,
   selector: 'app-question-bank-form',
-  imports: [FormsModule, NgFor, NgIf, TitleCasePipe],
+  imports: [FormsModule, NgFor, NgIf, TitleCasePipe, AccordionComponent],
   styleUrls: ['./question-bank-form.component.scss'],
   template: `
-    <details class="card host-panel host-section add-question-panel host-accordion">
-      <summary>Anadir pregunta al banco</summary>
+    <app-accordion
+      [title]="'Anadir pregunta al banco'"
+      [extraClasses]="'add-question-panel'">
       <p class="muted">Las preguntas nuevas quedaran disponibles para partidas futuras.</p>
       <form class="add-question-form" (ngSubmit)="submitQuestion()">
         <label>Pregunta</label>
@@ -46,7 +48,7 @@ import { ToastService } from '../../services/toast.service';
           <span *ngIf="addError()" class="error-msg">{{ addError() }}</span>
         </div>
       </form>
-    </details>
+    </app-accordion>
   `,
 })
 export class QuestionBankFormComponent {
