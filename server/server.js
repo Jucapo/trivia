@@ -26,10 +26,12 @@ app.use((req, res, next) => {
 const PORT = process.env.PORT || 3000;
 
 // ==== Configuración de tiempos y puntaje ====
-const QUESTION_TIME_MS = 15000; // 15s por pregunta
-const NEXT_DELAY_MS = 1800;     // pausa tras revelar
-const MAX_POINTS = 1000;        // puntaje si respondes al instante
-const MIN_POINTS = 200;         // puntaje mínimo si respondes al final del tiempo
+const DEFAULT_QUESTION_TIME_MS = 15000; // 15s por pregunta
+const MIN_QUESTION_TIME_MS = 5000;
+const MAX_QUESTION_TIME_MS = 60000;
+const NEXT_DELAY_MS = 1800;             // pausa tras revelar
+const MAX_POINTS = 1000;                // puntaje si respondes al instante
+const MIN_POINTS = 200;                 // puntaje mínimo si respondes al final del tiempo
 // ============================================
 
 const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, 'data');
@@ -119,6 +121,8 @@ const state = {
   currentOptions: null,
   currentCorrect: null,
   startedAt: null,
+  questionTimeMs: DEFAULT_QUESTION_TIME_MS,
+  gameQuestions: [],
   timer: null,
   nextTimer: null
 };
@@ -130,6 +134,12 @@ function shuffle(array) {
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
+}
+
+function clampInt(value, min, max, fallback) {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.max(min, Math.min(max, Math.round(n)));
 }
 
 function resetAnswers() {
@@ -148,7 +158,8 @@ function broadcastLobby() {
 }
 
 function prepareQuestion(idx) {
-  const q = questions[idx];
+  const q = state.gameQuestions[idx];
+  if (!q) return null;
   const opts = q.options.map((text, i) => ({ text, i }));
   const shuffled = shuffle(opts);
   const correctNewIndex = shuffled.findIndex(o => o.i === q.answer);
@@ -168,6 +179,7 @@ function emitQuestion() {
   clearTimers();
   const idx = state.currentIndex;
   const prepared = prepareQuestion(idx);
+  if (!prepared) return;
   state.currentOptions = prepared.options;
   state.currentCorrect = prepared.correctIndex;
   state.reveal = false;
@@ -176,13 +188,13 @@ function emitQuestion() {
 
   io.emit('question', {
     index: idx,
-    total: questions.length,
+    total: state.gameQuestions.length,
     q: prepared.q,
     options: prepared.options,
     reveal: false,
     correct: null,
     startedAt: state.startedAt,
-    durationMs: QUESTION_TIME_MS
+    durationMs: state.questionTimeMs
   });
 
   state.timer = setTimeout(() => {
@@ -190,15 +202,15 @@ function emitQuestion() {
     state.nextTimer = setTimeout(() => {
       doNext();
     }, NEXT_DELAY_MS);
-  }, QUESTION_TIME_MS);
+  }, state.questionTimeMs);
 }
 
 function scoreForAnswer(answeredAt) {
   if (!answeredAt || !state.startedAt) return MIN_POINTS;
   const elapsed = Math.max(0, answeredAt - state.startedAt);
-  const remaining = Math.max(0, QUESTION_TIME_MS - elapsed);
+  const remaining = Math.max(0, state.questionTimeMs - elapsed);
   const span = Math.max(1, MAX_POINTS - MIN_POINTS);
-  const dynamic = MIN_POINTS + Math.floor((remaining / QUESTION_TIME_MS) * span);
+  const dynamic = MIN_POINTS + Math.floor((remaining / state.questionTimeMs) * span);
   return Math.max(MIN_POINTS, Math.min(MAX_POINTS, dynamic));
 }
 
@@ -220,7 +232,7 @@ function doReveal() {
 
 function doNext() {
   if (!state.started) return;
-  if (state.currentIndex + 1 >= questions.length) {
+  if (state.currentIndex + 1 >= state.gameQuestions.length) {
     io.emit('end', {
       leaderboard: Object.values(state.players)
         .sort((a, b) => b.score - a.score)
@@ -232,6 +244,7 @@ function doNext() {
     state.currentOptions = null;
     state.currentCorrect = null;
     state.startedAt = null;
+    state.gameQuestions = [];
     clearTimers();
     broadcastLobby();
     return;
@@ -250,13 +263,13 @@ io.on('connection', (socket) => {
       if (state.started && state.currentIndex >= 0) {
         socket.emit('question', {
           index: state.currentIndex,
-          total: questions.length,
-          q: questions[state.currentIndex].q,
+          total: state.gameQuestions.length,
+          q: state.gameQuestions[state.currentIndex]?.q,
           options: state.currentOptions,
           reveal: state.reveal,
           correct: state.reveal ? state.currentCorrect : null,
           startedAt: state.startedAt,
-          durationMs: QUESTION_TIME_MS
+          durationMs: state.questionTimeMs
         });
       }
     } else {
@@ -278,21 +291,44 @@ io.on('connection', (socket) => {
       if (state.started && state.currentIndex >= 0) {
         socket.emit('question', {
           index: state.currentIndex,
-          total: questions.length,
-          q: questions[state.currentIndex].q,
+          total: state.gameQuestions.length,
+          q: state.gameQuestions[state.currentIndex]?.q,
           options: state.currentOptions,
           reveal: state.reveal,
           correct: state.reveal ? state.currentCorrect : null,
           startedAt: state.startedAt,
-          durationMs: QUESTION_TIME_MS
+          durationMs: state.questionTimeMs
         });
       }
     }
   });
 
-  socket.on('host:start', () => {
+  socket.on('host:start', (settings = {}) => {
     if (socket.id !== state.hostId) return;
     if (!questions.length) return;
+    if (state.started) return;
+
+    state.questionTimeMs = clampInt(
+      settings.questionTimeMs,
+      MIN_QUESTION_TIME_MS,
+      MAX_QUESTION_TIME_MS,
+      DEFAULT_QUESTION_TIME_MS,
+    );
+    const questionCount = clampInt(
+      settings.questionCount,
+      1,
+      questions.length,
+      questions.length,
+    );
+    state.gameQuestions = shuffle(questions).slice(0, questionCount);
+    if (!state.gameQuestions.length) return;
+
+    Object.values(state.players).forEach(p => {
+      p.score = 0;
+      p.answeredIndex = null;
+      p.answer = null;
+      p.answeredAt = null;
+    });
     state.started = true;
     state.currentIndex = 0;
     emitQuestion();

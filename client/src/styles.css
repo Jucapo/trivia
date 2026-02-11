@@ -161,6 +161,30 @@ h3 { font-size: 1.15rem; }
 .question { margin-top: 12px; font-size: 1.1rem; font-weight: 500; }
 .host-actions { margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap; }
 
+/* Game settings + accordion */
+.game-settings {
+  margin-bottom: 14px;
+  padding: 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #f8fbff;
+}
+.no-margin { margin: 0; }
+.add-question-panel summary {
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+  margin-bottom: 12px;
+}
+.add-question-panel summary::-webkit-details-marker { display: none; }
+.add-question-panel summary::after {
+  content: '▾';
+  float: right;
+  color: var(--muted);
+}
+.add-question-panel[open] summary::after { content: '▴'; }
+
 /* Add question form */
 .add-question-panel { margin-top: 20px; }
 .add-question-form label { display: block; margin-top: 8px; font-weight: 500; color: var(--text); font-size: 14px; }
@@ -181,4 +205,20 @@ h3 { font-size: 1.15rem; }
   .grid-2 { grid-template-columns: 1fr; }
   .share-row { flex-direction: column; align-items: stretch; }
   .share-url { white-space: normal; }
+  .container { padding: 16px 12px; }
+  .card { padding: 16px; border-radius: 12px; }
+  .host-panel { padding: 16px; }
+  .answers-grid { grid-template-columns: repeat(2, 1fr); }
+  .question { font-size: 1rem; }
+}
+
+@media (max-width: 560px) {
+  h2 { font-size: 1.25rem; }
+  h3 { font-size: 1.02rem; }
+  .btn { width: 100%; padding: 12px; }
+  .host-actions .btn { width: 100%; }
+  .input { font-size: 16px; } /* Prevent zoom on iOS */
+  .list-item { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .form-actions { align-items: stretch; }
+  .form-actions .btn { width: 100%; }
 }

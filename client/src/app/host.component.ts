@@ -16,6 +16,20 @@ import { QuestionsService, type QuestionItem } from './questions.service';
       <code class="share-url">{{ shareUrl }}</code>
       <button type="button" class="btn btn-copy" (click)="copyLink()" [class.copied]="copied()">{{ copied() ? '✓ Copiado' : 'Copiar' }}</button>
     </div>
+    <div class="game-settings">
+      <h3>⚙️ Configuración de partida</h3>
+      <div class="grid grid-2">
+        <div>
+          <label>Tiempo por pregunta (segundos)</label>
+          <input type="number" class="input" [(ngModel)]="gameTimeSec" min="5" max="60">
+        </div>
+        <div>
+          <label>Cantidad de preguntas</label>
+          <input type="number" class="input" [(ngModel)]="gameQuestionCount" min="1" [max]="totalQuestionCount() || 200">
+        </div>
+      </div>
+      <p class="muted no-margin">Banco disponible: {{ totalQuestionCount() || '...' }} preguntas.</p>
+    </div>
 
     <div class="grid grid-2">
       <div class="host-col">
@@ -70,8 +84,8 @@ import { QuestionsService, type QuestionItem } from './questions.service';
     </ul>
   </div>
 
-  <div class="card host-panel add-question-panel">
-    <h3>➕ Añadir pregunta al banco</h3>
+  <details class="card host-panel add-question-panel">
+    <summary>➕ Añadir pregunta al banco</summary>
     <p class="muted">Las preguntas que añadas quedarán disponibles para partidas futuras.</p>
     <form class="add-question-form" (ngSubmit)="submitQuestion()">
       <label>Pregunta</label>
@@ -97,7 +111,7 @@ import { QuestionsService, type QuestionItem } from './questions.service';
         <span *ngIf="addSuccess()" class="success-msg">{{ addSuccess() }}</span>
       </div>
     </form>
-  </div>
+  </details>
   `
 })
 export class HostComponent implements OnDestroy {
@@ -115,6 +129,9 @@ export class HostComponent implements OnDestroy {
   adding = signal(false);
   addError = signal('');
   addSuccess = signal('');
+  gameTimeSec = 15;
+  gameQuestionCount = 10;
+  totalQuestionCount = signal(0);
 
   constructor(
     private sock: SocketService,
@@ -127,6 +144,14 @@ export class HostComponent implements OnDestroy {
     } else {
       this.shareUrl = 'http://localhost:4200/play';
     }
+    this.questions.list()
+      .then((items) => {
+        this.totalQuestionCount.set(items.length);
+        this.gameQuestionCount = Math.max(1, Math.min(this.gameQuestionCount, items.length || 10));
+      })
+      .catch(() => {
+        this.totalQuestionCount.set(0);
+      });
   }
   ngOnDestroy(){ if (this.timer) clearInterval(this.timer); }
 
@@ -152,13 +177,20 @@ export class HostComponent implements OnDestroy {
       .then(() => {
         this.addSuccess.set('Pregunta guardada.');
         this.newQ = { q: '', options: ['', '', '', ''], answer: 0 };
+        this.totalQuestionCount.update((n) => n + 1);
         setTimeout(() => this.addSuccess.set(''), 3000);
       })
       .catch((err: Error) => { this.addError.set(err.message || 'Error al guardar'); })
       .finally(() => { this.adding.set(false); });
   }
 
-  start(){ this.sock.hostStart(); }
+  start() {
+    const timeMs = Math.max(5, Math.min(60, Number(this.gameTimeSec) || 15)) * 1000;
+    const maxFromBank = this.totalQuestionCount();
+    const desiredCount = Math.max(1, Number(this.gameQuestionCount) || 10);
+    const safeCount = maxFromBank > 0 ? Math.min(desiredCount, maxFromBank) : desiredCount;
+    this.sock.hostStart({ questionTimeMs: timeMs, questionCount: safeCount });
+  }
   next(){ this.sock.hostNext(); }
   reveal(){ this.sock.hostReveal(); }
 

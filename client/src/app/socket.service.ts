@@ -13,6 +13,10 @@ export interface CurrentQ {
   startedAt?: number;
   durationMs?: number;
 }
+export interface GameSettings {
+  questionTimeMs: number;
+  questionCount: number;
+}
 
 @Injectable({ providedIn: 'root' })
 export class SocketService {
@@ -59,7 +63,7 @@ export class SocketService {
 
   joinHost() { this.socket.emit('join', { role: 'host' }); }
   joinPlayer(name: string) { this.socket.emit('join', { role: 'player', name }); }
-  hostStart() { this.socket.emit('host:start'); }
+  hostStart(settings: GameSettings) { this.socket.emit('host:start', settings); }
   hostReveal() { this.socket.emit('host:reveal'); }
   hostNext() { this.socket.emit('host:next'); }
   answer(idx: number) { this.socket.emit('player:answer', idx); }
