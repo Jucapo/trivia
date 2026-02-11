@@ -50,7 +50,7 @@ export const environment = {
 2. **Add New → Project** and import your repo.
 3. Set **Root Directory** to `client`.
 4. **Build Command:** `npm run build`
-5. **Output Directory:** Use the folder from your local build (e.g. `dist/client/browser` or `dist/client`).
+5. **Output Directory:** `dist/client` (from this project’s build).
 6. Deploy. You’ll get a URL like `https://trivia-game-xxx.vercel.app`.
 
 **Netlify:**
