@@ -11,26 +11,27 @@ import { SocketService, Player } from '../../socket.service';
   styleUrls: ['./player.page.scss'],
   template: `
   <div class="player-container">
-    <div class="player-card">
-      <ng-container *ngIf="!joined; else game">
-        <div class="player-join-screen">
-          <a routerLink="/" class="back-link">← Volver a inicio</a>
-          <div class="join-header">
-            <h2 class="join-title">¡Únete a la partida!</h2>
-            <p class="join-subtitle">Ingresa tu nombre para comenzar</p>
+    <div class="player-card-wrapper">
+      <div class="player-card">
+        <ng-container *ngIf="!joined; else game">
+          <div class="player-join-screen">
+            <a routerLink="/" class="back-link">← Volver a inicio</a>
+            <div class="join-header">
+              <h2 class="join-title">¡Únete a la partida!</h2>
+              <p class="join-subtitle">Ingresa tu nombre para comenzar</p>
+            </div>
+            <div class="join-form">
+              <label class="join-label">Tu nombre</label>
+              <input 
+                [(ngModel)]="name" 
+                placeholder="Ej: Oscar / Jucapo / Cristian / Pipe" 
+                class="input join-input"
+                (keyup.enter)="join()">
+              <button class="btn join-btn" (click)="join()" [disabled]="!name.trim()">Unirme</button>
+              <p class="badge join-badge">Juega desde cualquier lugar</p>
+            </div>
           </div>
-          <div class="join-form">
-            <label class="join-label">Tu nombre</label>
-            <input 
-              [(ngModel)]="name" 
-              placeholder="Ej: Oscar / Jucapo / Cristian / Pipe" 
-              class="input join-input"
-              (keyup.enter)="join()">
-            <button class="btn join-btn" (click)="join()" [disabled]="!name.trim()">Unirme</button>
-            <p class="badge join-badge">Juega desde cualquier lugar</p>
-          </div>
-        </div>
-      </ng-container>
+        </ng-container>
 
       <ng-template #game>
         <div class="player-game-wrap" *ngIf="current() as q; else wait">
@@ -114,6 +115,7 @@ import { SocketService, Player } from '../../socket.service';
           </div>
         </ng-template>
       </ng-template>
+      </div>
     </div>
   </div>
   `
