@@ -11,14 +11,14 @@ import { QuestionBankFormComponent } from '../../components/question-bank-form/q
   imports: [DecimalPipe, NgFor, NgIf, FormsModule, QuestionBankFormComponent],
   template: `
   <div class="card host-panel">
-    <h2>ðŸŽ›ï¸ Host</h2>
+    <h2>Host</h2>
     <div class="share-row">
       <span class="badge">Comparte:</span>
       <code class="share-url">{{ shareUrl }}</code>
-      <button type="button" class="btn btn-copy" (click)="copyLink()" [class.copied]="copied()">{{ copied() ? 'âœ“ Copiado' : 'Copiar' }}</button>
+      <button type="button" class="btn btn-copy" (click)="copyLink()" [class.copied]="copied()">{{ copied() ? 'OK Copiado' : 'Copiar' }}</button>
     </div>
     <div class="game-settings">
-      <h3>âš™ï¸ ConfiguraciÃ³n de partida</h3>
+      <h3>Configuracion de partida</h3>
       <div class="grid grid-2">
         <div>
           <label>Tiempo por pregunta (segundos)</label>
@@ -55,16 +55,16 @@ import { QuestionBankFormComponent } from '../../components/question-bank-form/q
     </div>
 
     <div class="host-actions">
-      <button class="btn" (click)="start()">â–¶ï¸ Iniciar</button>
-      <button class="btn secondary" (click)="next()">âž¡ï¸ Siguiente</button>
-      <button class="btn secondary" (click)="reveal()">ðŸ‘ Revelar</button>
+      <button class="btn" (click)="start()">Iniciar</button>
+      <button class="btn secondary" (click)="next()">Siguiente</button>
+      <button class="btn secondary" (click)="reveal()">Revelar</button>
     </div>
   </div>
 
   <div class="card host-panel" *ngIf="current() as q">
     <div class="header-row">
       <h3>Pregunta {{q.index+1}} / {{q.total}}</h3>
-      <div class="badge" *ngIf="timeLeft(q) >= 0">â± {{ timeLeft(q) / 1000 | number:'1.0-0' }}s</div>
+      <div class="badge" *ngIf="timeLeft(q) >= 0">Tiempo: {{ timeLeft(q) / 1000 | number:'1.0-0' }}s</div>
     </div>
 
     <div class="progress"><div class="progress-bar" [style.width.%]="progressPct(q)"></div></div>
@@ -77,7 +77,7 @@ import { QuestionBankFormComponent } from '../../components/question-bank-form/q
   </div>
 
   <div class="card host-panel" *ngIf="leaderboard().length > 0">
-    <h3>ðŸ† Resultados</h3>
+    <h3>Resultados</h3>
     <ul class="list">
       <li *ngFor="let p of leaderboard(); let i = index" class="list-item">
         <span>{{i+1}}. {{p.name}}</span><span class="badge">Pts: {{p.score}}</span>

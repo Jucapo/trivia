@@ -15,7 +15,7 @@ import { ToastService } from '../../services/toast.service';
         [class.toast-error]="t.kind === 'error'"
       >
         <span>{{ t.message }}</span>
-        <button type="button" class="toast-close" (click)="toast.dismiss(t.id)">Ã—</button>
+        <button type="button" class="toast-close" (click)="toast.dismiss(t.id)">x</button>
       </div>
     </div>
   `,

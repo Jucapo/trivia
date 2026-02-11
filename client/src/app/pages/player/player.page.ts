@@ -10,9 +10,9 @@ import { SocketService, Player } from '../../socket.service';
   template: `
   <div class="card">
     <ng-container *ngIf="!joined; else game">
-      <h2>ðŸŽ® Unirse</h2>
+      <h2>Unirse</h2>
       <label>Tu nombre</label>
-      <input [(ngModel)]="name" placeholder="Ej: Ã“scar / Jucapo / Cristian / Pipe" class="input">
+      <input [(ngModel)]="name" placeholder="Ej: Oscar / Jucapo / Cristian / Pipe" class="input">
       <button class="btn" (click)="join()">Unirme</button>
       <p class="badge" style="margin-top:6px">Juega desde cualquier lugar.</p>
     </ng-container>
@@ -22,7 +22,7 @@ import { SocketService, Player } from '../../socket.service';
         <div class="qa-col">
           <div class="header-row">
             <h3>Pregunta</h3>
-            <div class="badge" *ngIf="timeLeft(q) >= 0">â± {{ timeLeft(q) / 1000 | number:'1.0-0' }}s</div>
+            <div class="badge" *ngIf="timeLeft(q) >= 0">Tiempo: {{ timeLeft(q) / 1000 | number:'1.0-0' }}s</div>
           </div>
 
           <div class="progress"><div class="progress-bar" [style.width.%]="progressPct(q)"></div></div>
@@ -44,7 +44,7 @@ import { SocketService, Player } from '../../socket.service';
         </div>
 
         <div class="lb-col">
-          <h3>ðŸ† Tabla de posiciones</h3>
+          <h3>Tabla de posiciones</h3>
           <ul class="list">
             <li *ngFor="let p of sortedPlayers(); let i = index" class="list-item">
               <span>{{i+1}}. {{p.name}}</span><span class="badge">Pts: {{p.score}}</span>
@@ -54,7 +54,7 @@ import { SocketService, Player } from '../../socket.service';
       </div>
 
       <ng-template #wait>
-        <p class="badge">Esperando a que el host inicieâ€¦</p>
+        <p class="badge">Esperando a que el host inicie...</p>
       </ng-template>
     </ng-template>
   </div>

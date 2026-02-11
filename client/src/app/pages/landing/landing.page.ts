@@ -7,11 +7,11 @@ import { RouterLink } from '@angular/router';
   imports: [RouterLink],
   template: `
     <div class="card landing">
-      <h1>ðŸŽ¯ Trivia</h1>
-      <p>Juega con amigos en vivo. Crea la partida como host o Ãºnete con el enlace que te pasen.</p>
+      <h1>Trivia</h1>
+      <p>Juega con amigos en vivo. Crea la partida como host o unete con el enlace que te pasen.</p>
       <div class="landing-links">
-        <a routerLink="/host" class="btn">ðŸŽ›ï¸ Soy host</a>
-        <a routerLink="/play" class="btn secondary">ðŸŽ® Quiero jugar</a>
+        <a routerLink="/host" class="btn">Soy host</a>
+        <a routerLink="/play" class="btn secondary">Quiero jugar</a>
       </div>
     </div>
   `,
