@@ -25,7 +25,7 @@ import { ToastService } from '../../services/toast.service';
           <option value="media">media</option>
           <option value="alta">alta</option>
         </select>
-        <label>Opcion A (correcta si eliges 0)</label>
+        <label>Opcion A</label>
         <input [(ngModel)]="newQ.options[0]" name="opt0" class="input" placeholder="Texto opcion A" required>
         <label>Opcion B</label>
         <input [(ngModel)]="newQ.options[1]" name="opt1" class="input" placeholder="Texto opcion B" required>

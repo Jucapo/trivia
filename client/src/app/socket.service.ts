@@ -12,11 +12,14 @@ export interface CurrentQ {
   correct: number | null;
   startedAt?: number;
   durationMs?: number;
+  category?: string;
+  difficulty?: string;
 }
 export interface GameSettings {
   questionTimeMs: number;
   questionCount: number;
   category?: string;
+  categories?: string[];
 }
 
 @Injectable({ providedIn: 'root' })

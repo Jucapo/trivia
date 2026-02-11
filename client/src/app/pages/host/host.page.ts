@@ -1,5 +1,5 @@
 import { Component, OnDestroy, signal } from '@angular/core';
-import { DecimalPipe, NgFor, NgIf } from '@angular/common';
+import { DecimalPipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SocketService } from '../../socket.service';
 import { QuestionsService } from '../../questions.service';
@@ -9,7 +9,7 @@ import { ToastService } from '../../services/toast.service';
 @Component({
   standalone: true,
   selector: 'app-host-page',
-  imports: [DecimalPipe, NgFor, NgIf, FormsModule, QuestionBankFormComponent],
+  imports: [DecimalPipe, NgFor, NgIf, NgClass, FormsModule, QuestionBankFormComponent],
   template: `
   <div class="card host-panel">
     <h2>Host</h2>
@@ -29,19 +29,22 @@ import { ToastService } from '../../services/toast.service';
           <label>Cantidad de preguntas</label>
           <input type="number" class="input" [(ngModel)]="gameQuestionCount" min="1" [max]="totalQuestionCount() || 200">
         </div>
-        <div>
+        <div class="category-select-col">
           <label>Categoria de la partida</label>
-          <select class="input" [(ngModel)]="selectedCategory">
+          <select class="input" [ngModel]="categoryDropdownValue" (ngModelChange)="onCategorySelected($event)">
+            <option value="">Elegir categoria...</option>
             <option value="todas">todas</option>
             <option *ngFor="let c of categories()" [value]="c">{{ c }}</option>
           </select>
+          <div class="chip-row chip-row--select" *ngIf="selectedCategories().length > 0">
+            <span *ngFor="let c of selectedCategories()" class="chip chip--select">
+              <span class="chip-dot"></span>{{ c }}
+              <button type="button" class="chip-x" (click)="removeCategoryChip(c)" aria-label="Quitar">×</button>
+            </span>
+          </div>
         </div>
       </div>
       <p class="muted no-margin">Banco disponible: {{ totalQuestionCount() || '...' }} preguntas.</p>
-      <div class="category-add-row">
-        <input class="input" [(ngModel)]="newCategoryName" placeholder="Nueva categoria (ej: deportes)">
-        <button class="btn secondary" type="button" (click)="addCategory()" [disabled]="addingCategory()">Agregar categoria</button>
-      </div>
     </div>
 
     <div class="grid grid-2">
@@ -81,6 +84,14 @@ import { ToastService } from '../../services/toast.service';
 
     <div class="progress"><div class="progress-bar" [style.width.%]="progressPct(q)"></div></div>
 
+    <div class="question-chips" *ngIf="q.category || q.difficulty">
+      <span *ngIf="q.category" class="chip chip--category" [ngClass]="'chip--cat-' + (q.category || 'cultura')">
+        <span class="chip-dot"></span>{{ q.category }}
+      </span>
+      <span *ngIf="q.difficulty" class="chip chip--difficulty" [ngClass]="'chip--diff-' + (q.difficulty || 'media')">
+        <span class="chip-dot"></span>{{ q.difficulty }}
+      </span>
+    </div>
     <p class="question">{{q.q}}</p>
     <ul>
       <li *ngFor="let opt of q.options; let i = index">{{ 'ABCD'[i] }}) {{opt}}</li>
@@ -98,6 +109,29 @@ import { ToastService } from '../../services/toast.service';
   </div>
 
   <app-question-bank-form [categories]="categories()" (questionAdded)="onQuestionAdded()"></app-question-bank-form>
+
+  <details class="card host-panel add-question-panel category-admin-panel">
+    <summary>Gestionar categorias</summary>
+    <p class="muted">Agrega nuevas categorias para usarlas al crear preguntas y filtrar partidas.</p>
+    <div class="category-add-row">
+      <input class="input" [(ngModel)]="newCategoryName" placeholder="Nueva categoria (ej: deportes)">
+      <button class="btn secondary" type="button" (click)="addCategory()" [disabled]="addingCategory()">Agregar categoria</button>
+    </div>
+    <div class="category-table-wrap" *ngIf="categories().length > 0">
+      <table class="category-table">
+        <thead>
+          <tr><th>Categoria</th><th>Preguntas</th><th>% del banco</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let c of categories()">
+            <td>{{ c }}</td>
+            <td>{{ categoryCounts()[c] || 0 }}</td>
+            <td>{{ categoryPct(c) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
   `
 })
 export class HostPage implements OnDestroy {
@@ -115,7 +149,9 @@ export class HostPage implements OnDestroy {
   gameQuestionCount = 10;
   totalQuestionCount = signal(0);
   categories = signal<string[]>(['cultura', 'historia', 'geografia', 'entretenimiento', 'videojuegos', 'musica']);
-  selectedCategory = 'todas';
+  categoryCounts = signal<Record<string, number>>({});
+  categoryDropdownValue = '';
+  selectedCategories = signal<string[]>(['todas']);
   newCategoryName = '';
   addingCategory = signal(false);
 
@@ -145,14 +181,34 @@ export class HostPage implements OnDestroy {
       .then((catalog) => {
         this.totalQuestionCount.set(catalog.totalCount);
         this.categories.set(catalog.categories || []);
+        this.categoryCounts.set(catalog.counts || {});
         this.gameQuestionCount = Math.max(1, Math.min(this.gameQuestionCount, catalog.totalCount || 10));
-        if (this.selectedCategory !== 'todas' && !catalog.categories.includes(this.selectedCategory)) {
-          this.selectedCategory = 'todas';
-        }
+        const sel = this.selectedCategories();
+        const hasTodas = sel.includes('todas');
+        const valid = sel.filter((c) => c === 'todas' || catalog.categories.includes(c));
+        if (valid.length !== sel.length || (hasTodas && sel.length > 1)) this.selectedCategories.set(hasTodas ? ['todas'] : valid);
       })
       .catch(() => {
         this.totalQuestionCount.set(0);
+        this.categoryCounts.set({});
       });
+  }
+
+  onCategorySelected(value: string): void {
+    this.categoryDropdownValue = '';
+    if (!value) return;
+    const v = value.trim().toLowerCase();
+    if (v === 'todas') {
+      this.selectedCategories.set(['todas']);
+      return;
+    }
+    const list = this.selectedCategories().filter((c) => c !== 'todas');
+    if (list.includes(v)) return;
+    this.selectedCategories.set([...list, v]);
+  }
+
+  removeCategoryChip(cat: string): void {
+    this.selectedCategories.set(this.selectedCategories().filter((c) => c !== cat));
   }
 
   addCategory(): void {
@@ -181,13 +237,15 @@ export class HostPage implements OnDestroy {
 
   start() {
     const timeMs = Math.max(5, Math.min(60, Number(this.gameTimeSec) || 15)) * 1000;
+    const sel = this.selectedCategories();
+    const categories = sel.length === 0 || sel.includes('todas') ? ['todas'] : sel;
     const maxFromBank = this.totalQuestionCount();
     const desiredCount = Math.max(1, Number(this.gameQuestionCount) || 10);
     const safeCount = maxFromBank > 0 ? Math.min(desiredCount, maxFromBank) : desiredCount;
     this.sock.hostStart({
       questionTimeMs: timeMs,
       questionCount: safeCount,
-      category: this.selectedCategory,
+      categories,
     });
   }
 
@@ -205,5 +263,12 @@ export class HostPage implements OnDestroy {
     const elapsed = this.now() - q.startedAt;
     const pct = (elapsed / q.durationMs) * 100;
     return Math.min(100, Math.max(0, pct));
+  }
+
+  categoryPct(cat: string): string {
+    const total = this.totalQuestionCount();
+    if (!total) return '0';
+    const n = this.categoryCounts()[cat] || 0;
+    return ((n / total) * 100).toFixed(1) + '%';
   }
 }

@@ -598,7 +598,7 @@
     "source": "static"
   },
   {
-    "q": "En que plataforma se conoce principalmente la serie The Witcher? (trivia rapida)",
+    "q": "En que plataforma se conoce principalmente la serie The Witcher?",
     "options": [
       "Disney+",
       "Netflix",
@@ -871,7 +871,7 @@
     "source": "static"
   },
   {
-    "q": "En que ano ocurrio Independencia de Mexico? (trivia rapida)",
+    "q": "En que ano ocurrio Independencia de Mexico?",
     "options": [
       "-753",
       "1810",
@@ -1144,7 +1144,7 @@
     "source": "static"
   },
   {
-    "q": "Croissant se reconoce como plato tipico de: (trivia rapida)",
+    "q": "Croissant se reconoce como plato tipico de:",
     "options": [
       "Japon",
       "Espana",
@@ -1170,7 +1170,7 @@
     "source": "static"
   },
   {
-    "q": "Rosalia se asocia principalmente con que pais? (trivia rapida)",
+    "q": "Rosalia se asocia principalmente con que pais?",
     "options": [
       "Argentina",
       "Reino Unido",
@@ -1248,7 +1248,7 @@
     "source": "static"
   },
   {
-    "q": "Ceviche se reconoce como plato tipico de: (trivia rapida)",
+    "q": "Ceviche se reconoce como plato tipico de:",
     "options": [
       "Brasil",
       "Italia",
@@ -1352,7 +1352,7 @@
     "source": "static"
   },
   {
-    "q": "Selecciona el pais asociado a Bandeja paisa. (trivia rapida)",
+    "q": "Selecciona el pais asociado a Bandeja paisa.",
     "options": [
       "Colombia",
       "Canada",
@@ -2158,7 +2158,7 @@
     "source": "static"
   },
   {
-    "q": "Selecciona el origen de Manuel Turizo. (trivia rapida)",
+    "q": "Selecciona el origen de Manuel Turizo.",
     "options": [
       "Colombia",
       "Argentina",
@@ -2301,7 +2301,7 @@
     "source": "static"
   },
   {
-    "q": "Ramen se reconoce como plato tipico de: (trivia rapida)",
+    "q": "Ramen se reconoce como plato tipico de:",
     "options": [
       "Italia",
       "Peru",
@@ -2340,7 +2340,7 @@
     "source": "static"
   },
   {
-    "q": "Que personaje o elemento se asocia con la pelicula Matrix? (trivia rapida)",
+    "q": "Que personaje o elemento se asocia con la pelicula Matrix?",
     "options": [
       "Woody",
       "Neo",
@@ -2509,7 +2509,7 @@
     "source": "static"
   },
   {
-    "q": "En que ano ocurrio Caida del Muro de Berlin? (trivia rapida)",
+    "q": "En que ano ocurrio Caida del Muro de Berlin?",
     "options": [
       "1989",
       "1969",
@@ -2548,7 +2548,7 @@
     "source": "static"
   },
   {
-    "q": "En cine, Toy Story se relaciona con: (trivia rapida)",
+    "q": "En cine, Toy Story se relaciona con:",
     "options": [
       "Maximo",
       "Woody",
@@ -2665,7 +2665,7 @@
     "source": "static"
   },
   {
-    "q": "De que pais o region es Karol G? (trivia rapida)",
+    "q": "De que pais o region es Karol G?",
     "options": [
       "Argentina",
       "Espana",
@@ -2860,7 +2860,7 @@
     "source": "static"
   },
   {
-    "q": "Piano se clasifica como instrumento de: (trivia rapida)",
+    "q": "Piano se clasifica como instrumento de:",
     "options": [
       "electronico",
       "percusion",
@@ -3159,7 +3159,7 @@
     "source": "static"
   },
   {
-    "q": "Adele se asocia principalmente con que pais? (trivia rapida)",
+    "q": "Adele se asocia principalmente con que pais?",
     "options": [
       "Reino Unido",
       "Colombia",
@@ -3172,7 +3172,7 @@
     "source": "static"
   },
   {
-    "q": "Selecciona el origen de Rauw Alejandro. (trivia rapida)",
+    "q": "Selecciona el origen de Rauw Alejandro.",
     "options": [
       "Puerto Rico",
       "Estados Unidos",
@@ -3250,7 +3250,7 @@
     "source": "static"
   },
   {
-    "q": "Que estudio se asocia con el juego PUBG? (trivia rapida)",
+    "q": "Que estudio se asocia con el juego PUBG?",
     "options": [
       "Rockstar Games",
       "Krafton",
@@ -3302,7 +3302,7 @@
     "source": "static"
   },
   {
-    "q": "Selecciona el estudio vinculado a PUBG. (trivia rapida)",
+    "q": "Selecciona el estudio vinculado a PUBG.",
     "options": [
       "Santa Monica Studio",
       "Krafton",
@@ -3419,7 +3419,7 @@
     "source": "static"
   },
   {
-    "q": "Tacos se reconoce como plato tipico de: (trivia rapida)",
+    "q": "Tacos se reconoce como plato tipico de:",
     "options": [
       "Peru",
       "Canada",
@@ -3497,7 +3497,7 @@
     "source": "static"
   },
   {
-    "q": "Que personaje o elemento se asocia con la pelicula Interstellar? (trivia rapida)",
+    "q": "Que personaje o elemento se asocia con la pelicula Interstellar?",
     "options": [
       "Darth Vader",
       "Cooper",
@@ -3705,7 +3705,7 @@
     "source": "static"
   },
   {
-    "q": "Selecciona el pais asociado a Empanada. (trivia rapida)",
+    "q": "Selecciona el pais asociado a Empanada.",
     "options": [
       "Japon",
       "Canada",
@@ -3809,7 +3809,7 @@
     "source": "static"
   },
   {
-    "q": "Valorant fue desarrollado por: (trivia rapida)",
+    "q": "Valorant fue desarrollado por:",
     "options": [
       "Mojang",
       "EA Sports",
@@ -4147,7 +4147,7 @@
     "source": "static"
   },
   {
-    "q": "Que estudio se asocia con el juego Fortnite? (trivia rapida)",
+    "q": "Que estudio se asocia con el juego Fortnite?",
     "options": [
       "Rockstar Games",
       "Epic Games",
@@ -4173,7 +4173,7 @@
     "source": "static"
   },
   {
-    "q": "Carlos Vives se asocia principalmente con que pais? (trivia rapida)",
+    "q": "Carlos Vives se asocia principalmente con que pais?",
     "options": [
       "Colombia",
       "Argentina",
@@ -4355,7 +4355,7 @@
     "source": "static"
   },
   {
-    "q": "De que pais o region es The Beatles? (trivia rapida)",
+    "q": "De que pais o region es The Beatles?",
     "options": [
       "Canada",
       "Argentina",
@@ -4472,7 +4472,7 @@
     "source": "static"
   },
   {
-    "q": "Selecciona una referencia correcta de Interstellar. (trivia rapida)",
+    "q": "Selecciona una referencia correcta de Interstellar.",
     "options": [
       "Burro",
       "Cooper",
@@ -4576,7 +4576,7 @@
     "source": "static"
   },
   {
-    "q": "En que ano ocurrio Primera Guerra Mundial? (trivia rapida)",
+    "q": "En que ano ocurrio Primera Guerra Mundial?",
     "options": [
       "1945",
       "1944",
@@ -4914,7 +4914,7 @@
     "source": "static"
   },
   {
-    "q": "Selecciona el pais asociado a Paella. (trivia rapida)",
+    "q": "Selecciona el pais asociado a Paella.",
     "options": [
       "Italia",
       "Brasil",
@@ -5044,7 +5044,7 @@
     "source": "static"
   },
   {
-    "q": "The Witcher suele verse en que plataforma? (trivia rapida)",
+    "q": "The Witcher suele verse en que plataforma?",
     "options": [
       "AMC",
       "Max",
@@ -5083,7 +5083,7 @@
     "source": "static"
   },
   {
-    "q": "Selecciona el estudio vinculado a Gears of War. (trivia rapida)",
+    "q": "Selecciona el estudio vinculado a Gears of War.",
     "options": [
       "Respawn",
       "Bungie",
@@ -5148,7 +5148,7 @@
     "source": "static"
   },
   {
-    "q": "En que plataforma se conoce principalmente la serie Game of Thrones? (trivia rapida)",
+    "q": "En que plataforma se conoce principalmente la serie Game of Thrones?",
     "options": [
       "HBO",
       "Peacock",
@@ -5200,7 +5200,7 @@
     "source": "static"
   },
   {
-    "q": "The Mandalorian suele verse en que plataforma? (trivia rapida)",
+    "q": "The Mandalorian suele verse en que plataforma?",
     "options": [
       "HBO",
       "Disney+",
@@ -5265,7 +5265,7 @@
     "source": "static"
   },
   {
-    "q": "Manuel Turizo se asocia principalmente con que pais? (trivia rapida)",
+    "q": "Manuel Turizo se asocia principalmente con que pais?",
     "options": [
       "Colombia",
       "Espana",
@@ -5499,7 +5499,7 @@
     "source": "static"
   },
   {
-    "q": "Selecciona el estudio vinculado a Assassins Creed. (trivia rapida)",
+    "q": "Selecciona el estudio vinculado a Assassins Creed.",
     "options": [
       "Nintendo",
       "Bungie",
@@ -5512,7 +5512,7 @@
     "source": "static"
   },
   {
-    "q": "Primera Guerra Mundial sucedio en el ano: (trivia rapida)",
+    "q": "Primera Guerra Mundial sucedio en el ano:",
     "options": [
       "1914",
       "1776",
@@ -5525,7 +5525,7 @@
     "source": "static"
   },
   {
-    "q": "En que ano ocurrio Caida del Imperio Romano de Occidente? (trivia rapida)",
+    "q": "En que ano ocurrio Caida del Imperio Romano de Occidente?",
     "options": [
       "476",
       "1989",
@@ -5824,7 +5824,7 @@
     "source": "static"
   },
   {
-    "q": "Selecciona el origen de Ed Sheeran. (trivia rapida)",
+    "q": "Selecciona el origen de Ed Sheeran.",
     "options": [
       "Chile",
       "Reino Unido",
@@ -5980,7 +5980,7 @@
     "source": "static"
   },
   {
-    "q": "Que estudio se asocia con el juego League of Legends? (trivia rapida)",
+    "q": "Que estudio se asocia con el juego League of Legends?",
     "options": [
       "Naughty Dog",
       "EA Sports",
@@ -6760,7 +6760,7 @@
     "source": "static"
   },
   {
-    "q": "Selecciona una referencia correcta de Matrix. (trivia rapida)",
+    "q": "Selecciona una referencia correcta de Matrix.",
     "options": [
       "Pandora",
       "Neo",
@@ -6890,7 +6890,7 @@
     "source": "static"
   },
   {
-    "q": "Dota 2 fue desarrollado por: (trivia rapida)",
+    "q": "Dota 2 fue desarrollado por:",
     "options": [
       "EA Sports",
       "Valve",
@@ -7059,7 +7059,7 @@
     "source": "static"
   },
   {
-    "q": "Selecciona el origen de Juanes. (trivia rapida)",
+    "q": "Selecciona el origen de Juanes.",
     "options": [
       "Canada",
       "Argentina",
@@ -7085,7 +7085,7 @@
     "source": "static"
   },
   {
-    "q": "Selecciona el pais asociado a Sushi. (trivia rapida)",
+    "q": "Selecciona el pais asociado a Sushi.",
     "options": [
       "Peru",
       "Japon",
@@ -7150,7 +7150,7 @@
     "source": "static"
   },
   {
-    "q": "Dark suele verse en que plataforma? (trivia rapida)",
+    "q": "Dark suele verse en que plataforma?",
     "options": [
       "AMC",
       "Netflix",
@@ -7163,7 +7163,7 @@
     "source": "static"
   },
   {
-    "q": "En que ano ocurrio Caida de Constantinopla? (trivia rapida)",
+    "q": "En que ano ocurrio Caida de Constantinopla?",
     "options": [
       "-753",
       "476",
@@ -7189,7 +7189,7 @@
     "source": "static"
   },
   {
-    "q": "Paella se reconoce como plato tipico de: (trivia rapida)",
+    "q": "Paella se reconoce como plato tipico de:",
     "options": [
       "Japon",
       "Espana",
@@ -7241,7 +7241,7 @@
     "source": "static"
   },
   {
-    "q": "Selecciona el estudio vinculado a Dota 2. (trivia rapida)",
+    "q": "Selecciona el estudio vinculado a Dota 2.",
     "options": [
       "Epic Games",
       "Valve",
@@ -7397,7 +7397,7 @@
     "source": "static"
   },
   {
-    "q": "Selecciona el ano correcto para Independencia de Estados Unidos. (trivia rapida)",
+    "q": "Selecciona el ano correcto para Independencia de Estados Unidos.",
     "options": [
       "1944",
       "1941",
@@ -7709,7 +7709,7 @@
     "source": "static"
   },
   {
-    "q": "Selecciona el pais asociado a Ramen. (trivia rapida)",
+    "q": "Selecciona el pais asociado a Ramen.",
     "options": [
       "Francia",
       "Japon",
@@ -8073,7 +8073,7 @@
     "source": "static"
   },
   {
-    "q": "Que estudio se asocia con el juego EA FC? (trivia rapida)",
+    "q": "Que estudio se asocia con el juego EA FC?",
     "options": [
       "EA Sports",
       "Krafton",
@@ -8112,7 +8112,7 @@
     "source": "static"
   },
   {
-    "q": "De que pais es tradicional Feijoada? (trivia rapida)",
+    "q": "De que pais es tradicional Feijoada?",
     "options": [
       "Japon",
       "Argentina",
@@ -8138,7 +8138,7 @@
     "source": "static"
   },
   {
-    "q": "Moussaka se reconoce como plato tipico de: (trivia rapida)",
+    "q": "Moussaka se reconoce como plato tipico de:",
     "options": [
       "Argentina",
       "Espana",
@@ -8463,7 +8463,7 @@
     "source": "static"
   },
   {
-    "q": "Selecciona el origen de Shakira. (trivia rapida)",
+    "q": "Selecciona el origen de Shakira.",
     "options": [
       "Colombia",
       "Reino Unido",
@@ -8489,7 +8489,7 @@
     "source": "static"
   },
   {
-    "q": "Selecciona el origen de Taylor Swift. (trivia rapida)",
+    "q": "Selecciona el origen de Taylor Swift.",
     "options": [
       "Espana",
       "Puerto Rico",
@@ -8502,7 +8502,7 @@
     "source": "static"
   },
   {
-    "q": "Que estudio se asocia con el juego Gears of War? (trivia rapida)",
+    "q": "Que estudio se asocia con el juego Gears of War?",
     "options": [
       "CD Projekt Red",
       "Respawn",
@@ -8567,7 +8567,7 @@
     "source": "static"
   },
   {
-    "q": "Descubrimiento de America sucedio en el ano: (trivia rapida)",
+    "q": "Descubrimiento de America sucedio en el ano:",
     "options": [
       "476",
       "1914",
@@ -8684,7 +8684,7 @@
     "source": "static"
   },
   {
-    "q": "Selecciona el pais asociado a Pizza. (trivia rapida)",
+    "q": "Selecciona el pais asociado a Pizza.",
     "options": [
       "Espana",
       "Italia",
@@ -9165,7 +9165,7 @@
     "source": "static"
   },
   {
-    "q": "Revolucion Francesa sucedio en el ano: (trivia rapida)",
+    "q": "Revolucion Francesa sucedio en el ano:",
     "options": [
       "1969",
       "1914",
@@ -9230,7 +9230,7 @@
     "source": "static"
   },
   {
-    "q": "Caida de Constantinopla sucedio en el ano: (trivia rapida)",
+    "q": "Caida de Constantinopla sucedio en el ano:",
     "options": [
       "1789",
       "1453",
@@ -9334,7 +9334,7 @@
     "source": "static"
   },
   {
-    "q": "En que pais se celebra principalmente Dia de Muertos? (trivia rapida)",
+    "q": "En que pais se celebra principalmente Dia de Muertos?",
     "options": [
       "Mexico",
       "Colombia",
@@ -9568,7 +9568,7 @@
     "source": "static"
   },
   {
-    "q": "En que plataforma se conoce principalmente la serie Stranger Things? (trivia rapida)",
+    "q": "En que plataforma se conoce principalmente la serie Stranger Things?",
     "options": [
       "Max",
       "Prime Video",
@@ -9672,7 +9672,7 @@
     "source": "static"
   },
   {
-    "q": "De que pais o region es Queen? (trivia rapida)",
+    "q": "De que pais o region es Queen?",
     "options": [
       "Argentina",
       "Reino Unido",
@@ -9815,7 +9815,7 @@
     "source": "static"
   },
   {
-    "q": "Selecciona una referencia correcta de Jurassic Park. (trivia rapida)",
+    "q": "Selecciona una referencia correcta de Jurassic Park.",
     "options": [
       "Jack Sparrow",
       "Dinosaurios",
@@ -10166,7 +10166,7 @@
     "source": "static"
   },
   {
-    "q": "En que ano ocurrio Invasion de Normandia? (trivia rapida)",
+    "q": "En que ano ocurrio Invasion de Normandia?",
     "options": [
       "1787",
       "1945",
@@ -10387,7 +10387,7 @@
     "source": "static"
   },
   {
-    "q": "De que pais es tradicional Poutine? (trivia rapida)",
+    "q": "De que pais es tradicional Poutine?",
     "options": [
       "Mexico",
       "Italia",
@@ -10660,7 +10660,7 @@
     "source": "static"
   },
   {
-    "q": "EA FC fue desarrollado por: (trivia rapida)",
+    "q": "EA FC fue desarrollado por:",
     "options": [
       "Epic Games",
       "Ubisoft",
@@ -10855,7 +10855,7 @@
     "source": "static"
   },
   {
-    "q": "Queen se asocia principalmente con que pais? (trivia rapida)",
+    "q": "Queen se asocia principalmente con que pais?",
     "options": [
       "Espana",
       "Colombia",
@@ -10894,7 +10894,7 @@
     "source": "static"
   },
   {
-    "q": "Que personaje o elemento se asocia con la pelicula Harry Potter? (trivia rapida)",
+    "q": "Que personaje o elemento se asocia con la pelicula Harry Potter?",
     "options": [
       "Pandora",
       "Hogwarts",
@@ -10920,7 +10920,7 @@
     "source": "static"
   },
   {
-    "q": "En cine, Shrek se relaciona con: (trivia rapida)",
+    "q": "En cine, Shrek se relaciona con:",
     "options": [
       "Miguel",
       "Maximo",
@@ -10998,7 +10998,7 @@
     "source": "static"
   },
   {
-    "q": "Selecciona la plataforma asociada a Breaking Bad. (trivia rapida)",
+    "q": "Selecciona la plataforma asociada a Breaking Bad.",
     "options": [
       "Prime Video",
       "Disney+",
@@ -11011,7 +11011,7 @@
     "source": "static"
   },
   {
-    "q": "Selecciona el ano correcto para Inicio de la Guerra Fria. (trivia rapida)",
+    "q": "Selecciona el ano correcto para Inicio de la Guerra Fria.",
     "options": [
       "1810",
       "476",
@@ -11024,7 +11024,7 @@
     "source": "static"
   },
   {
-    "q": "Selecciona el ano correcto para Fin de la Segunda Guerra Mundial. (trivia rapida)",
+    "q": "Selecciona el ano correcto para Fin de la Segunda Guerra Mundial.",
     "options": [
       "1453",
       "476",
@@ -11323,7 +11323,7 @@
     "source": "static"
   },
   {
-    "q": "Selecciona una referencia correcta de Moana. (trivia rapida)",
+    "q": "Selecciona una referencia correcta de Moana.",
     "options": [
       "Maui",
       "Jack",
@@ -11362,7 +11362,7 @@
     "source": "static"
   },
   {
-    "q": "Juanes se asocia principalmente con que pais? (trivia rapida)",
+    "q": "Juanes se asocia principalmente con que pais?",
     "options": [
       "Canada",
       "Reino Unido",
@@ -11505,7 +11505,7 @@
     "source": "static"
   },
   {
-    "q": "Que estudio se asocia con el juego The Legend of Zelda? (trivia rapida)",
+    "q": "Que estudio se asocia con el juego The Legend of Zelda?",
     "options": [
       "Riot Games",
       "Nintendo",
@@ -11739,7 +11739,7 @@
     "source": "static"
   },
   {
-    "q": "De que pais o region es Rauw Alejandro? (trivia rapida)",
+    "q": "De que pais o region es Rauw Alejandro?",
     "options": [
       "Argentina",
       "Reino Unido",
@@ -11752,7 +11752,7 @@
     "source": "static"
   },
   {
-    "q": "Counter-Strike fue desarrollado por: (trivia rapida)",
+    "q": "Counter-Strike fue desarrollado por:",
     "options": [
       "Valve",
       "CD Projekt Red",
@@ -11830,7 +11830,7 @@
     "source": "static"
   },
   {
-    "q": "En cine, Star Wars se relaciona con: (trivia rapida)",
+    "q": "En cine, Star Wars se relaciona con:",
     "options": [
       "Darth Vader",
       "Hogwarts",
@@ -11908,7 +11908,7 @@
     "source": "static"
   },
   {
-    "q": "Selecciona el origen de Marc Anthony. (trivia rapida)",
+    "q": "Selecciona el origen de Marc Anthony.",
     "options": [
       "Reino Unido",
       "Argentina",
@@ -11921,7 +11921,7 @@
     "source": "static"
   },
   {
-    "q": "El instrumento Piano pertenece a que familia? (trivia rapida)",
+    "q": "El instrumento Piano pertenece a que familia?",
     "options": [
       "percusion",
       "cuerdas",
@@ -12246,7 +12246,7 @@
     "source": "static"
   },
   {
-    "q": "De que pais es tradicional Sushi? (trivia rapida)",
+    "q": "De que pais es tradicional Sushi?",
     "options": [
       "Canada",
       "Japon",
@@ -12441,7 +12441,7 @@
     "source": "static"
   },
   {
-    "q": "Selecciona el origen de Bad Bunny. (trivia rapida)",
+    "q": "Selecciona el origen de Bad Bunny.",
     "options": [
       "Canada",
       "Argentina",
@@ -12571,7 +12571,7 @@
     "source": "static"
   },
   {
-    "q": "Empanada se reconoce como plato tipico de: (trivia rapida)",
+    "q": "Empanada se reconoce como plato tipico de:",
     "options": [
       "Mexico",
       "Canada",
@@ -12714,7 +12714,7 @@
     "source": "static"
   },
   {
-    "q": "Selecciona el ano correcto para Carta Magna. (trivia rapida)",
+    "q": "Selecciona el ano correcto para Carta Magna.",
     "options": [
       "1776",
       "1453",
@@ -12818,7 +12818,7 @@
     "source": "static"
   },
   {
-    "q": "En que ano ocurrio Llegada del hombre a la Luna? (trivia rapida)",
+    "q": "En que ano ocurrio Llegada del hombre a la Luna?",
     "options": [
       "1453",
       "1810",
@@ -12883,7 +12883,7 @@
     "source": "static"
   },
   {
-    "q": "Selecciona el origen de Mon Laferte. (trivia rapida)",
+    "q": "Selecciona el origen de Mon Laferte.",
     "options": [
       "Espana",
       "Reino Unido",

@@ -163,9 +163,16 @@ function filterByCategory(items, category) {
   return items.filter((q) => normalizeCategory(q.category) === c);
 }
 
-function buildGameQuestions(questionCount, category) {
-  const staticPool = shuffle(filterByCategory(staticQuestions, category));
-  const userPool = shuffle(filterByCategory(userQuestions, category));
+function filterByCategories(items, categories) {
+  if (!categories || !Array.isArray(categories) || categories.length === 0) return items;
+  if (categories.includes('todas')) return items;
+  const set = new Set(categories.map((c) => normalizeCategory(c)));
+  return items.filter((q) => set.has(normalizeCategory(q.category)));
+}
+
+function buildGameQuestions(questionCount, categories) {
+  const staticPool = shuffle(filterByCategories(staticQuestions, categories));
+  const userPool = shuffle(filterByCategories(userQuestions, categories));
 
   const targetStatic = Math.ceil(questionCount / 2);
   const targetUser = questionCount - targetStatic;
@@ -321,7 +328,9 @@ function prepareQuestion(idx) {
   return {
     q: q.q,
     options: shuffled.map(o => o.text),
-    correctIndex: correctNewIndex
+    correctIndex: correctNewIndex,
+    category: q.category || 'cultura',
+    difficulty: q.difficulty || 'media',
   };
 }
 
@@ -349,7 +358,9 @@ function emitQuestion() {
     reveal: false,
     correct: null,
     startedAt: state.startedAt,
-    durationMs: state.questionTimeMs
+    durationMs: state.questionTimeMs,
+    category: prepared.category,
+    difficulty: prepared.difficulty,
   });
 
   state.timer = setTimeout(() => {
@@ -416,15 +427,18 @@ io.on('connection', (socket) => {
       state.hostId = socket.id;
       broadcastLobby();
       if (state.started && state.currentIndex >= 0) {
+        const raw = state.gameQuestions[state.currentIndex];
         socket.emit('question', {
           index: state.currentIndex,
           total: state.gameQuestions.length,
-          q: state.gameQuestions[state.currentIndex]?.q,
+          q: raw?.q,
           options: state.currentOptions,
           reveal: state.reveal,
           correct: state.reveal ? state.currentCorrect : null,
           startedAt: state.startedAt,
-          durationMs: state.questionTimeMs
+          durationMs: state.questionTimeMs,
+          category: raw?.category || 'cultura',
+          difficulty: raw?.difficulty || 'media',
         });
       }
     } else {
@@ -444,15 +458,18 @@ io.on('connection', (socket) => {
       broadcastLobby();
 
       if (state.started && state.currentIndex >= 0) {
+        const raw = state.gameQuestions[state.currentIndex];
         socket.emit('question', {
           index: state.currentIndex,
           total: state.gameQuestions.length,
-          q: state.gameQuestions[state.currentIndex]?.q,
+          q: raw?.q,
           options: state.currentOptions,
           reveal: state.reveal,
           correct: state.reveal ? state.currentCorrect : null,
           startedAt: state.startedAt,
-          durationMs: state.questionTimeMs
+          durationMs: state.questionTimeMs,
+          category: raw?.category || 'cultura',
+          difficulty: raw?.difficulty || 'media',
         });
       }
     }
@@ -464,10 +481,12 @@ io.on('connection', (socket) => {
     if (!all.length) return;
     if (state.started) return;
 
-    const selectedCategory = (typeof settings.category === 'string' && settings.category.trim())
-      ? normalizeCategory(settings.category)
-      : 'todas';
-    const categoryForGame = selectedCategory === 'todas' ? 'todas' : selectedCategory;
+    const categoriesParam = Array.isArray(settings.categories) && settings.categories.length > 0
+      ? settings.categories
+      : (typeof settings.category === 'string' && settings.category.trim())
+        ? [normalizeCategory(settings.category)]
+        : ['todas'];
+    const categoryForGame = categoriesParam.includes('todas') ? ['todas'] : categoriesParam;
 
     state.questionTimeMs = clampInt(
       settings.questionTimeMs,
@@ -475,7 +494,7 @@ io.on('connection', (socket) => {
       MAX_QUESTION_TIME_MS,
       DEFAULT_QUESTION_TIME_MS,
     );
-    const availableByCategory = filterByCategory(all, categoryForGame).length;
+    const availableByCategory = filterByCategories(all, categoryForGame).length;
     if (!availableByCategory) return;
     const questionCount = clampInt(
       settings.questionCount,

@@ -225,7 +225,6 @@ function fillToTarget(seedQuestions, target, category) {
     const base = seedQuestions[guard % seedQuestions.length];
     const variants = [
       `${base.q} (seleccion unica)`,
-      `${base.q} (trivia rapida)`,
       `${base.q} (edicion semanal)`,
       `${base.q} (reto de conocimiento)`,
     ];

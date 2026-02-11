@@ -1,4 +1,4 @@
-﻿import { Component, OnDestroy, computed, effect, signal, type Signal } from '@angular/core';
+import { Component, OnDestroy, computed, effect, signal, type Signal } from '@angular/core';
 import { DecimalPipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SocketService, Player } from '../../socket.service';
@@ -27,6 +27,14 @@ import { SocketService, Player } from '../../socket.service';
 
           <div class="progress"><div class="progress-bar" [style.width.%]="progressPct(q)"></div></div>
 
+          <div class="question-chips" *ngIf="q.category || q.difficulty">
+            <span *ngIf="q.category" class="chip chip--category" [ngClass]="'chip--cat-' + (q.category || 'cultura')">
+              <span class="chip-dot"></span>{{ q.category }}
+            </span>
+            <span *ngIf="q.difficulty" class="chip chip--difficulty" [ngClass]="'chip--diff-' + (q.difficulty || 'media')">
+              <span class="chip-dot"></span>{{ q.difficulty }}
+            </span>
+          </div>
           <p class="question">{{q.q}}</p>
 
           <div class="grid two options-grid">
