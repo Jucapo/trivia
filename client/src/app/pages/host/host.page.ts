@@ -1,4 +1,4 @@
-import { Component, OnDestroy, signal } from '@angular/core';
+import { Component, OnDestroy, computed, signal } from '@angular/core';
 import { DecimalPipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SocketService } from '../../socket.service';
@@ -11,8 +11,8 @@ import { ToastService } from '../../services/toast.service';
   selector: 'app-host-page',
   imports: [DecimalPipe, NgFor, NgIf, NgClass, FormsModule, QuestionBankFormComponent],
   template: `
-  <div class="card host-panel">
-    <h2>Host</h2>
+  <details class="card host-panel host-section host-accordion" [attr.open]="lobbyStarted() ? null : ''">
+    <summary>Configuracion</summary>
     <div class="share-row">
       <span class="badge">Comparte:</span>
       <code class="share-url">{{ shareUrl }}</code>
@@ -22,19 +22,18 @@ import { ToastService } from '../../services/toast.service';
       <h3>Configuracion de partida</h3>
       <div class="grid grid-2">
         <div>
-          <label>Tiempo por pregunta (segundos)</label>
-          <input type="number" class="input" [(ngModel)]="gameTimeSec" min="5" max="60">
+          <label>Tiempo por pregunta (segundos) <span class="required">*</span></label>
+          <input type="number" class="input" [(ngModel)]="gameTimeSec" min="5" max="60" placeholder="5-60" required>
         </div>
         <div>
-          <label>Cantidad de preguntas</label>
-          <input type="number" class="input" [(ngModel)]="gameQuestionCount" min="1" [max]="totalQuestionCount() || 200">
+          <label>Cantidad de preguntas <span class="required">*</span></label>
+          <input type="number" class="input" [(ngModel)]="gameQuestionCount" min="1" [max]="totalQuestionCount() || 200" placeholder="1" required>
         </div>
         <div class="category-select-col">
-          <label>Categoria de la partida</label>
+          <label>Categoria de la partida <span class="required">*</span></label>
           <select class="input" [ngModel]="categoryDropdownValue" (ngModelChange)="onCategorySelected($event)">
             <option value="">Elegir categoria...</option>
-            <option value="todas">todas</option>
-            <option *ngFor="let c of categories()" [value]="c">{{ c }}</option>
+            <option *ngFor="let c of availableCategoriesForDropdown()" [value]="c">{{ c }}</option>
           </select>
           <div class="chip-row chip-row--select" *ngIf="selectedCategories().length > 0">
             <span *ngFor="let c of selectedCategories()" class="chip chip--select">
@@ -46,34 +45,34 @@ import { ToastService } from '../../services/toast.service';
       </div>
       <p class="muted no-margin">Banco disponible: {{ totalQuestionCount() || '...' }} preguntas.</p>
     </div>
+  </details>
 
-    <div class="grid grid-2">
-      <div class="host-col">
-        <h3>Jugadores</h3>
-        <ul class="list">
-          <li *ngFor="let p of players()" class="list-item">
-            <span>{{p.name}}</span><span class="badge">Pts: {{p.score}}</span>
-          </li>
-        </ul>
-      </div>
-
-      <div class="host-col">
-        <h3>Estado</h3>
-        <p class="badge">{{ lobbyStarted() ? 'En curso' : 'En lobby' }}</p>
-        <div *ngIf="counts() as c" class="grid answers-grid">
-          <div class="card soft">A: {{c[0]}}</div>
-          <div class="card soft">B: {{c[1]}}</div>
-          <div class="card soft">C: {{c[2]}}</div>
-          <div class="card soft">D: {{c[3]}}</div>
-        </div>
+  <details class="card host-panel host-section host-accordion" open>
+    <summary>Jugadores ingresados</summary>
+    <ul class="list" *ngIf="players().length > 0">
+      <li *ngFor="let p of players()" class="list-item">
+        <span>{{p.name}}</span><span class="badge">Pts: {{p.score}}</span>
+      </li>
+    </ul>
+    <p *ngIf="players().length === 0" class="muted">Ningun jugador ha ingresado. Comparte el enlace para que se unan.</p>
+    <div class="host-status-row">
+      <h3>Estado</h3>
+      <p class="badge">{{ lobbyStarted() ? 'En curso' : 'En lobby' }}</p>
+      <div *ngIf="counts() as c" class="grid answers-grid">
+        <div class="card soft">A: {{c[0]}}</div>
+        <div class="card soft">B: {{c[1]}}</div>
+        <div class="card soft">C: {{c[2]}}</div>
+        <div class="card soft">D: {{c[3]}}</div>
       </div>
     </div>
-
-    <div class="host-actions">
-      <button class="btn" (click)="start()">Iniciar</button>
+    <div class="host-actions" *ngIf="lobbyStarted()">
       <button class="btn secondary" (click)="next()">Siguiente</button>
       <button class="btn secondary" (click)="reveal()">Revelar</button>
     </div>
+  </details>
+
+  <div class="host-float-start">
+    <button class="btn btn-float" (click)="start()" [disabled]="!canStart()">Iniciar</button>
   </div>
 
   <div class="card host-panel" *ngIf="current() as q">
@@ -110,7 +109,7 @@ import { ToastService } from '../../services/toast.service';
 
   <app-question-bank-form [categories]="categories()" (questionAdded)="onQuestionAdded()"></app-question-bank-form>
 
-  <details class="card host-panel add-question-panel category-admin-panel">
+  <details class="card host-panel add-question-panel category-admin-panel host-accordion">
     <summary>Gestionar categorias</summary>
     <p class="muted">Agrega nuevas categorias para usarlas al crear preguntas y filtrar partidas.</p>
     <div class="category-add-row">
@@ -132,7 +131,10 @@ import { ToastService } from '../../services/toast.service';
       </table>
     </div>
   </details>
-  `
+  `,
+  styles: [`
+    :host { display: block; padding-bottom: 80px; }
+  `]
 })
 export class HostPage implements OnDestroy {
   get players() { return this.sock.players; }
@@ -154,6 +156,23 @@ export class HostPage implements OnDestroy {
   selectedCategories = signal<string[]>(['todas']);
   newCategoryName = '';
   addingCategory = signal(false);
+
+  availableCategoriesForDropdown = computed(() => {
+    const sel = this.selectedCategories();
+    return ['todas', ...this.categories()].filter((c) => !sel.includes(c));
+  });
+
+  canStart(): boolean {
+    if (this.lobbyStarted()) return false;
+    if (this.players().length === 0) return false;
+    if (this.selectedCategories().length === 0) return false;
+    const t = Number(this.gameTimeSec);
+    if (!Number.isFinite(t) || t < 5 || t > 60) return false;
+    const max = this.totalQuestionCount() || 0;
+    const n = Number(this.gameQuestionCount);
+    if (!Number.isFinite(n) || n < 1 || (max > 0 && n > max)) return false;
+    return true;
+  }
 
   constructor(
     private sock: SocketService,
