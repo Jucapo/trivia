@@ -4,5 +4,5 @@
  */
 export const environment = {
   production: true,
-  serverUrl: 'https://your-trivia-server.onrender.com',
+  serverUrl: 'https://triviagame-dpxq.onrender.com',
 };
