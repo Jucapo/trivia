@@ -3,14 +3,13 @@ import { DecimalPipe, NgClass, NgFor, NgIf, TitleCasePipe } from '@angular/commo
 import { FormsModule } from '@angular/forms';
 import { SocketService } from '../../socket.service';
 import { QuestionsService } from '../../questions.service';
-import { QuestionBankFormComponent } from '../../components/question-bank-form/question-bank-form.component';
 import { CategoryMultiSelectComponent } from '../../components/category-multi-select/category-multi-select.component';
 import { ToastService } from '../../services/toast.service';
 
 @Component({
   standalone: true,
   selector: 'app-host-page',
-  imports: [DecimalPipe, NgFor, NgIf, NgClass, TitleCasePipe, FormsModule, QuestionBankFormComponent, CategoryMultiSelectComponent],
+  imports: [DecimalPipe, NgFor, NgIf, NgClass, TitleCasePipe, FormsModule, CategoryMultiSelectComponent],
   styleUrls: ['./host.page.scss'],
   template: `
   <div class="host-main-layout">
@@ -154,40 +153,6 @@ import { ToastService } from '../../services/toast.service';
   </div>
   </div>
   </div>
-
-  <div class="host-bottom-section">
-  <app-question-bank-form [categories]="categories()" (questionAdded)="onQuestionAdded()"></app-question-bank-form>
-
-  <details class="card host-panel host-section add-question-panel category-admin-panel host-accordion">
-    <summary>Gestionar categorias</summary>
-    <p class="muted">Agrega nuevas categorias para usarlas al crear preguntas y filtrar partidas.</p>
-    <div class="category-icon-picker">
-      <span class="category-icon-picker-label">Icono (opcional):</span>
-      <span class="category-icon-list">
-        <button type="button" *ngFor="let ic of availableCategoryIcons" class="icon-pick-btn" [class.selected]="newCategoryIcon === ic" (click)="newCategoryIcon = ic" [title]="ic">{{ ic }}</button>
-      </span>
-    </div>
-    <div class="category-add-row">
-      <input class="input" [(ngModel)]="newCategoryName" placeholder="Nueva categoria (ej: deportes)">
-      <button class="btn secondary" type="button" (click)="addCategory()" [disabled]="addingCategory()">Agregar categoria</button>
-    </div>
-    <div class="category-table-wrap" *ngIf="categories().length > 0">
-      <table class="category-table">
-        <thead>
-          <tr><th>Categoria</th><th>Preguntas</th><th>% del banco</th></tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let c of categories()">
-            <td><span class="chip-icon">{{ categoryIcon(c) }}</span> {{ c | titlecase }}</td>
-            <td>{{ categoryCounts()[c] || 0 }}</td>
-            <td>{{ categoryPct(c) }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    </details>
-  </div>
-
   <div class="host-float-start" *ngIf="!lobbyStarted()">
     <button
       class="btn btn-float btn-float-primary"
