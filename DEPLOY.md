@@ -26,6 +26,22 @@ Right now the game only works on the same WiFi because the client talks to the s
 
 **Note:** On the free plan the server may sleep after ~15 minutes of no use. The first visit after that can take 30–60 seconds to wake up.
 
+#### Optional: Persist questions with Supabase (free database)
+
+Without a database, questions added by the host are lost when the server restarts (e.g. on Render). To keep them permanently:
+
+1. Go to [supabase.com](https://supabase.com) and create a free account and project.
+2. In the Supabase dashboard: **SQL Editor** → **New query**. Paste and run the contents of **`server/supabase-schema.sql`** (this creates the `questions` table).
+3. In the dashboard go to **Project Settings** → **API**. Copy:
+   - **Project URL** → use as `SUPABASE_URL`
+   - **service_role** key (under "Project API keys") → use as `SUPABASE_SERVICE_ROLE_KEY`
+4. In Render: your service → **Environment** → add:
+   - `SUPABASE_URL` = your Project URL
+   - `SUPABASE_SERVICE_ROLE_KEY` = the service_role key
+5. Redeploy the server. On first run it will seed the table from `questions.json` if the table is empty; new questions added via the host panel will be stored in Supabase.
+
+**Simplest free option:** Supabase free tier (500 MB, no credit card required). The server uses it only when these two env vars are set; otherwise it uses the file/seed as before.
+
 ### Step 2: Point the client to your server
 
 1. Open **`client/src/environments/environment.prod.ts`**.

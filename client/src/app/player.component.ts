@@ -14,7 +14,7 @@ import { SocketService, Player } from './socket.service';
       <label>Tu nombre</label>
       <input [(ngModel)]="name" placeholder="Ej: Óscar / Jucapo / Cristian / Pipe" class="input">
       <button class="btn" (click)="join()">Unirme</button>
-      <p class="badge" style="margin-top:6px">Misma Wi-Fi que el host.</p>
+      <p class="badge" style="margin-top:6px">Juega desde cualquier lugar.</p>
     </ng-container>
 
     <ng-template #game>

@@ -1,22 +1,12 @@
 [
-  {
-    "q": "Ejemplo: ¿Cuál es la capital de Colombia?",
-    "options": [
-      "Bogotá",
-      "Medellín",
-      "Cali",
-      "Barranquilla"
-    ],
-    "answer": 0
-  },
-  {
-    "q": "Ejemplo: ¿En qué continente está Japón?",
-    "options": [
-      "Asia",
-      "Europa",
-      "América",
-      "África"
-    ],
-    "answer": 0
-  }
+  {"q":"¿Cuál es la capital de Colombia?","options":["Bogotá","Medellín","Cali","Barranquilla"],"answer":0},
+  {"q":"¿En qué continente está Japón?","options":["Asia","Europa","América","África"],"answer":0},
+  {"q":"¿Cuántos planetas tiene el sistema solar?","options":["7","8","9","10"],"answer":1},
+  {"q":"¿Qué elemento químico tiene el símbolo Au?","options":["Plata","Cobre","Oro","Hierro"],"answer":2},
+  {"q":"¿En qué año cayó el Muro de Berlín?","options":["1987","1989","1991","1985"],"answer":1},
+  {"q":"¿Cuál es el río más largo del mundo?","options":["Amazonas","Nilo","Misisipi","Yangtsé"],"answer":1},
+  {"q":"¿Qué país tiene la forma de una bota?","options":["España","Grecia","Italia","Portugal"],"answer":2},
+  {"q":"¿Cuántos lados tiene un hexágono?","options":["5","6","7","8"],"answer":1},
+  {"q":"¿Quién pintó la Mona Lisa?","options":["Miguel Ángel","Leonardo da Vinci","Picasso","Van Gogh"],"answer":1},
+  {"q":"¿Cuál es el océano más grande?","options":["Atlántico","Índico","Pacífico","Ártico"],"answer":2}
 ]

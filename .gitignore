@@ -17,5 +17,8 @@ tmp/
 .DS_Store
 Thumbs.db
 
+# Server: user-added questions (local file persistence)
+server/data/
+
 # Env / secrets (optional: keep environment.prod.ts with placeholder)
 # client/src/environments/environment.prod.ts

@@ -4,11 +4,23 @@ const fs = require('fs');
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
+const { createClient } = require('@supabase/supabase-js');
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: { origin: '*', methods: ['GET', 'POST'] }
+});
+
+app.use(express.json());
+
+// CORS for REST API (client may be on another origin, e.g. Netlify)
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  if (req.method === 'OPTIONS') return res.sendStatus(200);
+  next();
 });
 
 const PORT = process.env.PORT || 3000;
@@ -20,12 +32,83 @@ const MAX_POINTS = 1000;        // puntaje si respondes al instante
 const MIN_POINTS = 200;         // puntaje mínimo si respondes al final del tiempo
 // ============================================
 
-let questions = [];
-try {
-  questions = JSON.parse(fs.readFileSync(path.join(__dirname, 'questions.json'), 'utf-8'));
-} catch (e) {
-  console.error('No se pudieron cargar preguntas:', e.message);
+const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, 'data');
+const QUESTIONS_FILE = path.join(DATA_DIR, 'questions.json');
+const SEED_FILE = path.join(__dirname, 'questions.json');
+
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const supabase = (SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY)
+  ? createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
+  : null;
+
+function loadQuestionsSync() {
+  let seed = [];
+  try {
+    seed = JSON.parse(fs.readFileSync(SEED_FILE, 'utf-8'));
+    if (!Array.isArray(seed)) seed = [];
+  } catch (e) {
+    console.error('No se pudo cargar seed de preguntas:', e.message);
+  }
+  try {
+    if (fs.existsSync(QUESTIONS_FILE)) {
+      const data = JSON.parse(fs.readFileSync(QUESTIONS_FILE, 'utf-8'));
+      if (Array.isArray(data) && data.length > 0) return data;
+    }
+  } catch (e) {
+    console.warn('No se pudo cargar banco de preguntas, usando seed:', e.message);
+  }
+  return seed;
 }
+
+function saveQuestionsToFile() {
+  try {
+    if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+    fs.writeFileSync(QUESTIONS_FILE, JSON.stringify(questions, null, 2), 'utf-8');
+    return true;
+  } catch (e) {
+    console.warn('No se pudo guardar banco de preguntas (p. ej. en hosting solo lectura):', e.message);
+    return false;
+  }
+}
+
+let questions = [];
+
+// REST API: questions
+app.get('/api/questions', (req, res) => {
+  res.json(questions);
+});
+
+app.post('/api/questions', async (req, res) => {
+  const { q, options, answer } = req.body || {};
+  if (typeof q !== 'string' || !q.trim()) {
+    return res.status(400).json({ error: 'Falta el texto de la pregunta (q).' });
+  }
+  if (!Array.isArray(options) || options.length !== 4) {
+    return res.status(400).json({ error: 'Se necesitan exactamente 4 opciones (options).' });
+  }
+  const opts = options.map(o => (typeof o === 'string' ? o : String(o)).trim()).filter(Boolean);
+  if (opts.length !== 4) {
+    return res.status(400).json({ error: 'Las 4 opciones deben ser texto no vacío.' });
+  }
+  const ans = Number(answer);
+  if (!Number.isInteger(ans) || ans < 0 || ans > 3) {
+    return res.status(400).json({ error: 'La respuesta correcta (answer) debe ser 0, 1, 2 o 3.' });
+  }
+  const newQ = { q: q.trim(), options: opts, answer: ans };
+
+  if (supabase) {
+    const { error } = await supabase.from('questions').insert(newQ);
+    if (error) {
+      return res.status(500).json({ error: error.message || 'Error al guardar en la base de datos.' });
+    }
+    questions.push(newQ);
+  } else {
+    questions.push(newQ);
+    saveQuestionsToFile();
+  }
+  res.status(201).json(newQ);
+});
 
 const state = {
   hostId: null,
@@ -243,6 +326,35 @@ io.on('connection', (socket) => {
   });
 });
 
-server.listen(PORT, () => {
-  console.log(`Socket server on http://localhost:${PORT}`);
-});
+async function start() {
+  if (supabase) {
+    try {
+      const { data, error } = await supabase.from('questions').select('q, options, answer');
+      if (error) throw error;
+      if (data && data.length > 0) {
+        questions = data;
+        console.log('[server] Preguntas cargadas desde Supabase:', questions.length);
+      } else {
+        const seed = loadQuestionsSync();
+        if (seed.length > 0) {
+          const { error: insertErr } = await supabase.from('questions').insert(seed);
+          if (insertErr) console.warn('[server] No se pudieron insertar seed en Supabase:', insertErr.message);
+          questions = seed;
+          console.log('[server] Seed de preguntas insertado en Supabase:', seed.length);
+        }
+      }
+    } catch (e) {
+      console.error('[server] Error cargando desde Supabase, usando seed:', e.message);
+      questions = loadQuestionsSync();
+    }
+  } else {
+    questions = loadQuestionsSync();
+    console.log('[server] Preguntas cargadas desde archivo/seed:', questions.length);
+  }
+
+  server.listen(PORT, () => {
+    console.log(`Socket server on http://localhost:${PORT}`);
+  });
+}
+
+start();
