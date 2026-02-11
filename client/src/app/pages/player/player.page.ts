@@ -13,6 +13,7 @@ import { SocketService, Player } from '../../socket.service';
     <div class="player-card">
       <ng-container *ngIf="!joined; else game">
         <div class="player-join-screen">
+          <a routerLink="/" class="back-link">← Volver a inicio</a>
           <div class="join-header">
             <h2 class="join-title">¡Únete a la partida!</h2>
             <p class="join-subtitle">Ingresa tu nombre para comenzar</p>

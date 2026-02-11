@@ -1,5 +1,6 @@
 import { Component, OnDestroy, signal } from '@angular/core';
 import { DecimalPipe, NgClass, NgFor, NgIf, TitleCasePipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { SocketService } from '../../socket.service';
 import { QuestionsService } from '../../questions.service';
@@ -9,9 +10,11 @@ import { ToastService } from '../../services/toast.service';
 @Component({
   standalone: true,
   selector: 'app-host-page',
-  imports: [DecimalPipe, NgFor, NgIf, NgClass, TitleCasePipe, FormsModule, CategoryMultiSelectComponent],
+  imports: [DecimalPipe, NgFor, NgIf, NgClass, TitleCasePipe, FormsModule, CategoryMultiSelectComponent, RouterLink],
   styleUrls: ['./host.page.scss'],
   template: `
+  <a routerLink="/" class="back-link">← Volver a inicio</a>
+
   <div class="host-main-layout">
   <div class="host-left-col">
   <details class="card host-panel host-section host-accordion" [attr.open]="lobbyStarted() ? null : ''">

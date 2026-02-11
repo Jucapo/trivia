@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { NgFor, NgIf, TitleCasePipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { QuestionBankFormComponent } from '../../components/question-bank-form/question-bank-form.component';
 import { QuestionsService } from '../../questions.service';
@@ -7,11 +8,12 @@ import { QuestionsService } from '../../questions.service';
 @Component({
   standalone: true,
   selector: 'app-admin-page',
-  imports: [NgFor, NgIf, TitleCasePipe, FormsModule, QuestionBankFormComponent],
+  imports: [NgFor, NgIf, TitleCasePipe, FormsModule, QuestionBankFormComponent, RouterLink],
   styleUrls: ['./admin.page.scss'],
   template: `
     <div class="container admin-container">
       <div class="card admin-card">
+        <a routerLink="/" class="back-link">← Volver a inicio</a>
         <h2>Gestionar preguntas y categorias</h2>
         <p class="muted">
           Administra el banco de preguntas y las categorias disponibles para todas las partidas.
