@@ -477,7 +477,19 @@ io.on('connection', (socket) => {
 
   socket.on('join', ({ role, name }) => {
     if (role === 'host') {
+      // Check if there's already an active host
+      if (state.hostId && state.hostId !== socket.id) {
+        const existingSocket = io.sockets.sockets.get(state.hostId);
+        if (existingSocket && existingSocket.connected) {
+          socket.emit('host:rejected', {
+            message: 'Ya hay un host conectado a esta partida. Solo puede haber un host a la vez.',
+          });
+          return;
+        }
+        // Previous host disconnected, allow this one
+      }
       state.hostId = socket.id;
+      socket.emit('host:accepted');
       broadcastLobby();
       if (state.started && state.currentIndex >= 0) {
         const raw = state.gameQuestions[state.currentIndex];

@@ -16,6 +16,21 @@ import { AccordionComponent } from '../../components/accordion/accordion.compone
   template: `
   <a routerLink="/" class="back-link">← Volver a inicio</a>
 
+  <div class="host-rejected-screen" *ngIf="hostRejected()">
+    <div class="rejected-card">
+      <div class="rejected-icon">🔒</div>
+      <h2 class="rejected-title">Host no disponible</h2>
+      <p class="rejected-message">{{ hostRejectedMessage() }}</p>
+      <p class="rejected-hint">Si el host actual se desconecta, podrás tomar el control recargando esta página.</p>
+      <div class="rejected-actions">
+        <a routerLink="/play" class="btn rejected-btn-play">Unirme como jugador</a>
+        <button class="btn secondary rejected-btn-retry" (click)="retryHost()">Reintentar como host</button>
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="!hostRejected()">
+
   <div class="host-share-section">
     <div class="share-row">
       <span class="badge">Comparte:</span>
@@ -206,6 +221,8 @@ import { AccordionComponent } from '../../components/accordion/accordion.compone
       <span class="icon-restart">&#8635;</span>
     </button>
   </div>
+
+  </ng-container>
   `
 })
 export class HostPage implements OnDestroy {
@@ -215,6 +232,8 @@ export class HostPage implements OnDestroy {
   get current() { return this.sock.currentQuestion; }
   get leaderboard() { return this.sock.leaderboard; }
   get paused() { return this.sock.paused; }
+  get hostRejected() { return this.sock.hostRejected; }
+  get hostRejectedMessage() { return this.sock.hostRejectedMessage; }
 
   now = signal(Date.now());
   private timer: any;
@@ -370,6 +389,7 @@ export class HostPage implements OnDestroy {
     });
   }
 
+  retryHost() { this.sock.joinHost(); }
   next() { this.sock.hostNext(); }
   reveal() { this.sock.hostReveal(); }
   pause() { this.sock.hostPause(); }

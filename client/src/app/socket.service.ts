@@ -35,6 +35,9 @@ export class SocketService {
   lobbyStarted = signal(false);
   paused = signal(false);
   playerConfirmed = signal(false);
+  hostAccepted = signal(false);
+  hostRejected = signal(false);
+  hostRejectedMessage = signal('');
 
   constructor() {
     const base =
@@ -70,6 +73,18 @@ export class SocketService {
 
     this.socket.on('player:joined', () => {
       this.playerConfirmed.set(true);
+    });
+
+    this.socket.on('host:accepted', () => {
+      this.hostAccepted.set(true);
+      this.hostRejected.set(false);
+      this.hostRejectedMessage.set('');
+    });
+
+    this.socket.on('host:rejected', ({ message }: { message: string }) => {
+      this.hostRejected.set(true);
+      this.hostAccepted.set(false);
+      this.hostRejectedMessage.set(message);
     });
 
     this.socket.on('question', (data: CurrentQ) => {
@@ -108,6 +123,9 @@ export class SocketService {
   joinHost() {
     this.pendingRole = 'host';
     this.pendingName = null;
+    this.hostAccepted.set(false);
+    this.hostRejected.set(false);
+    this.hostRejectedMessage.set('');
     this.socket.emit('join', { role: 'host' });
   }
 
