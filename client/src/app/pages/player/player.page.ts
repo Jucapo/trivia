@@ -13,7 +13,7 @@ import { SocketService, Player } from '../../socket.service';
   <div class="player-container">
     <div class="player-card-wrapper">
       <div class="player-card">
-        <ng-container *ngIf="!joined; else game">
+        <ng-container *ngIf="!joined(); else game">
           <div class="player-join-screen">
             <a routerLink="/" class="back-link">← Volver a inicio</a>
             <div class="join-header">
@@ -27,7 +27,9 @@ import { SocketService, Player } from '../../socket.service';
                 placeholder="Ej: Oscar / Jucapo / Cristian / Pipe" 
                 class="input join-input"
                 (keyup.enter)="join()">
-              <button class="btn join-btn" (click)="join()" [disabled]="!name.trim()">Unirme</button>
+              <button class="btn join-btn" (click)="join()" [disabled]="!name.trim() || joining">
+                {{ joining ? 'Conectando...' : 'Unirme' }}
+              </button>
               <p class="badge join-badge">Juega desde cualquier lugar</p>
             </div>
           </div>
@@ -122,7 +124,8 @@ import { SocketService, Player } from '../../socket.service';
 })
 export class PlayerPage implements OnDestroy {
   name = '';
-  joined = false;
+  joining = false;
+  get joined() { return this.sock.playerConfirmed; }
   get current() { return this.sock.currentQuestion; }
   get paused() { return this.sock.paused; }
 
@@ -146,11 +149,9 @@ export class PlayerPage implements OnDestroy {
 
   join() {
     const n = this.name.trim();
-    if (!n || n.length === 0) {
-      return; // No permitir nombres vacíos
-    }
+    if (!n || n.length === 0 || this.joining) return;
+    this.joining = true;
     this.sock.joinPlayer(n);
-    this.joined = true;
   }
 
   pick(i: number, reveal: boolean) {

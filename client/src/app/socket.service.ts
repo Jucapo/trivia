@@ -25,6 +25,8 @@ export interface GameSettings {
 @Injectable({ providedIn: 'root' })
 export class SocketService {
   private socket: Socket;
+  private pendingRole: 'host' | 'player' | null = null;
+  private pendingName: string | null = null;
 
   players = signal<Player[]>([]);
   currentQuestion = signal<CurrentQ | null>(null);
@@ -32,6 +34,7 @@ export class SocketService {
   leaderboard = signal<Player[]>([]);
   lobbyStarted = signal(false);
   paused = signal(false);
+  playerConfirmed = signal(false);
 
   constructor() {
     const base =
@@ -39,7 +42,22 @@ export class SocketService {
       `http://${typeof location !== 'undefined' ? location.hostname : 'localhost'}:3000`;
     this.socket = io(base, {
       path: '/socket.io',
-      transports: ['websocket']
+      transports: ['websocket', 'polling'],
+      reconnection: true,
+      reconnectionAttempts: 10,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax: 5000,
+    });
+
+    this.socket.on('connect', () => {
+      console.log('[Socket] Conectado:', this.socket.id);
+      if (this.pendingRole) {
+        console.log('[Socket] Re-enviando join tras reconexión:', this.pendingRole, this.pendingName);
+        this.socket.emit('join', {
+          role: this.pendingRole,
+          ...(this.pendingName ? { name: this.pendingName } : {}),
+        });
+      }
     });
 
     this.socket.on('lobby', ({ players, started, paused }: { players: Player[]; started: boolean; paused?: boolean; }) => {
@@ -49,6 +67,10 @@ export class SocketService {
     });
     this.socket.on('paused', () => this.paused.set(true));
     this.socket.on('resumed', () => this.paused.set(false));
+
+    this.socket.on('player:joined', () => {
+      this.playerConfirmed.set(true);
+    });
 
     this.socket.on('question', (data: CurrentQ) => {
       this.currentQuestion.set(data);
@@ -72,7 +94,6 @@ export class SocketService {
     this.socket.on('error', (data: { message?: string }) => {
       const message = data.message || 'Error desconocido';
       console.error('[Socket] Error:', message);
-      // Notificar a todos los callbacks registrados
       this.errorCallbacks.forEach(callback => callback(message));
     });
   }
@@ -84,8 +105,19 @@ export class SocketService {
     return () => this.errorCallbacks.delete(callback);
   }
 
-  joinHost() { this.socket.emit('join', { role: 'host' }); }
-  joinPlayer(name: string) { this.socket.emit('join', { role: 'player', name }); }
+  joinHost() {
+    this.pendingRole = 'host';
+    this.pendingName = null;
+    this.socket.emit('join', { role: 'host' });
+  }
+
+  joinPlayer(name: string) {
+    this.pendingRole = 'player';
+    this.pendingName = name;
+    this.playerConfirmed.set(false);
+    this.socket.emit('join', { role: 'player', name });
+  }
+
   hostStart(settings: GameSettings) { this.socket.emit('host:start', settings); }
   hostReveal() { this.socket.emit('host:reveal'); }
   hostNext() { this.socket.emit('host:next'); }
