@@ -9,6 +9,7 @@ import {
   Output,
   signal,
   SimpleChanges,
+  ViewChild,
 } from '@angular/core';
 import { NgFor, NgIf, TitleCasePipe } from '@angular/common';
 
@@ -18,7 +19,7 @@ import { NgFor, NgIf, TitleCasePipe } from '@angular/common';
   imports: [NgFor, NgIf, TitleCasePipe],
   template: `
     <div class="multiselect" #multiselectRef [class.open]="open()">
-      <button type="button" class="multiselect-trigger" (click)="toggle()">
+      <button type="button" class="multiselect-trigger" #triggerRef (click)="toggle()">
         <span class="multiselect-chips" *ngIf="displayChips().length > 0">
           <span *ngFor="let c of displayChips()" class="chip chip--multiselect">
             <span class="chip-icon">{{ iconFor(c) }}</span>{{ c | titlecase }}
@@ -28,7 +29,12 @@ import { NgFor, NgIf, TitleCasePipe } from '@angular/common';
         <span class="multiselect-placeholder" *ngIf="displayChips().length === 0">Elegir categorias...</span>
         <span class="multiselect-chevron">▾</span>
       </button>
-      <div class="multiselect-dropdown" *ngIf="open()">
+      <div
+        class="multiselect-dropdown"
+        *ngIf="open()"
+        [style.top.px]="dropdownPos().top"
+        [style.left.px]="dropdownPos().left"
+        [style.width.px]="dropdownPos().width">
         <div
           class="multiselect-option multiselect-option--all"
           (click)="toggleAll()">
@@ -127,17 +133,14 @@ import { NgFor, NgIf, TitleCasePipe } from '@angular/common';
     .chip--multiselect .chip-dot { background: rgba(255,255,255,0.9); }
     .chip--multiselect .chip-x { color: #fff; }
     .multiselect-dropdown {
-      position: absolute;
-      top: calc(100% + 6px);
-      left: 0;
-      right: 0;
-      max-height: 220px;
+      position: fixed;
+      max-height: 260px;
       overflow-y: auto;
       background: #fff;
       border: 2px solid #e2e8f0;
       border-radius: 12px;
-      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
-      z-index: 200;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.18);
+      z-index: 9999;
       padding: 8px;
     }
     @media (prefers-color-scheme: dark) {
@@ -221,6 +224,9 @@ export class CategoryMultiSelectComponent implements OnInit, OnChanges {
   open = signal(false);
   // Internal: list of selected INDIVIDUAL category names (never contains 'todas')
   internalSelected = signal<string[]>([]);
+  dropdownPos = signal<{ top: number; left: number; width: number }>({ top: 0, left: 0, width: 0 });
+
+  @ViewChild('triggerRef') triggerRef?: ElementRef<HTMLButtonElement>;
 
   constructor(private el: ElementRef<HTMLElement>) {}
 
@@ -248,11 +254,37 @@ export class CategoryMultiSelectComponent implements OnInit, OnChanges {
     if (!this.open()) return;
     const target = ev.target as Node;
     if (this.el.nativeElement.contains(target)) return;
+    // Also allow clicks on our floating dropdown (rendered outside native component)
+    const dropdown = document.querySelector('.multiselect-dropdown');
+    if (dropdown && dropdown.contains(target)) return;
     this.open.set(false);
   }
 
+  @HostListener('window:scroll')
+  @HostListener('window:resize')
+  onWindowChange() {
+    if (this.open()) this.updateDropdownPos();
+  }
+
   toggle() {
-    this.open.update((o) => !o);
+    const willOpen = !this.open();
+    if (willOpen) this.updateDropdownPos();
+    this.open.set(willOpen);
+  }
+
+  private updateDropdownPos() {
+    const el = this.triggerRef?.nativeElement;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const maxDropdownHeight = 260;
+    const spaceBelow = window.innerHeight - rect.bottom;
+    const showAbove = spaceBelow < maxDropdownHeight + 20 && rect.top > maxDropdownHeight;
+    const top = showAbove ? rect.top - maxDropdownHeight - 8 : rect.bottom + 6;
+    this.dropdownPos.set({
+      top,
+      left: rect.left,
+      width: rect.width,
+    });
   }
 
   remove(ev: Event, cat: string) {
