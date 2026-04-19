@@ -19,17 +19,25 @@ import { NgFor, NgIf, TitleCasePipe } from '@angular/common';
   template: `
     <div class="multiselect" #multiselectRef [class.open]="open()">
       <button type="button" class="multiselect-trigger" (click)="toggle()">
-        <span class="multiselect-chips" *ngIf="selectedList().length > 0">
-          <span *ngFor="let c of selectedList()" class="chip chip--multiselect">
+        <span class="multiselect-chips" *ngIf="displayChips().length > 0">
+          <span *ngFor="let c of displayChips()" class="chip chip--multiselect">
             <span class="chip-icon">{{ iconFor(c) }}</span>{{ c | titlecase }}
             <button type="button" class="chip-x" (click)="remove($event, c)" aria-label="Quitar">×</button>
           </span>
         </span>
-        <span class="multiselect-placeholder" *ngIf="selectedList().length === 0">Elegir categorias...</span>
+        <span class="multiselect-placeholder" *ngIf="displayChips().length === 0">Elegir categorias...</span>
         <span class="multiselect-chevron">▾</span>
       </button>
       <div class="multiselect-dropdown" *ngIf="open()">
-        <div class="multiselect-option" *ngFor="let opt of availableOptions()" (click)="toggleOption(opt)">
+        <div
+          class="multiselect-option multiselect-option--all"
+          (click)="toggleAll()">
+          <input type="checkbox" [checked]="allSelected()" [indeterminate]="someSelected() && !allSelected()">
+          <span class="chip-icon">📋</span>
+          <span><strong>Todas</strong></span>
+        </div>
+        <div class="multiselect-divider"></div>
+        <div class="multiselect-option" *ngFor="let opt of options" (click)="toggleOption(opt)">
           <input type="checkbox" [checked]="isSelected(opt)">
           <span class="chip-icon">{{ iconFor(opt) }}</span>
           <span>{{ opt | titlecase }}</span>
@@ -163,6 +171,31 @@ import { NgFor, NgIf, TitleCasePipe } from '@angular/common';
       accent-color: var(--accent);
       cursor: pointer;
     }
+    .multiselect-option--all {
+      background: rgba(102, 126, 234, 0.06);
+      font-weight: 600;
+    }
+    .multiselect-option--all:hover {
+      background: rgba(102, 126, 234, 0.12);
+    }
+    @media (prefers-color-scheme: dark) {
+      .multiselect-option--all {
+        background: rgba(102, 126, 234, 0.15);
+      }
+      .multiselect-option--all:hover {
+        background: rgba(102, 126, 234, 0.25);
+      }
+    }
+    .multiselect-divider {
+      height: 1px;
+      background: #e2e8f0;
+      margin: 6px 4px;
+    }
+    @media (prefers-color-scheme: dark) {
+      .multiselect-divider {
+        background: #475569;
+      }
+    }
     .chip-icon {
       font-size: 1.1em;
       line-height: 1;
@@ -186,8 +219,8 @@ export class CategoryMultiSelectComponent implements OnInit, OnChanges {
   };
 
   open = signal(false);
-  selectedList = signal<string[]>([]);
-  availableOptions = signal<string[]>([]);
+  // Internal: list of selected INDIVIDUAL category names (never contains 'todas')
+  internalSelected = signal<string[]>([]);
 
   constructor(private el: ElementRef<HTMLElement>) {}
 
@@ -200,8 +233,14 @@ export class CategoryMultiSelectComponent implements OnInit, OnChanges {
   }
 
   private syncFromInputs() {
-    this.selectedList.set([...(this.selected || [])]);
-    this.availableOptions.set(['todas', ...(this.options || [])]);
+    const incoming = this.selected || [];
+    const opts = this.options || [];
+    // If parent passed ['todas'] treat it as "all selected"
+    if (incoming.includes('todas')) {
+      this.internalSelected.set([...opts]);
+    } else {
+      this.internalSelected.set(incoming.filter((c) => opts.includes(c)));
+    }
   }
 
   @HostListener('document:click', ['$event'])
@@ -218,13 +257,34 @@ export class CategoryMultiSelectComponent implements OnInit, OnChanges {
 
   remove(ev: Event, cat: string) {
     ev.stopPropagation();
-    const next = this.selectedList().filter((c) => c !== cat);
-    this.selectedList.set(next);
-    this.selectedChange.emit(next);
+    if (cat === 'todas') {
+      this.internalSelected.set([]);
+      this.emit();
+      return;
+    }
+    const next = this.internalSelected().filter((c) => c !== cat);
+    this.internalSelected.set(next);
+    this.emit();
   }
 
   isSelected(opt: string): boolean {
-    return this.selectedList().includes(opt);
+    return this.internalSelected().includes(opt);
+  }
+
+  allSelected(): boolean {
+    const opts = this.options || [];
+    const sel = this.internalSelected();
+    return opts.length > 0 && sel.length === opts.length;
+  }
+
+  someSelected(): boolean {
+    return this.internalSelected().length > 0;
+  }
+
+  /** Chips shown in the trigger: a single "Todas" chip when all selected, else individual chips */
+  displayChips(): string[] {
+    if (this.allSelected()) return ['todas'];
+    return this.internalSelected();
   }
 
   iconFor(cat: string): string {
@@ -232,19 +292,30 @@ export class CategoryMultiSelectComponent implements OnInit, OnChanges {
     return this.categoryIcons?.[key] || CategoryMultiSelectComponent.DEFAULT_ICONS[key] || '📁';
   }
 
-  toggleOption(opt: string) {
-    let next: string[];
-    if (opt === 'todas') {
-      next = this.isSelected('todas') ? [] : ['todas'];
+  toggleAll() {
+    if (this.allSelected()) {
+      this.internalSelected.set([]);
     } else {
-      const list = this.selectedList().filter((c) => c !== 'todas');
-      if (this.isSelected(opt)) {
-        next = list.filter((c) => c !== opt);
-      } else {
-        next = [...list, opt];
-      }
+      this.internalSelected.set([...(this.options || [])]);
     }
-    this.selectedList.set(next);
-    this.selectedChange.emit(next);
+    this.emit();
+  }
+
+  toggleOption(opt: string) {
+    const list = this.internalSelected();
+    let next: string[];
+    if (list.includes(opt)) {
+      next = list.filter((c) => c !== opt);
+    } else {
+      next = [...list, opt];
+    }
+    this.internalSelected.set(next);
+    this.emit();
+  }
+
+  private emit() {
+    // Emit 'todas' for backward compat when all selected, else individual list
+    const out = this.allSelected() ? ['todas'] : [...this.internalSelected()];
+    this.selectedChange.emit(out);
   }
 }
