@@ -36,6 +36,15 @@ import { SocketService, Player } from '../../socket.service';
         </ng-container>
 
       <ng-template #game>
+        <ng-container *ngIf="countdownNumber() !== null; else notCountdown">
+          <div class="player-countdown-screen">
+            <div class="countdown-label">La partida inicia en</div>
+            <div class="countdown-number" [class.countdown-go]="countdownNumber() === 0" [attr.data-n]="countdownNumber()">
+              {{ countdownNumber() === 0 ? '¡YA!' : countdownNumber() }}
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #notCountdown>
         <div class="player-game-wrap" *ngIf="current() as q; else wait">
           <div class="paused-overlay" *ngIf="paused()">
             <div class="paused-overlay-content">
@@ -116,6 +125,7 @@ import { SocketService, Player } from '../../socket.service';
             </div>
           </div>
         </ng-template>
+        </ng-template>
       </ng-template>
       </div>
     </div>
@@ -128,6 +138,18 @@ export class PlayerPage implements OnDestroy {
   get joined() { return this.sock.playerConfirmed; }
   get current() { return this.sock.currentQuestion; }
   get paused() { return this.sock.paused; }
+  get countdown() { return this.sock.countdown; }
+
+  countdownNumber(): number | null {
+    const cd = this.countdown();
+    if (!cd) return null;
+    const elapsed = this.now() - cd.startsAt;
+    const remaining = cd.durationMs - elapsed;
+    if (remaining <= 0) return null;
+    // Show "YA" for last 500ms, then 1, 2, 3
+    if (remaining <= 500) return 0;
+    return Math.ceil((remaining - 500) / 1000);
+  }
 
   selected: number | null = null;
 

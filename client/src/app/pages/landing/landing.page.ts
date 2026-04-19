@@ -23,7 +23,7 @@ import { RouterLink } from '@angular/router';
             </a>
             <a routerLink="/admin" class="btn secondary landing-btn-secondary">
               <span class="landing-btn-icon">📚</span>
-              <span class="landing-btn-text">Gestionar Preguntas Y Categorias</span>
+              <span class="landing-btn-text">Preguntas Y Categorias</span>
             </a>
           </div>
         </div>

@@ -134,6 +134,12 @@ import { AccordionComponent } from '../../components/accordion/accordion.compone
   </app-accordion>
 
   <div class="host-right-col">
+  <div class="host-countdown-card" *ngIf="countdownNumber() !== null">
+    <div class="countdown-label">La partida inicia en</div>
+    <div class="countdown-number" [class.countdown-go]="countdownNumber() === 0">
+      {{ countdownNumber() === 0 ? '¡YA!' : countdownNumber() }}
+    </div>
+  </div>
   <app-accordion
     *ngIf="current() as q"
     [open]="true"
@@ -234,6 +240,17 @@ export class HostPage implements OnDestroy {
   get paused() { return this.sock.paused; }
   get hostRejected() { return this.sock.hostRejected; }
   get hostRejectedMessage() { return this.sock.hostRejectedMessage; }
+  get countdown() { return this.sock.countdown; }
+
+  countdownNumber(): number | null {
+    const cd = this.countdown();
+    if (!cd) return null;
+    const elapsed = this.now() - cd.startsAt;
+    const remaining = cd.durationMs - elapsed;
+    if (remaining <= 0) return null;
+    if (remaining <= 500) return 0;
+    return Math.ceil((remaining - 500) / 1000);
+  }
 
   now = signal(Date.now());
   private timer: any;

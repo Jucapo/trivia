@@ -30,6 +30,7 @@ const DEFAULT_QUESTION_TIME_MS = 15000; // 15s por pregunta
 const MIN_QUESTION_TIME_MS = 5000;
 const MAX_QUESTION_TIME_MS = 60000;
 const NEXT_DELAY_MS = 1500;             // pausa tras revelar (reducido para mejor UX)
+const COUNTDOWN_MS = 3500;              // countdown inicial 3-2-1
 const MAX_POINTS = 1000;                // puntaje si respondes al instante
 const MIN_POINTS = 200;                 // puntaje mínimo si respondes al final del tiempo
 const DEFAULT_DIFFICULTY = 'media';
@@ -585,8 +586,13 @@ io.on('connection', (socket) => {
     state.paused = false;
     state.pauseRemainingMs = null;
     state.currentIndex = 0;
-    emitQuestion();
     broadcastLobby();
+
+    // Emit countdown before first question
+    io.emit('countdown', { startsAt: Date.now(), durationMs: COUNTDOWN_MS });
+    state.nextTimer = setTimeout(() => {
+      emitQuestion();
+    }, COUNTDOWN_MS);
   });
 
   socket.on('host:reveal', () => { if (socket.id === state.hostId) doReveal(); });

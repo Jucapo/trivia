@@ -73,6 +73,55 @@
   font-size: 0.9rem;
 }
 
+/* Countdown card for host */
+.host-countdown-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius);
+  padding: 40px 24px;
+  text-align: center;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: var(--shadow);
+  margin-bottom: 20px;
+
+  @media (prefers-color-scheme: dark) {
+    background: rgba(30, 41, 59, 0.95);
+    border-color: rgba(51, 65, 85, 0.8);
+  }
+
+  .countdown-label {
+    font-size: 1rem;
+    color: var(--muted);
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+
+  .countdown-number {
+    font-size: 5rem;
+    font-weight: 900;
+    line-height: 1;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: hostCountdownPop 1s ease-in-out;
+
+    &.countdown-go {
+      font-size: 3.5rem;
+      background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  }
+}
+
+@keyframes hostCountdownPop {
+  0% { transform: scale(0.5); opacity: 0; }
+  40% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
 /* Sección de compartir enlace - fuera del acordeón */
 .host-share-section {
   margin-bottom: 24px;

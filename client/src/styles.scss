@@ -75,24 +75,32 @@ body {
 .container { 
   max-width: 1560px; 
   margin: 0 auto; 
-  padding: 28px 20px;
+  padding: 20px 12px;
   flex: 1;
   display: flex;
   flex-direction: column;
   min-height: 0;
-  
+
+  @media (min-width: 768px) {
+    padding: 24px 20px;
+  }
+
   @media (min-width: 1024px) {
     padding: 20px;
   }
-  
+
   @media (min-width: 1600px) {
     max-width: 1800px;
     padding: 20px;
   }
-  
+
   @media (min-width: 1920px) {
     max-width: 2000px;
     padding: 20px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 16px 6px;
   }
 }
 

@@ -38,6 +38,7 @@ export class SocketService {
   hostAccepted = signal(false);
   hostRejected = signal(false);
   hostRejectedMessage = signal('');
+  countdown = signal<{ startsAt: number; durationMs: number } | null>(null);
 
   constructor() {
     const base =
@@ -87,7 +88,12 @@ export class SocketService {
       this.hostRejectedMessage.set(message);
     });
 
+    this.socket.on('countdown', (data: { startsAt: number; durationMs: number }) => {
+      this.countdown.set(data);
+    });
+
     this.socket.on('question', (data: CurrentQ) => {
+      this.countdown.set(null);
       this.currentQuestion.set(data);
       this.counts.set([0, 0, 0, 0]);
     });
